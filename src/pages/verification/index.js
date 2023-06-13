@@ -1,58 +1,119 @@
-import InputFormLogin from "@/Componens/InputForm.js";
 import LoginVerifikasiLayout from "@/Layout/Login/LoginVerifikasiLayout";
-import { Box, Button, Grid, Typography } from "@mui/material";
-import { Form, Formik } from "formik";
-import Image from "next/image";
-import React from "react";
-import style from "../../styles/LoginVerifikasi.module.scss";
+import {
+  Box,
+  Grid,
+  LinearProgress,
+  TextField,
+  Typography,
+  styled,
+} from "@mui/material";
+import { useFormik } from "formik";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
+import SubmitButton from "@/Componens/Button/SubmitButton";
+import FoodieOrder from "@/Componens/Logo/FoodieOrder";
+import zxcvbn from "zxcvbn";
+import theme from "@/Helper/theme";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+
+const CssTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "black",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "#B2BAC2",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#FFAF37",
+      borderRadius: theme.spacing(1.3), // Atur border-radius di sini
+      borderWidth: 3,
+    },
+    "&:hover fieldset": {
+      borderColor: "#FFAF37",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#FFAF37",
+      borderWidth: 3,
+    },
+  },
+});
 
 export default function Verification() {
-  const handleSubmit = (value, setFieldError) => {
-    alert("bisa");
+  const [strengthPwd, setStrengthPwd] = useState(0);
+  const [strengthColor, setStrengthColor] = useState("inherit");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const handleSubmit = (value) => {
+    setTimeout(() => {
+      formik.setSubmitting(false);
+      formik.resetForm();
+    }, 2000);
   };
 
-  const validationSchema = Yup.object({
-    email: Yup.string().email().required(),
-    password: Yup.string().min(5).required(),
-    confirmPassword: Yup.string().oneOf(
-      [Yup.ref("password")],
-      "confirm password is not correct"
-    ),
+  const formik = useFormik({
+    // setting initial values
+    initialValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+
+    validationSchema: Yup.object({
+      email: Yup.string().email().required(),
+      password: Yup.string()
+        .min(8, "Password harus terdiri dari minimal 8 karakter")
+        .matches(/[a-z]/, "Password harus mengandung huruf kecil")
+        .matches(/[A-Z]/, "Password harus mengandung huruf besar")
+        .matches(/\d/, "Password harus mengandung angka")
+        .matches(/[^a-zA-Z\d]/, "Password harus mengandung karakter khusus")
+        .test(
+          "no-consecutive-characters",
+          "Tidak boleh memiliki 3 huruf yang sama secara berurutan",
+          (value) => {
+            const consecutiveRegex = /(.)\1{2}/;
+            return !consecutiveRegex.test(value);
+          }
+        )
+        .required(),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password")], "confirm password tidak benar")
+        .required(),
+    }),
+
+    // handle submission
+    onSubmit: handleSubmit,
   });
 
-  // 8karakter
-  // hurufbesar
-  // huruf kecil
-  // angka & special karakter
+  useEffect(() => {
+    const pwdStrength = zxcvbn(formik.values.password);
+
+    if (pwdStrength.score === 1) {
+      setStrengthPwd(25);
+      setStrengthColor("error");
+    } else if (pwdStrength.score === 2) {
+      setStrengthPwd(50);
+      setStrengthColor("primary");
+    } else if (pwdStrength.score === 3) {
+      setStrengthPwd(75);
+      setStrengthColor("secondary");
+    } else if (pwdStrength.score === 4) {
+      setStrengthPwd(100);
+      setStrengthColor("success");
+    } else {
+      setStrengthPwd(0);
+    }
+
+    console.log(pwdStrength);
+  }, [formik.values.password]);
 
   return (
     <>
       <LoginVerifikasiLayout>
         <Grid sx={{ width: "35rem" }}>
-          <Grid display={"flex"} justifyContent={"center"}>
-            <Box
-              sx={{ boxSizing: "border-box" }}
-              display={"flex"}
-              paddingX={3}
-              // paddingY={2}
-            >
-              <Image
-                src="/img/logo.svg"
-                height={80}
-                width={80}
-                // layout="responsive"
-                style={{ height: "50px", width: "100px" }}
-              />
-            </Box>
-            <Typography
-              variant="h3"
-              fontFamily="Harlow Solid"
-              className={style.foodieorder}
-            >
-              FoodieOrder
-            </Typography>
-          </Grid>
+          <FoodieOrder />
           <Grid pt={2}>
             <Typography
               paddingBottom={2}
@@ -62,39 +123,98 @@ export default function Verification() {
             >
               Account Verification
             </Typography>
-            <Formik
-              initialValues={{ email: "", password: "" }}
-              validationSchema={validationSchema}
-              onSubmit={(values, { setFieldError }) =>
-                handleSubmit(values, setFieldError)
-              }
+            <form
+              onSubmit={formik.handleSubmit}
+              style={{ display: "flex", flexDirection: "column", gap: "30px" }}
             >
-              <Form>
-                <InputFormLogin title="email" label="Email" />
-                <InputFormLogin title="password" label="Password" />
-                <InputFormLogin
-                  title="confirmPassword"
-                  label="Confirm Password"
+              <Box display={"flex"} flexDirection={"column"}>
+                <CssTextField
+                  name="email"
+                  label="email"
+                  autoComplete="off"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
-                <Box mt={2}>
-                  <Button
-                    sx={{
-                      padding: "10px",
-                      backgroundColor: "#FAA41A",
-                      width: "100%",
-                      color: "black",
-                      borderRadius: "12px",
-                      fontSize: { lg: "18px", xs: "10px" },
-                      ":hover": {
-                        bgcolor: "#FAA41A",
-                      },
-                    }}
+                {formik.touched.email && formik.errors.email && (
+                  <span style={{ color: "red", fontFamily: "Inter" }}>
+                    {formik.errors.email}
+                  </span>
+                )}
+              </Box>
+              <Box display={"flex"} flexDirection={"column"}>
+                <Box position={"relative"}>
+                  <CssTextField
+                    sx={{ width: "100%" }}
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    label="password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  <Box
+                    position={"absolute"}
+                    right={"20px"}
+                    top={"18px"}
+                    onClick={() => setShowPassword(!showPassword)}
                   >
-                    Sign in
-                  </Button>
+                    {!showPassword ? (
+                      <VisibilityOutlinedIcon />
+                    ) : (
+                      <VisibilityOffOutlinedIcon />
+                    )}
+                  </Box>
                 </Box>
-              </Form>
-            </Formik>
+                {formik.values.password && (
+                  <Box sx={{ width: "100%" }} paddingY={1} paddingBottom={0.5}>
+                    <LinearProgress
+                      variant="determinate"
+                      color={strengthColor}
+                      value={strengthPwd}
+                    />
+                  </Box>
+                )}
+                {formik.touched.password && formik.errors.password && (
+                  <span style={{ color: "red", fontFamily: "Inter" }}>
+                    {formik.errors.password}
+                  </span>
+                )}
+              </Box>
+              <Box display={"flex"} flexDirection={"column"}>
+                <Box position={"relative"}>
+                  <CssTextField
+                    sx={{ width: "100%" }}
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    autoComplete="off"
+                    value={formik.values.confirmPassword}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  <Box
+                    position={"absolute"}
+                    right={"20px"}
+                    top={"18px"}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {!showConfirmPassword ? (
+                      <VisibilityOutlinedIcon sx={{ fontWeight: "100" }} />
+                    ) : (
+                      <VisibilityOffOutlinedIcon />
+                    )}
+                  </Box>
+                </Box>
+                {formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword && (
+                    <span style={{ color: "red", fontFamily: "Inter" }}>
+                      {formik.errors.confirmPassword}
+                    </span>
+                  )}
+              </Box>
+              <SubmitButton disable={formik.isSubmitting} />
+            </form>
           </Grid>
         </Grid>
       </LoginVerifikasiLayout>

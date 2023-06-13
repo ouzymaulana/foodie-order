@@ -8,9 +8,9 @@ import "@fontsource/inter/500.css"; // Specify weight
 export default function LoginVerifikasiLayout({ children }) {
   return (
     <>
-      <Head>
+      {/* <Head>
         <link rel="stylesheet" href="/_next/fonts/HARLOWSI_1.woff" />
-      </Head>
+      </Head> */}
       <Grid
         display={"flex"}
         flexWrap={"wrap"}
@@ -21,9 +21,12 @@ export default function LoginVerifikasiLayout({ children }) {
           <Image
             src="/img/pizza.png"
             className={style.gambar}
-            height={100}
-            width={100}
-            layout="responsive"
+            width={1280}
+            height={1280}
+            // height={100}
+            // width={100}
+            // layout="responsive"
+            alt="gambar"
           />
         </Grid>
         <Grid

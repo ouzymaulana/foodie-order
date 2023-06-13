@@ -21,7 +21,7 @@ export default function InputFormLogin({ title, label }) {
         name={title}
         id={title}
       />
-      <span style={{ color: "red" }}>
+      <span style={{ color: "red", fontFamily: "Inter" }}>
         <ErrorMessage name={title} />
       </span>
     </Box>
