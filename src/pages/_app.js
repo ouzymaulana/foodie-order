@@ -1,3 +1,6 @@
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 import "@/styles/globals.css";
 import { ThemeProvider } from "@emotion/react";
 import Head from "next/head";

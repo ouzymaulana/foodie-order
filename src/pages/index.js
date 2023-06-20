@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import cookie from "cookie";
 import { Typography } from "@mui/material";
 import MainLayout from "@/Layout";
+import HomeMenu from "@/Views/HomeMenu";
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +18,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <MainLayout>
-        <Typography variant="h3">Ouzy</Typography>
+        <HomeMenu />
       </MainLayout>
     </>
   );

@@ -2,6 +2,7 @@ import {
   AppBar,
   Box,
   Drawer,
+  Grid,
   List,
   ListItem,
   ListItemButton,
@@ -13,54 +14,34 @@ import {
 import Image from "next/image";
 import React from "react";
 import WidgetsOutlinedIcon from "@mui/icons-material/WidgetsOutlined";
-import Navbar from "@/Componens/Navbar/Index";
+import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined";
+import Navbar from "@/Componens/Header/Index";
+import { IconContext } from "react-icons";
+import { FaHandHoldingHeart, FaHandsHolding } from "react-icons/fa";
+import { RiHandHeartLine } from "react-icons/ri";
+import SideBarMenu from "@/Componens/SideBar";
+import SearchValueContextProvider from "@/Context/SearchValueContextProvider";
 
 export default function MainLayout({ children }) {
   return (
     <>
-      <Navbar />
-      <Drawer
-        sx={{
-          position: "relative",
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: "10rem",
-            boxSizing: "border-box",
-          },
-        }}
-        variant="permanent"
-        anchor="left"
-      >
-        <Toolbar sx={{ height: "80px" }}>
-          <Image src="/img/logo.svg" height={100} width={100} alt="logo" />
-        </Toolbar>
-        <List>
-          {["Menu", "Favorite", "Order History"].map((text, index) => (
-            <ListItem key={text}>
-              <Box
-                sx={{
-                  padding: "10px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  borderRadius: "20px",
-                  width: "20rem",
-                  cursor: "pointer",
-                  "&:hover": {
-                    backgroundColor: "#FFCF81",
-                  },
-                }}
-              >
-                {/* <ListItemIcon> */}
-                <WidgetsOutlinedIcon sx={{ fontSize: 40 }} color="action" />
-                {/* </ListItemIcon> */}
-                <Typography>{text}</Typography>
-              </Box>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
+      <SearchValueContextProvider>
+        <Navbar />
+        <SideBarMenu />
+
+        <Grid
+          sx={{
+            backgroundColor: "#F1F1F1",
+            // height: "20vh",
+            height: "calc(100vh - 80px)",
+            marginTop: "80px",
+            marginLeft: "10rem",
+            padding: "20px",
+          }}
+        >
+          {children}
+        </Grid>
+      </SearchValueContextProvider>
     </>
   );
 }

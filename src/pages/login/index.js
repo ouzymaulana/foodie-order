@@ -53,7 +53,8 @@ export default function Login() {
   const route = useRouter();
 
   const handleSubmit = async () => {
-    const url = "http://localhost:5000/users";
+    console.log("masuk ke handle submit");
+    const url = "http://localhost:5000/login";
 
     // fetch("http://localhost:5000/users", {
     //   method: "POST",
@@ -80,20 +81,20 @@ export default function Login() {
       }),
     });
 
+    console.log(response.ok);
     if (response.ok) {
       const data = await response.json();
-      console.log(data.status);
-      Cookies.set("token", data.data.token, { expires: 1 / 24 });
-      // console.log("berhasil :", data.token);
-      // console.log(response);
-      route.push("/");
+      if (data.status !== "fail") {
+        Cookies.set("token", data.data.token, { expires: 1 / 24 });
+        route.push("/");
+      } else {
+        setAlertMessage(data.data.message);
+        setIsAlart(true);
+      }
     } else {
-      console.error("Error:", response.status);
       setIsAlart(true);
       const data = await response.json();
-      console.log(data);
-      setAlertMessage(data.message);
-      // Lakukan penanganan kesalahan sesuai kebutuhan
+      setAlertMessage(data.data.message);
     }
 
     setTimeout(() => {
