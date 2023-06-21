@@ -9,7 +9,6 @@ import MenuItem from "./Menu";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function HomeMenu() {
-  const [selectByCategory, setSelectByCategory] = useState("heavy meal");
   return (
     <>
       <Grid
@@ -29,11 +28,8 @@ export default function HomeMenu() {
           }}
         >
           <BestSellers />
-          <SelectByCategory
-            selectByCategory={selectByCategory}
-            setSelectByCategory={setSelectByCategory}
-          />
-          <MenuItem selectByCategory={selectByCategory} />
+          <SelectByCategory />
+          <MenuItem />
         </Grid>
         <Grid flex={3}>
           <Balance />

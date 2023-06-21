@@ -1,11 +1,19 @@
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
-export default function SelectByCategory({
-  selectByCategory,
-  setSelectByCategory,
-}) {
+export default function SelectByCategory() {
+  const route = useRouter();
+
+  const kategori = [
+    { nama: "heavy-meal", img: "/img/makananberat.svg" },
+    { nama: "snack", img: "/img/Snack.svg" },
+    { nama: "drink", img: "/img/drink.svg" },
+    { nama: "juice", img: "/img/Juice.svg" },
+  ];
+
+  console.log(kategori);
   return (
     <Grid>
       <Typography variant="h6" fontWeight={500}>
@@ -24,9 +32,27 @@ export default function SelectByCategory({
         }}
         gap={6}
       >
-        <Paper
+        {kategori.map((item, i) => (
+          <Paper
+            onClick={() => {
+              route.push(item.nama);
+            }}
+            elevation={0}
+            sx={{
+              borderRadius: "15px",
+              cursor: "pointer",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image src={item.img} height={50} width={50} alt="icon" />
+          </Paper>
+        ))}
+        {/* looping */}
+        {/* <Paper
           onClick={() => {
-            setSelectByCategory("heavy meal");
+            route.push("/heavy meal");
           }}
           elevation={0}
           sx={{
@@ -46,7 +72,7 @@ export default function SelectByCategory({
         </Paper>
         <Paper
           onClick={() => {
-            setSelectByCategory("snack");
+            route.push("/snack");
           }}
           elevation={0}
           sx={{
@@ -61,7 +87,7 @@ export default function SelectByCategory({
         </Paper>
         <Paper
           onClick={() => {
-            setSelectByCategory("drinks");
+            route.push("/drink");
           }}
           elevation={0}
           sx={{
@@ -76,7 +102,7 @@ export default function SelectByCategory({
         </Paper>
         <Paper
           onClick={() => {
-            setSelectByCategory("juice");
+            route.push("/juice");
           }}
           elevation={0}
           sx={{
@@ -88,7 +114,7 @@ export default function SelectByCategory({
           }}
         >
           <Image src="/img/Juice.svg" height={50} width={50} alt="icon" />
-        </Paper>
+        </Paper> */}
       </Box>
     </Grid>
   );

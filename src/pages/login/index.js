@@ -86,7 +86,7 @@ export default function Login() {
       const data = await response.json();
       if (data.status !== "fail") {
         Cookies.set("token", data.data.token, { expires: 1 / 24 });
-        route.push("/");
+        route.push("/heavy-meal");
       } else {
         setAlertMessage(data.data.message);
         setIsAlart(true);

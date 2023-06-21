@@ -13,6 +13,7 @@ import style from "../../styles/LoginVerifikasi.module.scss";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import theme from "@/Helper/theme";
 import { useDataSearchMenu } from "@/Context/SearchValueContextProvider";
+import { useRouter } from "next/router";
 
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
@@ -26,7 +27,19 @@ const CssTextField = styled(TextField)({
 });
 
 export default function Navbar() {
-  const { setSearchValue } = useDataSearchMenu();
+  const { searchValue, setSearchValue } = useDataSearchMenu();
+  const router = useRouter();
+
+  const handleSearch = (event) => {
+    // e.prefentDefault();
+    const searchValueData = event.target.value;
+    // const url = encodeURI(searchValue);
+    // console.log(url);
+    router.push({
+      pathname: router.query.kategori,
+      query: { search: searchValueData },
+    });
+  };
   return (
     <AppBar
       position="fixed"
@@ -67,6 +80,7 @@ export default function Navbar() {
                 backgroundColor: "white",
                 borderRadius: "25px",
               }}
+              value={searchValue}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -74,8 +88,9 @@ export default function Navbar() {
                   </InputAdornment>
                 ),
               }}
+              onChange={(event) => setSearchValue(event.target.value)}
               onKeyDown={(event) =>
-                event.key === "Enter" ? setSearchValue(event.target.value) : ""
+                event.key === "Enter" ? handleSearch(event) : ""
               }
             />
           </Box>

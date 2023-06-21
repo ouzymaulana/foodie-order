@@ -1,14 +1,14 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
-import { green, purple } from "@mui/material/colors";
+import { green, grey, purple } from "@mui/material/colors";
 
 const base = createTheme({
   palette: {
     primary: {
-      main: "#FFAF37",
+      main: "#FAA41A",
       dark: "#FFFFF",
     },
     secondary: {
-      main: green[500],
+      main: grey[600],
     },
     error: {
       main: "#d50000",

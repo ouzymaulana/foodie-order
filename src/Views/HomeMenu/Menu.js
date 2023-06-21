@@ -17,9 +17,10 @@ import { useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDataSearchMenu } from "@/Context/SearchValueContextProvider";
 import CardMenuLoading from "@/Componens/Loading/CardMenuLoading";
+import { useRouter } from "next/router";
 const inter = Inter({ subsets: ["latin"] });
 
-export default function MenuItem({ selectByCategory }) {
+export default function MenuItem() {
   const [data, setData] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
@@ -29,72 +30,48 @@ export default function MenuItem({ selectByCategory }) {
   const [loadingMenu, setLoadingMenu] = useState(false);
   const [loadingMenuTimer, setLoadingMenuTimer] = useState();
 
+  const route = useRouter();
+
   const token = Cookies.get("token");
   const listInnerRef = useRef(null);
 
   const fetchData = async () => {
-    // clearTimeout(loadingMenuTimer);
-
     setLoadingMenu(true);
     try {
       console.log("jalan");
+      setData([]);
       const response = await axios.get("http://localhost:5000/menu", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
         params: {
-          kategori: selectByCategory,
+          kategori: route.query.kategori,
           page,
           limit,
-          search: searchValue,
+          nama: route.query.search,
         },
       });
 
-      setTimeout(() => {
-        if (data == "") {
-          setData(response.data.data);
-        } else {
-          setData((prevData) => [...prevData, ...response.data.data]);
-        }
-        setTotalItems(response.data.totalItems);
-        setHasMore(response.data.hasMore);
-        setPage(page + 1);
-        setLoadingMenu(false);
-      }, 1000);
+      if (data == "") {
+        setData(response.data.data);
+      } else {
+        setData((prevData) => [...prevData, ...response.data.data]);
+      }
+      setTotalItems(response.data.totalItems);
+      setHasMore(response.data.hasMore);
+      // setPage(page + 1);
+      setLoadingMenu(false);
     } catch (error) {
       console.error(error);
     }
     setLoadingMenu(false);
-    // setLoadingMenuTimer(timer);
   };
 
   useEffect(() => {
     setPage(1);
     setData([]);
     fetchData();
-  }, [selectByCategory, searchValue]);
-
-  useEffect(() => {
-    if (hasMore && data.length >= totalItems) {
-      setHasMore(false);
-    }
-    if (hasMore) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            // setPage(page + 1);
-            fetchData();
-          }
-        },
-        { threshold: 1 }
-      );
-      observer.observe(listInnerRef.current);
-
-      return () => {
-        observer.disconnect();
-      };
-    }
-  }, [hasMore, data.length, totalItems]);
+  }, [route.query.kategori, route.query.search]);
 
   const handleAddFavoriteMenu = async (id_menu) => {
     try {
@@ -193,7 +170,7 @@ export default function MenuItem({ selectByCategory }) {
       </Grid>
       <div
         id="scroll-trigger"
-        style={{ height: "1px" }}
+        style={{ height: "0px" }}
         // onScroll={handleScroll}
         ref={listInnerRef}
       ></div>
