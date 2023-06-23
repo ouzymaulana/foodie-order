@@ -10,8 +10,10 @@ import { FaHandHoldingHeart, FaHandsHolding } from "react-icons/fa";
 import { RiHandHeartLine } from "react-icons/ri";
 import { GoHistory } from "react-icons/go";
 import { GrHistory } from "react-icons/gr";
+import { useRouter } from "next/router";
 
 export default function SideBarMenu() {
+  const route = useRouter();
   return (
     <Drawer
       sx={{
@@ -32,6 +34,7 @@ export default function SideBarMenu() {
       <List sx={{ paddingX: "20px" }}>
         {/* {["Menu", "Favorite", "Order History"].map((text, index) => ( */}
         <ListItem
+          onClick={() => route.push("/")}
           sx={{
             display: "flex",
             // justifyContent: "center",
@@ -59,6 +62,7 @@ export default function SideBarMenu() {
           <Typography textAlign={"center"}>Menu</Typography>
         </ListItem>
         <ListItem
+          onClick={() => route.push("/favorite")}
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -71,7 +75,7 @@ export default function SideBarMenu() {
           }}
         >
           <RiHandHeartLine fontSize={35} color="grey" />
-          <Typography textAlign={"center"}>Menu</Typography>
+          <Typography textAlign={"center"}>Favorite</Typography>
         </ListItem>
         <ListItem
           sx={{

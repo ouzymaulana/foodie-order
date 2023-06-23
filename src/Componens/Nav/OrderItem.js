@@ -12,6 +12,7 @@ export default function OrderItem() {
         src="/img/cocktail.jpg"
         height={80}
         width={80}
+        alt="gambar-menu"
         style={{
           borderRadius: "15px",
           flex: "1.5",

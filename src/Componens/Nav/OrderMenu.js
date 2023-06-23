@@ -1,7 +1,7 @@
-import { Box, Button, Paper, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import OrderItem from "./OrderItem";
-import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import ListTotal from "./ListTotal";
 
 export default function OrderMenu() {
   return (
@@ -38,50 +38,7 @@ export default function OrderMenu() {
         <OrderItem />
         <OrderItem />
       </Box>
-      <Box
-        flex={2}
-        display={"flex"}
-        flexDirection={"column"}
-        sx={{ backgroundColor: "#eeeeee" }}
-        borderRadius={3}
-        paddingX={2}
-      >
-        <Box display={"flex"} flex={6}>
-          <Box display={"flex"} justifyContent={"end"} alignItems={"center"}>
-            <Typography>makan siang, Lantai 3, Ruang 2</Typography>
-          </Box>
-          <Box display={"flex"} justifyContent={"end"} alignItems={"center"}>
-            <Typography>makan siang, Lantai 3, Ruang 2</Typography>
-          </Box>
-        </Box>
-        <Box display={"flex"} flex={6}>
-          <Box display={"flex"} justifyContent={"end"} alignItems={"center"}>
-            <Typography>Total</Typography>
-          </Box>
-          <Box display={"flex"} justifyContent={"end"} alignItems={"center"}>
-            <Typography>IDR 100.000</Typography>
-          </Box>
-        </Box>
-        {/* <Box
-          gap={2}
-          display={"flex"}
-          justifyContent={"end"}
-          sx={{ backgroundColor: "red" }}
-        >
-          sdfs */}
-        {/* <Paper
-            sx={{
-              backgroundColor: "#FAA41A",
-              padding: "2px",
-              display: "flex",
-              justifyContent: "center",
-              cursor: "pointer",
-            }}
-          >
-            <ModeEditOutlineOutlinedIcon color="dark" />
-          </Paper> */}
-        {/* </Box> */}
-      </Box>
+      <ListTotal />
       <Box flex={1} paddingTop={2}>
         <Button
           variant="contained"

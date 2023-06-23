@@ -87,6 +87,8 @@ export default function Verification() {
     onSubmit: handleSubmit,
   });
 
+  const aja = zxcvbn(formik.values.password);
+
   // useEffect(() => {
   //   const pwdStrength = zxcvbn(formik.errors);
   //   const isMinValid = Yup.string().min(8).isValidSync(formik.values.password);
@@ -146,16 +148,29 @@ export default function Verification() {
       (key) => key === "password"
     ).length;
 
+    console.log("====================================");
+    console.log("zxcvbn : ", pwdStrength.score);
+    console.log("zxcvbn : ", pwdStrength.guesses_log10);
+    console.log("error/tidak : ", passwordErrorsCount);
+    console.log("====================================");
+
     // if (pwdStrength.score === 1) {
     //   setStrengthPwd(25);
     //   setStrengthColor("error");
     // } else
-    if (passwordErrorsCount === 0) {
+    if (passwordErrorsCount === 0 && pwdStrength.guesses_log10 >= 10) {
       setStrengthPwd(100);
       setStrengthColor("success");
-    } else if (passwordErrorsCount >= 1) {
-      setStrengthPwd(50);
+    } else if (passwordErrorsCount === 0 && pwdStrength.score >= 2) {
+      setStrengthPwd(75);
       setStrengthColor("primary");
+      // setStrengthColor("success");
+    } else if (passwordErrorsCount === 0 && pwdStrength.score < 2) {
+      setStrengthPwd(50);
+      setStrengthColor("error");
+    } else if (passwordErrorsCount >= 1 && pwdStrength.score < 4) {
+      setStrengthPwd(25);
+      setStrengthColor("error");
     } else {
       setStrengthPwd(25);
       setStrengthColor("error");
@@ -175,7 +190,7 @@ export default function Verification() {
     // } else {
     //   setStrengthPwd(0);
     // }
-  }, [formik.values.password, formik.errors.password]);
+  }, [formik.values.password, formik.errors.password, aja]);
 
   return (
     <>

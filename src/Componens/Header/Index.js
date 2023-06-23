@@ -31,14 +31,18 @@ export default function Navbar() {
   const router = useRouter();
 
   const handleSearch = (event) => {
-    // e.prefentDefault();
     const searchValueData = event.target.value;
-    // const url = encodeURI(searchValue);
-    // console.log(url);
-    router.push({
-      pathname: router.query.kategori,
-      query: { search: searchValueData },
-    });
+
+    if (searchValueData !== "") {
+      router.push({
+        pathname: router.query.kategori,
+        query: { search: searchValueData },
+      });
+    } else {
+      router.push({
+        pathname: router.query.kategori,
+      });
+    }
   };
   return (
     <AppBar
