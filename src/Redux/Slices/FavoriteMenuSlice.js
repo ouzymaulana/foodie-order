@@ -16,6 +16,10 @@ const FavoriteMenuSlice = createSlice({
       );
     },
 
+    addDataFavorite: (state, action) => {
+      state.dataFavorite = [...state.dataFavorite, { ...action.payload }];
+    },
+
     ifHasDataFavorite: (state, action) => {
       console.log("==================ifHasDataFavorite==================");
       console.log(action.payload);
@@ -25,6 +29,10 @@ const FavoriteMenuSlice = createSlice({
 });
 
 export const selectDataFavorite = (state) => state.dataFavorite.dataFavorite;
-export const { setDataFavorite, deleteDataByIdMenu, ifHasDataFavorite } =
-  FavoriteMenuSlice.actions;
+export const {
+  setDataFavorite,
+  deleteDataByIdMenu,
+  addDataFavorite,
+  ifHasDataFavorite,
+} = FavoriteMenuSlice.actions;
 export default FavoriteMenuSlice.reducer;

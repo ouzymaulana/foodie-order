@@ -7,23 +7,23 @@ import theme from "@/Helper/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import store from "@/Redux/Store";
 import { Provider } from "react-redux";
-// import { PersistGate } from "redux-persist/integration/react";
-// import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
 
 export default function App({ Component, pageProps }) {
-  // const persistor = persistStore(store);
+  const persistor = persistStore(store);
   return (
     <>
       <Head>
         <title>foodie Order</title>
       </Head>
       <Provider store={store}>
-        {/* <PersistGate loading={null} persistor={persistor}> */}
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
-        {/* </PersistGate> */}
+        <PersistGate loading={null} persistor={persistor}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </PersistGate>
       </Provider>
     </>
   );

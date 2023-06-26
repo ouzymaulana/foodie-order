@@ -1,29 +1,78 @@
-import { Box } from "@mui/material";
+import { Box, MenuItem, TextField, styled } from "@mui/material";
 import { ErrorMessage, Field } from "formik";
+import theme from "@/Helper/theme";
 import React from "react";
 
-export default function InputFormLogin({ title, label }) {
+const CssTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "black",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "#B2BAC2",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "#FFAF37",
+      borderRadius: theme.spacing(1.3), // Atur border-radius di sini
+      borderWidth: 3,
+    },
+    "&:hover fieldset": {
+      borderColor: "#FFAF37",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#FFAF37",
+      borderWidth: 3,
+    },
+  },
+});
+
+export default function InputForm({
+  title,
+  label,
+  multiline,
+  select,
+  value,
+  onchange,
+  dataError,
+}) {
   return (
-    <Box paddingBottom={1}>
-      <label htmlFor={title} style={{ fontSize: "20px", fontFamily: "Inter" }}>
-        {label}
-      </label>
-      <Field
-        style={{
-          width: "100%",
-          margin: "8px 0",
-          padding: "10px",
-          fontSize: "20px",
-          borderRadius: "12px",
-          border: "3.1px solid #FAA41A",
-        }}
-        autoComplete="off"
-        name={title}
-        id={title}
-      />
-      <span style={{ color: "red", fontFamily: "Inter" }}>
-        <ErrorMessage name={title} />
-      </span>
+    <Box display={"flex"} flexDirection={"column"}>
+      {multiline === true ? (
+        <CssTextField
+          multiline
+          name={title}
+          label={label}
+          autoComplete="off"
+          rows={4}
+          // maxRows={4}
+          value={value}
+          onChange={onchange}
+        />
+      ) : select === true ? (
+        <CssTextField
+          select
+          name={title}
+          label={label}
+          autoComplete="off"
+          value={value || ""}
+          onChange={onchange}
+          // onBlur={formik.handleBlur}
+        >
+          <MenuItem value={"siang"}>siang</MenuItem>
+          <MenuItem value={"sore"}>sore</MenuItem>
+        </CssTextField>
+      ) : (
+        <CssTextField
+          name={title}
+          label={label}
+          autoComplete="off"
+          value={value}
+          onChange={onchange}
+        />
+      )}
+      {dataError && (
+        <span style={{ color: "red", fontFamily: "Inter" }}>{dataError}</span>
+      )}
     </Box>
   );
 }

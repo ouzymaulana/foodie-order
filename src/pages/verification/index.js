@@ -87,72 +87,14 @@ export default function Verification() {
     onSubmit: handleSubmit,
   });
 
-  const aja = zxcvbn(formik.values.password);
-
-  // useEffect(() => {
-  //   const pwdStrength = zxcvbn(formik.errors);
-  //   const isMinValid = Yup.string().min(8).isValidSync(formik.values.password);
-  //   const isLowerCaseValid = Yup.string()
-  //     .matches(/[a-z]/)
-  //     .isValidSync(formik.values.password);
-  //   const isUpperCaseValid = Yup.string()
-  //     .matches(/[A-Z]/)
-  //     .isValidSync(formik.values.password);
-  //   const isSpecialCharValid = Yup.string()
-  //     .matches(/[^a-zA-Z\d]/)
-  //     .test(
-  //       "no-consecutive-characters",
-  //       "Tidak boleh memiliki 3 huruf yang sama secara berurutan",
-  //       (value) => {
-  //         const consecutiveRegex = /(.)\1{2}/;
-  //         return !consecutiveRegex.test(value);
-  //       }
-  //     )
-  //     .isValidSync(formik.values.password);
-
-  //   if (isMinValid && isLowerCaseValid && isUpperCaseValid) {
-  //     setStrengthPwd(50);
-  //     setStrengthColor("error");
-  //   } else if (
-  //     isMinValid &&
-  //     isLowerCaseValid &&
-  //     isUpperCaseValid &&
-  //     isSpecialCharValid
-  //   ) {
-  //     setStrengthPwd(75);
-  //   } else if (pwdStrength.score === 1) {
-  //     setStrengthPwd(25);
-  //     setStrengthColor("error");
-  //   } else if (pwdStrength.score === 2) {
-  //     setStrengthPwd(50);
-  //     setStrengthColor("primary");
-  //   } else if (pwdStrength.score === 3) {
-  //     setStrengthPwd(75);
-  //     setStrengthColor("secondary");
-  //   } else if (pwdStrength.score === 4) {
-  //     setStrengthPwd(100);
-  //     setStrengthColor("success");
-  //   } else {
-  //     setStrengthPwd(0);
-  //   }
-
-  //   console.log(pwdStrength);
-  // }, [formik.values.password]);
+  const strengthPwdzxcvbn = zxcvbn(formik.values.password);
 
   useEffect(() => {
     const pwdStrength = zxcvbn(formik.values.password);
-    // console.log(zxcvbn(error));
-
     const error = formik.errors.password;
     const passwordErrorsCount = Object.keys(formik.errors).filter(
       (key) => key === "password"
     ).length;
-
-    console.log("====================================");
-    console.log("zxcvbn : ", pwdStrength.score);
-    console.log("zxcvbn : ", pwdStrength.guesses_log10);
-    console.log("error/tidak : ", passwordErrorsCount);
-    console.log("====================================");
 
     // if (pwdStrength.score === 1) {
     //   setStrengthPwd(25);
@@ -190,7 +132,7 @@ export default function Verification() {
     // } else {
     //   setStrengthPwd(0);
     // }
-  }, [formik.values.password, formik.errors.password, aja]);
+  }, [formik.values.password, formik.errors.password, strengthPwdzxcvbn]);
 
   return (
     <>

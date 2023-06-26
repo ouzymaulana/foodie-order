@@ -10,7 +10,6 @@ import {
 import React, { useEffect, useState } from "react";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Inter } from "next/font/google";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRef } from "react";
@@ -21,9 +20,14 @@ import { useRouter } from "next/router";
 import jwt from "jsonwebtoken";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addDataFavorite,
+  deleteDataByIdMenu,
   selectDataFavorite,
   setDataFavorite,
 } from "@/Redux/Slices/FavoriteMenuSlice";
+import CardMenu from "@/Componens/Card";
+import { Inter } from "next/font/google";
+import AddToCart from "@/Componens/Modal/AddToCart";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function MenuItem() {
@@ -38,6 +42,10 @@ export default function MenuItem() {
   const dataFavorite = useSelector(selectDataFavorite);
   const dispatch = useDispatch();
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const route = useRouter();
 
   const token = Cookies.get("token");
@@ -47,7 +55,7 @@ export default function MenuItem() {
     setLoadingMenu(true);
     try {
       setData([]);
-      const response = await axios.get("http://localhost:5000/api-menu/menu", {
+      const response = await axios.get("http://localhost:5000/api/menu", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -84,23 +92,23 @@ export default function MenuItem() {
     const emailLogin = jwt.decode(token);
     // verify secretKey
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api-favorite/favorite",
-        {
-          data: {
-            id_menu,
-            email: emailLogin.email,
-          },
-        }
-      );
+      const response = await axios.post("http://localhost:5000/api/favorite", {
+        data: {
+          id_menu,
+          email: emailLogin.email,
+        },
+      });
 
-      // handle to redux
-      // use callback
+      if (response.data.data.message === "Delete") {
+        dispatch(deleteDataByIdMenu(id_menu));
+        // fetchData();
+        getDataFavorite();
+      }
 
-      // if (response.data.status === "success") {
-      //   dispatch(deleteDataByIdMenu(id_menu));
-      //   fetchData();
-      // }
+      if (response.data.data.message === "Create") {
+        const getDataMenu = data.find((menu) => menu.id === id_menu);
+        dispatch(addDataFavorite(getDataMenu));
+      }
     } catch (error) {
       console.error(error);
     }
@@ -108,14 +116,11 @@ export default function MenuItem() {
 
   const getDataFavorite = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api-favorite/favorite",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get("http://localhost:5000/api/favorite", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       console.log(response.data.data.data);
 
@@ -151,84 +156,23 @@ export default function MenuItem() {
               (favorite) => favorite.id === item.id
             );
             return (
-              <Card
-                elevation={0}
-                sx={{
-                  width: 240,
-                  borderRadius: "20px",
-                  overflow: "hidden",
-                  padding: "10px",
-                }}
+              <CardMenu
+                item={item}
+                isFavorite={isFavorite}
+                handleAddFavoriteMenu={handleAddFavoriteMenu}
+                handleOpen={handleOpen}
                 key={i}
-              >
-                <Box position={"relative"}>
-                  <Box
-                    onClick={() => handleAddFavoriteMenu(item.id)}
-                    aria-label="delete"
-                    size="small"
-                    sx={{
-                      position: "absolute",
-                      right: "10px",
-                      top: "5px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <FavoriteIcon
-                      sx={{
-                        color:
-                          isFavorite === true
-                            ? "#CD1818"
-                            : "rgba(255, 255, 255, 0.5)",
-                        fontSize: 30,
-                      }}
-                    />
-                  </Box>
-                  <CardMedia
-                    sx={{ borderRadius: "15px" }}
-                    component="img"
-                    alt="green iguana"
-                    height="180"
-                    image="/img/cocktail.jpg"
-                  />
-                </Box>
-                <Box display={"flex"}>
-                  <Box sx={{ flex: 1, paddingX: "5px", paddingTop: "5px" }}>
-                    <Typography
-                      gutterBottom
-                      variant="h6"
-                      className={inter.className}
-                      fontWeight={600}
-                    >
-                      {item.nama}
-                    </Typography>
-                    <Typography
-                      gutterBottom
-                      variant="h6"
-                      color={"primary"}
-                      fontWeight={500}
-                    >
-                      IDR {item.harga}
-                    </Typography>
-                  </Box>
-                  <CardActions>
-                    <IconButton
-                      color="primary"
-                      aria-label="add to shopping cart"
-                    >
-                      <AddShoppingCartIcon />
-                    </IconButton>
-                  </CardActions>
-                </Box>
-              </Card>
+              />
             );
           })}
       </Grid>
-      <div
+      <AddToCart open={open} handleClose={handleClose} />
+      {/* <div
         id="scroll-trigger"
         style={{ height: "0px" }}
         // onScroll={handleScroll}
         ref={listInnerRef}
-      ></div>
+      ></div> */}
     </>
   );
 }
