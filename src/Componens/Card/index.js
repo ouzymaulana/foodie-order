@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   CardActions,
   CardMedia,
@@ -57,31 +58,50 @@ export default function CardMenu({
             image="/img/cocktail.jpg"
           />
         </Box>
-        <Box display={"flex"}>
-          <Box sx={{ flex: 1, paddingX: "5px", paddingTop: "5px" }}>
+        <Box display={"flex"} flexDirection={"column"} paddingX={"3px"}>
+          <Box sx={{ paddingTop: "5px" }}>
             <Typography
               gutterBottom
               variant="h6"
               className={inter.className}
-              fontWeight={600}
+              sx={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                maxWidth: "100%",
+              }}
             >
               {item.nama}
             </Typography>
+          </Box>
+          <Box>
             <Typography
               gutterBottom
-              variant="h6"
+              variant="subtitle2"
+              fontSize={18}
               color={"primary"}
-              fontWeight={500}
+              fontWeight={600}
             >
               IDR {item.harga}
             </Typography>
           </Box>
-          {/* <CardActions onClick={() => handleAddToCart(item.id)}> */}
-          <CardActions onClick={handleOpen}>
-            <IconButton color="primary" aria-label="add to shopping cart">
-              <AddShoppingCartIcon />
-            </IconButton>
-          </CardActions>
+          <Button
+            onClick={() => handleOpen(item.id)}
+            variant="contained"
+            size="small"
+            color="primary"
+            sx={{
+              paddingY: "5px",
+              borderRadius: "8px",
+              // height: "90%",
+              // width: "100%",
+              fontWeight: "600",
+            }}
+            disableElevation
+          >
+            add
+            {/* </IconButton> */}
+          </Button>
         </Box>
       </Card>
     </>

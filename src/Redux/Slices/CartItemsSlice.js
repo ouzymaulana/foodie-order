@@ -2,36 +2,34 @@ import { createSlice } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-const dataCartPersistConfig = {
-  key: "menuCart",
+const itemCartPersistConfig = {
+  key: "cartItem",
   storage: storage,
-  whitelist: ["cartItems"],
+  whitelist: ["cartItem"],
 };
 
 const CartItemsSlice = createSlice({
-  name: "menuCart",
+  name: "cartItem",
   initialState: {
     cartItem: [],
   },
   reducers: {
     setCartItem: (state, action) => {
-      if (Array.isArray(state.cartItem) !== 0) {
-        state.cartItem = [
-          ...state.cartItem,
-          { ...action.payload, quantity: 1 },
-        ];
-      } else {
+      console.log(action.payload);
+      if (state.cartItem == "") {
         state.cartItem = action.payload;
+      } else {
+        state.cartItem[0].menu.push(action.payload);
       }
     },
   },
 });
 
-const persistedDataCartReducer = persistReducer(
-  dataCartPersistConfig,
+const persistedItemCartReducer = persistReducer(
+  itemCartPersistConfig,
   CartItemsSlice.reducer
 );
 
-export const selectDataCart = (state) => state.dataCart;
+export const selectDataCart = (state) => state.cartItem.cartItem;
 export const { setCartItem } = CartItemsSlice.actions;
-export default persistedDataCartReducer;
+export default persistedItemCartReducer;

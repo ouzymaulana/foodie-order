@@ -12,7 +12,7 @@ const FavoriteMenuSlice = createSlice({
 
     deleteDataByIdMenu: (state, action) => {
       state.dataFavorite = state.dataFavorite.filter(
-        (item) => item.id === action.payload
+        (item) => item.id !== action.payload
       );
     },
 

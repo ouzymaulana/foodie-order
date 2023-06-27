@@ -7,10 +7,10 @@ import { Grid, MenuItem, TextField } from "@mui/material";
 import ButtonModal from "./ButtonModal.js";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import styled from "@emotion/styled";
-import theme from "@/Helper/theme";
-import { useDispatch } from "react-redux";
-import { setCartItem } from "@/Redux/Slices/CartItemsSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import { selectDataCart, setCartItem } from "@/Redux/Slices/CartItemsSlice.js";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const style = {
   marginTop: "5rem",
@@ -26,21 +26,50 @@ const style = {
   p: 4,
 };
 
-export default function AddToCart({ open, handleClose }) {
+export default function AddToCart({ open, handleClose, idMenu }) {
+  const cartItem = useSelector(selectDataCart);
   const dispatch = useDispatch();
-  const handleAddToCart = () => {
-    console.log(formik.values.waktuPesanan);
-    console.log(formik.values.alamatAntar);
-    console.log(formik.values.catatanTambahan);
+  const token = Cookies.get("token");
 
-    const data = [
-      {
-        waktuPesanan: formik.values.waktuPesanan,
-        alamatAntar: formik.values.alamatAntar,
+  const handleAddToCart = async () => {
+    if (cartItem == "") {
+      try {
+        const response = await axios.get("http://localhost:5000/user", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 200) {
+          const data = [
+            {
+              menu: [
+                {
+                  idMenu: idMenu,
+                  catatanTambahan: formik.values.catatanTambahan,
+                  quantity: 1,
+                },
+              ],
+              idUser: response.data.data.user.id,
+              waktuPesanan: formik.values.waktuPesanan,
+              alamatAntar: formik.values.alamatAntar,
+            },
+          ];
+          dispatch(setCartItem(data));
+          handleClose();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      const menu = {
+        idMenu: idMenu,
         catatanTambahan: formik.values.catatanTambahan,
-      },
-    ];
-    dispatch(setCartItem(data));
+        quantity: 1,
+      };
+      dispatch(setCartItem(menu));
+      handleClose();
+    }
   };
 
   const formik = useFormik({
@@ -86,36 +115,54 @@ export default function AddToCart({ open, handleClose }) {
             </Typography>
           </Box>
           <form onSubmit={formik.handleSubmit}>
-            <Grid display={"flex"} flexDirection={"column"} gap={3}>
-              <InputForm
-                title={"waktuPesanan"}
-                label={"Order Time"}
-                select={true}
-                value={formik.values.waktuPesanan}
-                onchange={formik.handleChange}
-                dataError={formik.errors.waktuPesanan}
-              />
-              <InputForm
-                title={"alamatAntar"}
-                label={"Table Location"}
-                value={formik.values.alamatAntar}
-                onchange={formik.handleChange}
-                dataError={formik.errors.alamatAntar}
-              />
-              <InputForm
-                title={"catatanTambahan"}
-                label={"Order Notes"}
-                multiline={true}
-                value={formik.values.catatanTambahan}
-                onchange={formik.handleChange}
-                dataError={formik.errors.catatanTambahan}
-              />
-              <ButtonModal
-                disable={false}
-                open={open}
-                handleClose={handleClose}
-              />
-            </Grid>
+            {cartItem == "" ? (
+              <Grid display={"flex"} flexDirection={"column"} gap={3}>
+                <InputForm
+                  title={"waktuPesanan"}
+                  label={"Order Time"}
+                  select={true}
+                  value={formik.values.waktuPesanan}
+                  onchange={formik.handleChange}
+                  dataError={formik.errors.waktuPesanan}
+                />
+                <InputForm
+                  title={"alamatAntar"}
+                  label={"Table Location"}
+                  value={formik.values.alamatAntar}
+                  onchange={formik.handleChange}
+                  dataError={formik.errors.alamatAntar}
+                />
+                <InputForm
+                  title={"catatanTambahan"}
+                  label={"Order Notes"}
+                  multiline={true}
+                  value={formik.values.catatanTambahan}
+                  onchange={formik.handleChange}
+                  dataError={formik.errors.catatanTambahan}
+                />
+                <ButtonModal
+                  disable={false}
+                  open={open}
+                  handleClose={handleClose}
+                />
+              </Grid>
+            ) : (
+              <Grid display={"flex"} flexDirection={"column"} gap={3}>
+                <InputForm
+                  title={"catatanTambahan"}
+                  label={"Order Notes"}
+                  multiline={true}
+                  value={formik.values.catatanTambahan}
+                  onchange={formik.handleChange}
+                  dataError={formik.errors.catatanTambahan}
+                />
+                <ButtonModal
+                  disable={false}
+                  open={open}
+                  handleClose={handleClose}
+                />
+              </Grid>
+            )}
           </form>
           {/* </Grid> */}
         </Box>

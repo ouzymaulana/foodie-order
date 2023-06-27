@@ -70,7 +70,7 @@ export default function FavoriteMenuItem() {
 
       if (response.data.status === "success") {
         dispatch(deleteDataByIdMenu(id_menu));
-        getDataFavorite();
+        // getDataFavorite();
       }
     } catch (error) {
       console.error(error);

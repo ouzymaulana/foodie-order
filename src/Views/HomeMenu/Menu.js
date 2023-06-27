@@ -1,20 +1,8 @@
-import {
-  Box,
-  Card,
-  CardActions,
-  CardMedia,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRef } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { useDataSearchMenu } from "@/Context/SearchValueContextProvider";
 import CardMenuLoading from "@/Componens/Loading/CardMenuLoading";
 import { useRouter } from "next/router";
 import jwt from "jsonwebtoken";
@@ -28,6 +16,7 @@ import {
 import CardMenu from "@/Componens/Card";
 import { Inter } from "next/font/google";
 import AddToCart from "@/Componens/Modal/AddToCart";
+import { selectDataCart } from "@/Redux/Slices/CartItemsSlice";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function MenuItem() {
@@ -35,21 +24,22 @@ export default function MenuItem() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
-  const { searchValue, setSearchValue } = useDataSearchMenu();
   const [totalItems, setTotalItems] = useState(0);
   const [loadingMenu, setLoadingMenu] = useState(false);
   const [loadingMenuTimer, setLoadingMenuTimer] = useState();
+  const [idMenuAddToCart, setIdMenuAddToCart] = useState();
+  const [open, setOpen] = useState(false);
+  // const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const dataFavorite = useSelector(selectDataFavorite);
   const dispatch = useDispatch();
-
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   const route = useRouter();
 
   const token = Cookies.get("token");
   const listInnerRef = useRef(null);
+
+  const cartItem = useSelector(selectDataCart);
 
   const fetchData = async () => {
     setLoadingMenu(true);
@@ -132,6 +122,11 @@ export default function MenuItem() {
     }
   };
 
+  const handleOpen = (id_menu) => {
+    setOpen(true);
+    setIdMenuAddToCart(id_menu);
+  };
+
   useEffect(() => {
     getDataFavorite();
   }, []);
@@ -166,7 +161,11 @@ export default function MenuItem() {
             );
           })}
       </Grid>
-      <AddToCart open={open} handleClose={handleClose} />
+      <AddToCart
+        open={open}
+        handleClose={handleClose}
+        idMenu={idMenuAddToCart}
+      />
       {/* <div
         id="scroll-trigger"
         style={{ height: "0px" }}

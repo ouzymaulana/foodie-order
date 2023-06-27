@@ -1,9 +1,18 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OrderItem from "./OrderItem";
 import ListTotal from "./ListTotal";
+import { useSelector } from "react-redux";
+import { selectDataCart } from "@/Redux/Slices/CartItemsSlice";
 
 export default function OrderMenu() {
+  const cartItem = useSelector(selectDataCart);
+  const [dataItemCart, setDataItemCart] = useState([]);
+
+  useEffect(() => {
+    setDataItemCart(cartItem[0]?.menu || []);
+  }, [cartItem]);
+
   return (
     <Box
       sx={{ backgroundColor: "white", height: "calc(100vh - 240px)" }}
@@ -33,10 +42,9 @@ export default function OrderMenu() {
         }}
       >
         <Typography variant="h6">Item</Typography>
-        <OrderItem />
-        <OrderItem />
-        <OrderItem />
-        <OrderItem />
+        {dataItemCart.map((item, i) => (
+          <OrderItem key={i} item={item} />
+        ))}
       </Box>
       <ListTotal />
       <Box flex={1} paddingTop={2}>

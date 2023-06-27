@@ -1,11 +1,27 @@
 import { Box, Paper, Typography } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import Cookies from "js-cookie";
 
-export default function OrderItem() {
+export default function OrderItem({ item }) {
+  const token = Cookies.get("token");
+
+  // useEffect(async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:5000/one-menu", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //   } catch (error) {}
+  // }, []);
+
+  console.log("===item=================================");
+  console.log(item);
+  console.log("====================================");
   return (
     <Box display={"flex"}>
       <Image
@@ -51,7 +67,7 @@ export default function OrderItem() {
             alignItems: "center",
           }}
         >
-          0
+          {item.quantity}
         </Paper>
         <AddIcon sx={{ cursor: "pointer" }} />
       </Box>
