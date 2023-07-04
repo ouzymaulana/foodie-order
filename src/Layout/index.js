@@ -21,26 +21,32 @@ import { FaHandHoldingHeart, FaHandsHolding } from "react-icons/fa";
 import { RiHandHeartLine } from "react-icons/ri";
 import SideBarMenu from "@/Componens/SideBar";
 import SearchValueContextProvider from "@/Context/SearchValueContextProvider";
+import LimitContextProvider from "@/Context/LimitContextProvider";
+import PageContextProvider from "@/Context/PageContextProvider";
 
 export default function MainLayout({ children }) {
   return (
     <>
       <SearchValueContextProvider>
-        <Navbar />
-        <SideBarMenu />
+        <LimitContextProvider>
+          <PageContextProvider>
+            <Navbar />
+            <SideBarMenu />
 
-        <Grid
-          sx={{
-            backgroundColor: "#F1F1F1",
-            // height: "20vh",
-            height: "calc(100vh - 80px)",
-            marginTop: "80px",
-            marginLeft: "10rem",
-            padding: "20px",
-          }}
-        >
-          {children}
-        </Grid>
+            <Grid
+              sx={{
+                backgroundColor: "#F1F1F1",
+                // height: "20vh",
+                height: "calc(100vh - 80px)",
+                marginTop: "80px",
+                marginLeft: "10rem",
+                padding: "20px",
+              }}
+            >
+              {children}
+            </Grid>
+          </PageContextProvider>
+        </LimitContextProvider>
       </SearchValueContextProvider>
     </>
   );

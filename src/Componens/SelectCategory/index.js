@@ -1,9 +1,11 @@
+import { usePageMenu } from "@/Context/PageContextProvider";
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 
 export default function SelectByCategory() {
+  const { page, setPage } = usePageMenu();
   const route = useRouter();
 
   const kategori = [
@@ -34,7 +36,7 @@ export default function SelectByCategory() {
           <Paper
             key={i}
             onClick={() => {
-              route.push(`/kategori/${item.nama}`);
+              setPage(1), route.push(`/kategori/${item.nama}`);
             }}
             elevation={0}
             sx={{

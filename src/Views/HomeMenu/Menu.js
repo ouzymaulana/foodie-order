@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRef } from "react";
-import CardMenuLoading from "@/Componens/Loading/CardMenuLoading";
 import { useRouter } from "next/router";
 import jwt from "jsonwebtoken";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,22 +16,25 @@ import CardMenu from "@/Componens/Card";
 import { Inter } from "next/font/google";
 import AddToCart from "@/Componens/Modal/AddToCart";
 import { selectDataCart } from "@/Redux/Slices/CartItemsSlice";
+import IsHasCartItem from "@/Componens/Modal/IsHasCartItem";
+import { useLimitMenu } from "@/Context/LimitContextProvider";
+import { usePageMenu } from "@/Context/PageContextProvider";
+import CardMenuLoading from "@/Componens/Loading/CardMenuLoading";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function MenuItem() {
   const [data, setData] = useState([]);
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [totalItems, setTotalItems] = useState(0);
   const [loadingMenu, setLoadingMenu] = useState(false);
   const [loadingMenuTimer, setLoadingMenuTimer] = useState();
   const [idMenuAddToCart, setIdMenuAddToCart] = useState();
   const [open, setOpen] = useState(false);
-  // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const dataFavorite = useSelector(selectDataFavorite);
   const dispatch = useDispatch();
+  const { limit, setLimit } = useLimitMenu();
+  const { page, setPage } = usePageMenu();
 
   const route = useRouter();
 
@@ -41,38 +43,75 @@ export default function MenuItem() {
 
   const cartItem = useSelector(selectDataCart);
 
-  const fetchData = async () => {
-    setLoadingMenu(true);
-    try {
-      setData([]);
-      const response = await axios.get("http://localhost:5000/api/menu", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          kategori: route.query.kategori,
-          page,
-          limit,
-          nama: route.query.search,
-        },
-      });
+  function onIntersection(entries) {
+    const firstEntery = entries[0];
+    if (firstEntery.isIntersecting && hasMore) {
+      fetchData();
+      // console.log("====================================");
+      // console.log("jalan");
+      // console.log(page);
+      // console.log(hasMore);
+      // console.log("====================================");
+    }
+  }
 
-      if (data == "") {
-        setData(response.data.data);
-      } else {
-        setData((prevData) => [...prevData, ...response.data.data]);
+  useEffect(() => {
+    const observer = new IntersectionObserver(onIntersection);
+    if (observer && listInnerRef.current) {
+      observer.observe(listInnerRef.current);
+    }
+    return () => {
+      if (observer) {
+        observer.disconnect();
       }
-      setTotalItems(response.data.totalItems);
-      setHasMore(response.data.hasMore);
-      // setPage(page + 1);
-      setLoadingMenu(false);
+    };
+  }, [data]);
+
+  const fetchData = async () => {
+    // setPage(page + 1);
+    try {
+      // setData([]);
+      clearTimeout(loadingMenuTimer);
+      setLoadingMenu(true);
+      const interval = setInterval(async () => {
+        const response = await axios.get("http://localhost:5000/api/menu", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            kategori: route.query.kategori,
+            page,
+            limit,
+            nama: route.query.search,
+          },
+        });
+
+        if (data == "") {
+          setData(response.data.data);
+          clearInterval(interval);
+        } else {
+          setData((prevData) => [...prevData, ...response.data.data]);
+          clearInterval(interval);
+        }
+
+        setHasMore(response.data.hasMore);
+        console.log("hasmore pada fetch : ", response.data.hasMore);
+        console.log("category pada fetch : ", route.query.kategori);
+        setTotalItems(response.data.totalItems);
+
+        setPage(page + 1);
+        // setPage((prevPage) => prevPage + 1);
+        setLoadingMenu(false);
+      }, 1000);
+
+      setLoadingMenuTimer(interval);
     } catch (error) {
       console.error(error);
     }
-    setLoadingMenu(false);
   };
 
   useEffect(() => {
+    setHasMore(!hasMore);
     setPage(1);
     setData([]);
     fetchData();
@@ -112,8 +151,6 @@ export default function MenuItem() {
         },
       });
 
-      console.log(response.data.data.data);
-
       if (response.status === 200) {
         dispatch(setDataFavorite(response.data.data.data));
       }
@@ -123,8 +160,12 @@ export default function MenuItem() {
   };
 
   const handleOpen = (id_menu) => {
-    setOpen(true);
-    setIdMenuAddToCart(id_menu);
+    const dataCart = cartItem[0]?.menu || "";
+    const isHasData = data.find((item) => item.idMenu === id_menu);
+    if (isHasData === undefined) {
+      setOpen(true);
+      setIdMenuAddToCart(id_menu);
+    }
   };
 
   useEffect(() => {
@@ -144,34 +185,54 @@ export default function MenuItem() {
         marginTop={2}
         paddingBottom={3}
       >
-        {loadingMenu && <CardMenuLoading />}
-        {!loadingMenu &&
-          data.map((item, i) => {
-            const isFavorite = dataFavorite.some(
-              (favorite) => favorite.id === item.id
-            );
-            return (
-              <CardMenu
-                item={item}
-                isFavorite={isFavorite}
-                handleAddFavoriteMenu={handleAddFavoriteMenu}
-                handleOpen={handleOpen}
-                key={i}
-              />
-            );
-          })}
+        {data.map((item, i) => {
+          const isFavorite = dataFavorite.some(
+            (favorite) => favorite.id === item.id
+          );
+          return (
+            <CardMenu
+              item={item}
+              isFavorite={isFavorite}
+              handleAddFavoriteMenu={handleAddFavoriteMenu}
+              handleOpen={handleOpen}
+              key={i}
+            />
+          );
+        })}
       </Grid>
-      <AddToCart
-        open={open}
-        handleClose={handleClose}
-        idMenu={idMenuAddToCart}
-      />
-      {/* <div
-        id="scroll-trigger"
-        style={{ height: "0px" }}
-        // onScroll={handleScroll}
-        ref={listInnerRef}
-      ></div> */}
+
+      {loadingMenu && <CardMenuLoading />}
+
+      {cartItem == "" ? (
+        <AddToCart
+          open={open}
+          handleClose={handleClose}
+          idMenu={idMenuAddToCart}
+          title="Please Fill The Form"
+        />
+      ) : (
+        <IsHasCartItem
+          open={open}
+          handleClose={handleClose}
+          idMenu={idMenuAddToCart}
+          title="Please Fill The Form"
+        />
+      )}
+
+      {hasMore && (
+        <>
+          {/* {loadingMenu && (
+            <div style={{ minHeight: "100px" }}>
+              <CardMenuLoading />
+            </div>
+          )} */}
+          <div
+            id="scroll-trigger"
+            style={{ minHeight: "25px", minWidth: "200px" }}
+            ref={listInnerRef}
+          ></div>
+        </>
+      )}
     </>
   );
 }

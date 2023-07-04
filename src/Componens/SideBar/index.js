@@ -31,7 +31,7 @@ export default function SideBarMenu() {
       <Toolbar sx={{ height: "80px" }}>
         <Image src="/img/logo.svg" height={100} width={100} alt="logo" />
       </Toolbar>
-      <List sx={{ paddingX: "20px" }}>
+      <List sx={{ paddingX: "30px" }}>
         {/* {["Menu", "Favorite", "Order History"].map((text, index) => ( */}
         <ListItem
           onClick={() => route.push("/")}
@@ -42,7 +42,7 @@ export default function SideBarMenu() {
             flexDirection: "column",
             borderRadius: "20px",
             cursor: "pointer",
-            marginY: "10px",
+            marginY: "15px",
             "&:hover": {
               backgroundColor: "#FFCF81",
             },

@@ -52,11 +52,6 @@ export default function FavoriteMenuItem() {
     }
   };
 
-  // const renderIfDeleteFavoriteMenu = (id_menu) => {
-  //   dispatch(deleteDataByIdMenu(id_menu));
-
-  // }
-
   const handleAddFavoriteMenu = async (id_menu) => {
     const emailLogin = jwt.decode(token);
 
@@ -81,7 +76,6 @@ export default function FavoriteMenuItem() {
     getDataFavorite();
   }, []);
 
-  console.log(hasMore);
   return (
     <>
       {/* <InfiniteScroll

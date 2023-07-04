@@ -53,7 +53,6 @@ export default function Login() {
   const route = useRouter();
 
   const handleSubmit = async () => {
-    console.log("masuk ke handle submit");
     const url = "http://localhost:5000/login";
 
     // fetch("http://localhost:5000/users", {

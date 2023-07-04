@@ -1,17 +1,8 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardMedia,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Card, CardMedia, Typography } from "@mui/material";
 import React, { useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Inter } from "next/font/google";
-import AddToCart from "../Modal/AddToCart";
+import { formatCurrency } from "@/Helper/formatCurrency";
 const inter = Inter({ subsets: ["latin"] });
 export default function CardMenu({
   item,
@@ -82,7 +73,7 @@ export default function CardMenu({
               color={"primary"}
               fontWeight={600}
             >
-              IDR {item.harga}
+              {formatCurrency(item.harga)}
             </Typography>
           </Box>
           <Button
