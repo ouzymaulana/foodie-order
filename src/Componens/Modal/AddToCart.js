@@ -10,27 +10,15 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import ModalLayout from "./ModalLayout/index.js";
 
-const style = {
-  marginTop: "5rem",
-  position: "absolute",
-  top: "20%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 600,
-  bgcolor: "background.paper",
-  // border: "2px solid #000",
-  borderRadius: 4,
-  boxShadow: 24,
-  p: 4,
-};
-
 export default function AddToCart({ open, handleClose, idMenu, title }) {
   const cartItem = useSelector(selectDataCart);
   const dispatch = useDispatch();
   const token = Cookies.get("token");
+  const jwtData = jwt.decode(token);
 
   const handleAddToCart = async () => {
     try {
+      // create id in token
       const response = await axios.get("http://localhost:5000/user", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -47,7 +35,8 @@ export default function AddToCart({ open, handleClose, idMenu, title }) {
                 quantity: 1,
               },
             ],
-            idUser: response.data.data.user.id,
+            // idUser: response.data.data.user.id,
+            idUser: jwtData.id,
             waktuPesanan: formik.values.waktuPesanan,
             alamatAntar: formik.values.alamatAntar,
           },
@@ -80,6 +69,10 @@ export default function AddToCart({ open, handleClose, idMenu, title }) {
     onSubmit: handleAddToCart,
   });
 
+  const clearDataForm = () => {
+    formik.resetForm();
+  };
+
   return (
     <ModalLayout open={open} handleClose={handleClose} title={title}>
       <form onSubmit={formik.handleSubmit}>
@@ -92,6 +85,7 @@ export default function AddToCart({ open, handleClose, idMenu, title }) {
             value={formik.values.waktuPesanan}
             onchange={formik.handleChange}
             dataError={formik.errors.waktuPesanan}
+            touched={formik.touched.waktuPesanan}
           />
           <InputForm
             title={"alamatAntar"}
@@ -99,6 +93,7 @@ export default function AddToCart({ open, handleClose, idMenu, title }) {
             value={formik.values.alamatAntar}
             onchange={formik.handleChange}
             dataError={formik.errors.alamatAntar}
+            touched={formik.touched.alamatAntar}
           />
           <InputForm
             title={"catatanTambahan"}
@@ -107,8 +102,14 @@ export default function AddToCart({ open, handleClose, idMenu, title }) {
             value={formik.values.catatanTambahan}
             onchange={formik.handleChange}
             dataError={formik.errors.catatanTambahan}
+            touched={formik.touched.catatanTambahan}
           />
-          <ButtonModal disable={false} open={open} handleClose={handleClose} />
+          <ButtonModal
+            disable={false}
+            open={open}
+            handleClose={handleClose}
+            resetInput={clearDataForm}
+          />
         </Grid>
       </form>
     </ModalLayout>

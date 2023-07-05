@@ -41,6 +41,10 @@ export default function UpdateOrderLocAndTime({ open, handleClose, title }) {
     onSubmit: handleUpdateOrderLocAndTime,
   });
 
+  const clearDataForm = () => {
+    formik.resetForm();
+  };
+
   useEffect(() => {
     formik.setValues({
       waktuPesanan: cartItem[0]?.waktuPesanan || "",
@@ -58,6 +62,7 @@ export default function UpdateOrderLocAndTime({ open, handleClose, title }) {
             value={formik.values.waktuPesanan}
             onchange={formik.handleChange}
             dataError={formik.errors.waktuPesanan}
+            touched={formik.touched.waktuPesanan}
           />
           <InputForm
             title={"alamatAntar"}
@@ -65,8 +70,14 @@ export default function UpdateOrderLocAndTime({ open, handleClose, title }) {
             value={formik.values.alamatAntar}
             onchange={formik.handleChange}
             dataError={formik.errors.alamatAntar}
+            touched={formik.touched.alamatAntar}
           />
-          <ButtonModal disable={false} open={open} handleClose={handleClose} />
+          <ButtonModal
+            disable={false}
+            open={open}
+            handleClose={handleClose}
+            resetInput={clearDataForm}
+          />
         </Grid>
       </form>
     </ModalLayout>

@@ -6,9 +6,12 @@ import Balance from "@/Componens/Nav/Balance";
 import BestSellers from "./BestSellers";
 import SelectByCategory from "@/Componens/SelectCategory";
 import MenuItem from "./Menu";
+import { useRouter } from "next/router";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function HomeMenu() {
+  const route = useRouter();
+  console.log(route.query);
   return (
     <>
       <Grid

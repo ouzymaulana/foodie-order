@@ -4,12 +4,19 @@ import React from "react";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
-export default function ButtonModal({ disable, open, handleClose }) {
+export default function ButtonModal({
+  disable,
+  open,
+  handleClose,
+  resetInput,
+}) {
   const route = useRouter();
   return (
     <Box display={"flex"} flexDirection={"row"} gap={2}>
       <Button
-        onClick={handleClose}
+        onClick={() => {
+          handleClose(), resetInput();
+        }}
         variant="contained"
         sx={{
           padding: "10px",

@@ -34,6 +34,7 @@ export default function InputForm({
   value,
   onchange,
   dataError,
+  touched,
 }) {
   return (
     <Box display={"flex"} flexDirection={"column"}>
@@ -70,7 +71,7 @@ export default function InputForm({
           onChange={onchange}
         />
       )}
-      {dataError && (
+      {touched && dataError && (
         <span style={{ color: "red", fontFamily: "Inter" }}>{dataError}</span>
       )}
     </Box>

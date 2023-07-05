@@ -5,10 +5,30 @@ import InputForm from "../InputForm";
 import ButtonModal from "./ButtonModal";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 export default function TranferBalance({ open, title, handleClose }) {
-  const handleTransferBalance = () => {
-    alert("bisa");
+  const token = Cookies.get("token");
+  const handleTransferBalance = async () => {
+    const response = await axios.post(
+      "http://localhost:5000/user/transferBalance",
+      {
+        destinationEmail: formik.values.destinationEmail,
+        transferAmount: formik.values.transferAmount,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.data.data.status === "success") {
+      console.log("berhasil transfer");
+      handleClose();
+    }
+    console.log(response.data);
   };
 
   const formik = useFormik({
@@ -24,6 +44,9 @@ export default function TranferBalance({ open, title, handleClose }) {
 
     onSubmit: handleTransferBalance,
   });
+  const clearDataForm = () => {
+    formik.resetForm();
+  };
   return (
     <ModalLayout open={open} title={title}>
       <form onSubmit={formik.handleSubmit}>
@@ -41,8 +64,14 @@ export default function TranferBalance({ open, title, handleClose }) {
             value={formik.values.transferAmount}
             onchange={formik.handleChange}
             dataError={formik.errors.transferAmount}
+            touched={formik.touched.transferAmount}
           />
-          <ButtonModal disable={false} open={open} handleClose={handleClose} />
+          <ButtonModal
+            disable={false}
+            open={open}
+            handleClose={handleClose}
+            resetInput={clearDataForm}
+          />
         </Grid>
       </form>
     </ModalLayout>

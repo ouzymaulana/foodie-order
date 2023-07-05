@@ -28,7 +28,6 @@ export default function ListTotal({ total, setTotal, itemMenu }) {
 
   useEffect(() => {
     const newTotal = calculateTotal(cartItem, itemMenu);
-    console.log(newTotal);
     setTotal(newTotal);
   }, [cartItem, itemMenu]);
 

@@ -5,10 +5,36 @@ import InputForm from "../InputForm";
 import ButtonModal from "./ButtonModal";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import Cookies from "js-cookie";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function TopUpSaldo({ open, title, handleClose }) {
-  const handleTopUpBalance = () => {
-    alert("bisa");
+  const token = Cookies.get("token");
+  const handleTopUpBalance = async () => {
+    const response = await axios.post(
+      "http://localhost:5000/user/topUpBalance",
+      {
+        topupAmount: formik.values.topupAmount,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.data.status === "success") {
+      handleClose();
+      // Swal.fire("Success TopUp", "", "success");
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Balance has been added",
+        showConfirmButton: false,
+        timer: 1300,
+      });
+    }
   };
 
   const formik = useFormik({
@@ -22,6 +48,10 @@ export default function TopUpSaldo({ open, title, handleClose }) {
 
     onSubmit: handleTopUpBalance,
   });
+
+  const clearDataForm = () => {
+    formik.resetForm();
+  };
   return (
     <ModalLayout open={open} title={title}>
       <form onSubmit={formik.handleSubmit}>
@@ -32,8 +62,14 @@ export default function TopUpSaldo({ open, title, handleClose }) {
             value={formik.values.topupAmount}
             onchange={formik.handleChange}
             dataError={formik.errors.topupAmount}
+            touched={formik.touched.topupAmount}
           />
-          <ButtonModal disable={false} open={open} handleClose={handleClose} />
+          <ButtonModal
+            disable={false}
+            open={open}
+            handleClose={handleClose}
+            resetInput={clearDataForm}
+          />
         </Grid>
       </form>
     </ModalLayout>

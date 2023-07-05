@@ -11,9 +11,20 @@ import { RiHandHeartLine } from "react-icons/ri";
 import { GoHistory } from "react-icons/go";
 import { GrHistory } from "react-icons/gr";
 import { useRouter } from "next/router";
+import { useDataSelectMenu } from "@/Context/SelectMenuSidebarContexProvider";
+import { usePageMenu } from "@/Context/PageContextProvider";
 
 export default function SideBarMenu() {
   const route = useRouter();
+  const { setPage } = usePageMenu();
+  const { selectMenu, setSelectMenu } = useDataSelectMenu();
+
+  const handleChangeSelectMenu = (value) => {
+    setSelectMenu(value);
+  };
+
+  console.log(selectMenu);
+
   return (
     <Drawer
       sx={{
@@ -34,7 +45,9 @@ export default function SideBarMenu() {
       <List sx={{ paddingX: "30px" }}>
         {/* {["Menu", "Favorite", "Order History"].map((text, index) => ( */}
         <ListItem
-          onClick={() => route.push("/")}
+          onClick={() => {
+            setPage(1), route.push("/");
+          }}
           sx={{
             display: "flex",
             // justifyContent: "center",
@@ -46,6 +59,9 @@ export default function SideBarMenu() {
             "&:hover": {
               backgroundColor: "#FFCF81",
             },
+            ...(selectMenu === "" && {
+              backgroundColor: "#FFCF81",
+            }),
           }}
         >
           <WidgetsOutlinedIcon
@@ -62,7 +78,9 @@ export default function SideBarMenu() {
           <Typography textAlign={"center"}>Menu</Typography>
         </ListItem>
         <ListItem
-          onClick={() => route.push("/favorite")}
+          onClick={() => {
+            setPage(1), route.push("/favorite");
+          }}
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -72,9 +90,18 @@ export default function SideBarMenu() {
             "&:hover": {
               backgroundColor: "#FFCF81",
             },
+            ...(selectMenu === "favorite" && {
+              backgroundColor: "#FFCF81",
+            }),
           }}
         >
-          <RiHandHeartLine fontSize={35} color="grey" />
+          {/* <RiHandHeartLine fontSize={35} color="grey" /> */}
+          <Image
+            src="/img/iconSideBar/Love.svg"
+            width={50}
+            height={50}
+            alt="icon"
+          />
           <Typography textAlign={"center"}>Favorite</Typography>
         </ListItem>
         <ListItem

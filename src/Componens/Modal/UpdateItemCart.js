@@ -37,6 +37,10 @@ export default function UpdateItemCart({ open, handleClose, item, title }) {
 
     onSubmit: handleUpdateOrderNote,
   });
+
+  const clearDataForm = () => {
+    formik.resetForm();
+  };
   return (
     <ModalLayout open={open} title={title}>
       <form onSubmit={formik.handleSubmit}>
@@ -49,8 +53,14 @@ export default function UpdateItemCart({ open, handleClose, item, title }) {
             value={formik.values.catatanTambahan}
             onchange={formik.handleChange}
             dataError={formik.errors.catatanTambahan}
+            touched={formik.touched.catatanTambahan}
           />
-          <ButtonModal disable={false} open={open} handleClose={handleClose} />
+          <ButtonModal
+            disable={false}
+            open={open}
+            handleClose={handleClose}
+            resetInput={clearDataForm}
+          />
         </Grid>
       </form>
     </ModalLayout>

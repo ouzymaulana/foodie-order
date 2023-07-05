@@ -23,6 +23,7 @@ import SideBarMenu from "@/Componens/SideBar";
 import SearchValueContextProvider from "@/Context/SearchValueContextProvider";
 import LimitContextProvider from "@/Context/LimitContextProvider";
 import PageContextProvider from "@/Context/PageContextProvider";
+import SelectMenuSidebarContexProvider from "@/Context/SelectMenuSidebarContexProvider";
 
 export default function MainLayout({ children }) {
   return (
@@ -30,21 +31,23 @@ export default function MainLayout({ children }) {
       <SearchValueContextProvider>
         <LimitContextProvider>
           <PageContextProvider>
-            <Navbar />
-            <SideBarMenu />
+            <SelectMenuSidebarContexProvider>
+              <Navbar />
+              <SideBarMenu />
 
-            <Grid
-              sx={{
-                backgroundColor: "#F1F1F1",
-                // height: "20vh",
-                height: "calc(100vh - 80px)",
-                marginTop: "80px",
-                marginLeft: "10rem",
-                padding: "20px",
-              }}
-            >
-              {children}
-            </Grid>
+              <Grid
+                sx={{
+                  backgroundColor: "#F1F1F1",
+                  // height: "20vh",
+                  height: "calc(100vh - 80px)",
+                  marginTop: "80px",
+                  marginLeft: "10rem",
+                  padding: "20px",
+                }}
+              >
+                {children}
+              </Grid>
+            </SelectMenuSidebarContexProvider>
           </PageContextProvider>
         </LimitContextProvider>
       </SearchValueContextProvider>

@@ -47,11 +47,10 @@ export default function MenuItem() {
     const firstEntery = entries[0];
     if (firstEntery.isIntersecting && hasMore) {
       fetchData();
-      // console.log("====================================");
-      // console.log("jalan");
-      // console.log(page);
-      // console.log(hasMore);
-      // console.log("====================================");
+      console.log("====================================");
+      console.log(page);
+      console.log(hasMore);
+      console.log("====================================");
     }
   }
 
@@ -68,9 +67,7 @@ export default function MenuItem() {
   }, [data]);
 
   const fetchData = async () => {
-    // setPage(page + 1);
     try {
-      // setData([]);
       clearTimeout(loadingMenuTimer);
       setLoadingMenu(true);
       const interval = setInterval(async () => {
@@ -100,7 +97,7 @@ export default function MenuItem() {
         setTotalItems(response.data.totalItems);
 
         setPage(page + 1);
-        // setPage((prevPage) => prevPage + 1);
+
         setLoadingMenu(false);
       }, 1000);
 
@@ -112,7 +109,7 @@ export default function MenuItem() {
 
   useEffect(() => {
     setHasMore(!hasMore);
-    setPage(1);
+    // setPage(1);
     setData([]);
     fetchData();
   }, [route.query.kategori, route.query.search]);

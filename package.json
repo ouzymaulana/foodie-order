@@ -33,6 +33,7 @@
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",
+    "sweetalert2": "^11.7.12",
     "yup": "^1.2.0",
     "zxcvbn": "^4.4.2"
   },

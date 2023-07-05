@@ -3,8 +3,11 @@ import React from "react";
 import FavoriteMenuItem from "./FavoriteMenuItem";
 import Balance from "@/Componens/Nav/Balance";
 import OrderMenu from "@/Componens/Nav/OrderMenu";
+import { useRouter } from "next/router";
 
 export default function FavoriteMenu() {
+  const route = useRouter();
+  console.log(route.query);
   return (
     <Grid display={"flex"} sx={{ height: "calc(100vh - 120px)", gap: "20px" }}>
       <Grid

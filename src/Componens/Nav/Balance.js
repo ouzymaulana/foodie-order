@@ -4,8 +4,13 @@ import SendIcon from "@mui/icons-material/Send";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import TopUpSaldo from "../Modal/TopUpSaldo";
 import TranferBalance from "../Modal/TranferBalance";
+import Cookies from "js-cookie";
+import jwt from "jsonwebtoken";
+import { formatCurrency } from "@/Helper/formatCurrency";
 
 export default function Balance() {
+  const token = Cookies.get("token");
+  const jwtData = jwt.decode(token);
   const [open, setOpen] = useState(false);
   const [openTfModal, setOpenTfModal] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -30,7 +35,7 @@ export default function Balance() {
           <Typography variant="h6" fontWeight={600}>
             Your Balance
           </Typography>
-          <Typography variant="h6">Rp 500.000</Typography>
+          <Typography variant="h6">{formatCurrency(jwtData.saldo)}</Typography>
         </Grid>
         <Grid
           flex={6}

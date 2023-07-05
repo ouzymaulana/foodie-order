@@ -33,6 +33,9 @@ export default function IsHasCartItem({ open, handleClose, idMenu, title }) {
 
     onSubmit: handleAddToCart,
   });
+  const clearDataForm = () => {
+    formik.resetForm();
+  };
 
   return (
     <ModalLayout open={open} title={title}>
@@ -45,8 +48,14 @@ export default function IsHasCartItem({ open, handleClose, idMenu, title }) {
             value={formik.values.catatanTambahan}
             onchange={formik.handleChange}
             dataError={formik.errors.catatanTambahan}
+            touched={formik.touched.catatanTambahan}
           />
-          <ButtonModal disable={false} open={open} handleClose={handleClose} />
+          <ButtonModal
+            disable={false}
+            open={open}
+            handleClose={handleClose}
+            resetInput={clearDataForm}
+          />
         </Grid>
       </form>
     </ModalLayout>
