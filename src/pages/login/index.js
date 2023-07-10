@@ -21,6 +21,7 @@ import style from "../../styles/LoginVerifikasi.module.scss";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import cookie from "cookie";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -224,4 +225,25 @@ export default function Login() {
       </LoginVerifikasiLayout>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  let cookieHeader = context.req.headers.cookie;
+
+  if (typeof cookieHeader !== "string") {
+    cookieHeader = "";
+  }
+  const cookies = cookie.parse(cookieHeader).token;
+
+  if (cookies) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
 }

@@ -8,9 +8,12 @@ import * as Yup from "yup";
 import Cookies from "js-cookie";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { topUpBalance } from "@/Redux/Slices/BalanceSlice";
 
 export default function TopUpSaldo({ open, title, handleClose }) {
   const token = Cookies.get("token");
+  const dispatch = useDispatch();
   const handleTopUpBalance = async () => {
     const response = await axios.post(
       "http://localhost:5000/user/topUpBalance",
@@ -25,6 +28,7 @@ export default function TopUpSaldo({ open, title, handleClose }) {
     );
 
     if (response.data.status === "success") {
+      dispatch(topUpBalance(formik.values.topupAmount));
       handleClose();
       // Swal.fire("Success TopUp", "", "success");
       Swal.fire({

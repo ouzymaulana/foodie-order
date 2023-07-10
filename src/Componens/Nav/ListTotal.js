@@ -7,16 +7,17 @@ import UpdateOrderLocAndTime from "../Modal/UpdateOrderLocAndTime";
 import { formatCurrency } from "@/Helper/formatCurrency";
 
 function calculateTotal(cartItem, itemMenu) {
-  // if (cartItem !== null) {
   let total = 0;
-  cartItem[0].menu.forEach((item) => {
-    const menuItem = itemMenu.find((menu) => menu.id === item.idMenu);
-    if (menuItem) {
-      total += menuItem.harga * item.quantity;
-    }
-  });
+  const isHasCartItem = cartItem[0]?.menu || "";
+  if (isHasCartItem !== "") {
+    isHasCartItem.forEach((item) => {
+      const menuItem = itemMenu.find((menu) => menu.id === item.idMenu);
+      if (menuItem) {
+        total += menuItem.harga * item.quantity;
+      }
+    });
+  }
   return total;
-  // }
 }
 export default function ListTotal({ total, setTotal, itemMenu }) {
   const cartItem = useSelector(selectDataCart);

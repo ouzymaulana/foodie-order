@@ -1,11 +1,9 @@
 import {
   AppBar,
-  Avatar,
   Box,
   Grid,
   InputAdornment,
   TextField,
-  Toolbar,
   Typography,
   styled,
 } from "@mui/material";
@@ -18,7 +16,7 @@ import { useRouter } from "next/router";
 import { usePageMenu } from "@/Context/PageContextProvider";
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
-import { grey } from "@mui/material/colors";
+import Profile from "./Profile";
 
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
@@ -54,26 +52,6 @@ export default function Navbar() {
       });
     }
   };
-
-  function stringAvatar(name) {
-    // return {
-    //   children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
-    // };
-    const nameArray = name.split(" ");
-    if (nameArray.length >= 2) {
-      return {
-        children: `${nameArray[0][0]}${nameArray[1][0]}`,
-      };
-    } else if (nameArray.length === 1) {
-      return {
-        children: `${nameArray[0][0]}`,
-      };
-    } else {
-      return {
-        children: "",
-      };
-    }
-  }
   return (
     <AppBar
       position="fixed"
@@ -129,47 +107,7 @@ export default function Navbar() {
             />
           </Box>
         </Grid>
-        <Grid display={"flex"} flex={3} gap={5} justifyContent={"end"}>
-          <Box
-            sx={{ backgroundColor: "white" }}
-            borderRadius={5}
-            // flex={0.2}
-            width={60}
-          ></Box>
-          <Grid width={180} display={"flex"} flexDirection={"row"}>
-            <Typography
-              width={130}
-              variant="subtitle1"
-              display={"flex"}
-              alignItems={"center"}
-              paddingX={1}
-              justifyContent={"end"}
-            >
-              {jwtData.nama}
-            </Typography>
-            <Box
-              width={60}
-              // sx={{ backgroundColor: "white" }}
-              borderRadius={5}
-              // flex={0.3}
-            >
-              {/* <Typography variant="h6">
-                {...stringAvatar("Kent Dodds")}
-              </Typography> */}
-              <Avatar
-                {...stringAvatar(jwtData.nama)}
-                sx={{
-                  width: 56,
-                  height: 56,
-                  borderRadius: "10",
-                  backgroundColor: "white",
-                  color: grey[400],
-                  fontWeight: "500",
-                }}
-              />
-            </Box>
-          </Grid>
-        </Grid>
+        <Profile nama={jwtData?.nama || ""} />
       </Grid>
     </AppBar>
   );

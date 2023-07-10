@@ -44,7 +44,7 @@ export default function CardMenu({
           <CardMedia
             sx={{ borderRadius: "15px" }}
             component="img"
-            alt="green iguana"
+            alt="green"
             height="180"
             image="/img/cocktail.jpg"
           />

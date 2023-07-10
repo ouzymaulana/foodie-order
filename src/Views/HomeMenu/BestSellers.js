@@ -1,27 +1,30 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardMedia,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material";
-import React from "react";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import { Inter } from "next/font/google";
 import Slider from "react-slick";
 import Image from "next/image";
+import axios from "axios";
+import Cookies from "js-cookie";
+import CardMenu from "@/Componens/Card";
+import { handleAddFavoriteMenu } from "@/Helper/handleAddFavoriteMenu";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addDataFavorite,
+  deleteDataByIdMenu,
+  selectDataFavorite,
+  setDataFavorite,
+} from "@/Redux/Slices/FavoriteMenuSlice";
+import { useMenuContext } from "@/Context/DataMenuContextProvider";
+import { getDataFavorite } from "@/Helper/FavoriteData/getDataFavorite";
+import { selectDataCart } from "@/Redux/Slices/CartItemsSlice";
+import AddToCart from "@/Componens/Modal/AddToCart";
+import IsHasCartItem from "@/Componens/Modal/IsHasCartItem";
 
 const inter = Inter({ subsets: ["latin"] });
 
 function SampleNextArrow({ onClick, style, className }) {
-  // const { className, style, onClick } = props;
   return (
     <div
       onClick={onClick}
@@ -50,7 +53,6 @@ function SampleNextArrow({ onClick, style, className }) {
   );
 }
 
-// function SamplePrevArrow(props) {
 function SamplePrevArrow({ onClick, style, className }) {
   // const { className, , onClick } = props;
   return (
@@ -88,6 +90,55 @@ function SamplePrevArrow({ onClick, style, className }) {
 }
 
 export default function BestSellers() {
+  const dataFavorite = useSelector(selectDataFavorite);
+  const cartItem = useSelector(selectDataCart);
+  const [dataBestSellers, setDataBestSellers] = useState([]);
+  const { menu, setMenu } = useMenuContext();
+  const [idMenuAddToCart, setIdMenuAddToCart] = useState();
+  const [open, setOpen] = useState(false);
+  const [isHasCartopen, setIsHasCartOpen] = useState(false);
+  const handleClose = () => setOpen(false);
+  const handleCloseIsHasCart = () => setIsHasCartOpen(false);
+
+  const dispatch = useDispatch();
+
+  const getDataBestSellers = async () => {
+    const response = await axios.get("http://localhost:5000/api/best-sellers");
+
+    if (response.data.status === "success") {
+      setDataBestSellers(response.data.data.menuBestSellers);
+    }
+  };
+
+  const addFavoriteMenu = async (id_menu) => {
+    handleAddFavoriteMenu(
+      id_menu,
+      dispatch,
+      deleteDataByIdMenu,
+      addDataFavorite,
+      setDataFavorite,
+      menu
+    );
+  };
+
+  useEffect(() => {
+    getDataBestSellers();
+  }, []);
+
+  const handleOpen = (id_menu) => {
+    const dataCart = cartItem[0]?.menu || [];
+    const isHasData = dataCart.find((item) => item.idMenu === id_menu);
+
+    if (isHasData === undefined) {
+      cartItem.length > 0 ? setIsHasCartOpen(true) : setOpen(true);
+      setIdMenuAddToCart(id_menu);
+    }
+  };
+
+  useEffect(() => {
+    getDataFavorite(dispatch, setDataFavorite);
+  }, []);
+
   const settings = {
     // className: "center",
     infinite: true,
@@ -120,362 +171,37 @@ export default function BestSellers() {
           display: "flex",
         }}
       >
-        <Card
-          elevation={0}
-          sx={{
-            maxWidth: 240,
-            borderRadius: "20px",
-            overflow: "hidden",
-            padding: "10px",
-          }}
-        >
-          <Box position={"relative"}>
-            <Box
-              aria-label="delete"
-              size="small"
-              sx={{
-                cursor: "pointer",
-                position: "absolute",
-                right: "10px",
-                top: "5px",
-              }}
-            >
-              <FavoriteIcon
-                fontSize="large"
-                sx={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 30 }}
-              />
-            </Box>
-            <CardMedia
-              sx={{ borderRadius: "15px" }}
-              component="img"
-              alt="green iguana"
-              height="180"
-              image="/img/cocktail.jpg"
+        {dataBestSellers.map((item, i) => {
+          const isFavorite = dataFavorite.some(
+            (favorite) => favorite.id === item.tb_menu.id
+          );
+          return (
+            <CardMenu
+              item={item.tb_menu}
+              isFavorite={isFavorite}
+              handleAddFavoriteMenu={addFavoriteMenu}
+              handleOpen={handleOpen}
+              key={i}
             />
-          </Box>
-          <Box display={"flex"}>
-            <Box sx={{ flex: 1, paddingX: "5px", paddingTop: "5px" }}>
-              <Typography
-                gutterBottom
-                variant="h6"
-                className={inter.className}
-                fontWeight={600}
-              >
-                Es Teh Manis
-              </Typography>
-              <Typography
-                gutterBottom
-                variant="h6"
-                color={"primary"}
-                fontWeight={500}
-              >
-                IDR 10.000.00
-              </Typography>
-            </Box>
-            <CardActions>
-              <IconButton color="primary" aria-label="add to shopping cart">
-                <AddShoppingCartIcon />
-              </IconButton>
-            </CardActions>
-          </Box>
-        </Card>
-        <Card
-          elevation={0}
-          sx={{
-            maxWidth: 240,
-            borderRadius: "20px",
-            overflow: "hidden",
-            padding: "10px",
-          }}
-        >
-          <Box position={"relative"}>
-            <Box
-              aria-label="delete"
-              size="small"
-              sx={{
-                cursor: "pointer",
-                position: "absolute",
-                right: "10px",
-                top: "5px",
-              }}
-            >
-              <FavoriteIcon
-                fontSize="large"
-                sx={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 30 }}
-              />
-            </Box>
-            <CardMedia
-              sx={{ borderRadius: "15px" }}
-              component="img"
-              alt="green iguana"
-              height="180"
-              image="/img/cocktail.jpg"
-            />
-          </Box>
-          <Box display={"flex"}>
-            <Box sx={{ flex: 1, paddingX: "5px", paddingTop: "5px" }}>
-              <Typography
-                gutterBottom
-                variant="h6"
-                className={inter.className}
-                fontWeight={600}
-              >
-                Es Teh Manis
-              </Typography>
-              <Typography
-                gutterBottom
-                variant="h6"
-                color={"primary"}
-                fontWeight={500}
-              >
-                IDR 10.000.00
-              </Typography>
-            </Box>
-            <CardActions>
-              <IconButton color="primary" aria-label="add to shopping cart">
-                <AddShoppingCartIcon />
-              </IconButton>
-            </CardActions>
-          </Box>
-        </Card>
-        <Card
-          elevation={0}
-          sx={{
-            maxWidth: 240,
-            borderRadius: "20px",
-            overflow: "hidden",
-            padding: "10px",
-          }}
-        >
-          <Box position={"relative"}>
-            <Box
-              aria-label="delete"
-              size="small"
-              sx={{
-                cursor: "pointer",
-                position: "absolute",
-                right: "10px",
-                top: "5px",
-              }}
-            >
-              <FavoriteIcon
-                fontSize="large"
-                sx={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 30 }}
-              />
-            </Box>
-            <CardMedia
-              sx={{ borderRadius: "15px" }}
-              component="img"
-              alt="green iguana"
-              height="180"
-              image="/img/cocktail.jpg"
-            />
-          </Box>
-          <Box display={"flex"}>
-            <Box sx={{ flex: 1, paddingX: "5px", paddingTop: "5px" }}>
-              <Typography
-                gutterBottom
-                variant="h6"
-                className={inter.className}
-                fontWeight={600}
-              >
-                Es Teh Manis
-              </Typography>
-              <Typography
-                gutterBottom
-                variant="h6"
-                color={"primary"}
-                fontWeight={500}
-              >
-                IDR 10.000.00
-              </Typography>
-            </Box>
-            <CardActions>
-              <IconButton color="primary" aria-label="add to shopping cart">
-                <AddShoppingCartIcon />
-              </IconButton>
-            </CardActions>
-          </Box>
-        </Card>
-        <Card
-          elevation={0}
-          sx={{
-            maxWidth: 240,
-            borderRadius: "20px",
-            overflow: "hidden",
-            padding: "10px",
-          }}
-        >
-          <Box position={"relative"}>
-            <Box
-              aria-label="delete"
-              size="small"
-              sx={{
-                cursor: "pointer",
-                position: "absolute",
-                right: "10px",
-                top: "5px",
-              }}
-            >
-              <FavoriteIcon
-                fontSize="large"
-                sx={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 30 }}
-              />
-            </Box>
-            <CardMedia
-              sx={{ borderRadius: "15px" }}
-              component="img"
-              alt="green iguana"
-              height="180"
-              image="/img/cocktail.jpg"
-            />
-          </Box>
-          <Box display={"flex"}>
-            <Box sx={{ flex: 1, paddingX: "5px", paddingTop: "5px" }}>
-              <Typography
-                gutterBottom
-                variant="h6"
-                className={inter.className}
-                fontWeight={600}
-              >
-                Es Teh Manis
-              </Typography>
-              <Typography
-                gutterBottom
-                variant="h6"
-                color={"primary"}
-                fontWeight={500}
-              >
-                IDR 10.000.00
-              </Typography>
-            </Box>
-            <CardActions>
-              <IconButton color="primary" aria-label="add to shopping cart">
-                <AddShoppingCartIcon />
-              </IconButton>
-            </CardActions>
-          </Box>
-        </Card>
-        <Card
-          elevation={0}
-          sx={{
-            maxWidth: 240,
-            borderRadius: "20px",
-            overflow: "hidden",
-            padding: "10px",
-          }}
-        >
-          <Box position={"relative"}>
-            <Box
-              aria-label="delete"
-              size="small"
-              sx={{
-                cursor: "pointer",
-                position: "absolute",
-                right: "10px",
-                top: "5px",
-              }}
-            >
-              <FavoriteIcon
-                fontSize="large"
-                sx={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 30 }}
-              />
-            </Box>
-            <CardMedia
-              sx={{ borderRadius: "15px" }}
-              component="img"
-              alt="green iguana"
-              height="180"
-              image="/img/cocktail.jpg"
-            />
-          </Box>
-          <Box display={"flex"}>
-            <Box sx={{ flex: 1, paddingX: "5px", paddingTop: "5px" }}>
-              <Typography
-                gutterBottom
-                variant="h6"
-                className={inter.className}
-                fontWeight={600}
-              >
-                Es Teh Manis
-              </Typography>
-              <Typography
-                gutterBottom
-                variant="h6"
-                color={"primary"}
-                fontWeight={500}
-              >
-                IDR 10.000.00
-              </Typography>
-            </Box>
-            <CardActions>
-              <IconButton color="primary" aria-label="add to shopping cart">
-                <AddShoppingCartIcon />
-              </IconButton>
-            </CardActions>
-          </Box>
-        </Card>
-        <Card
-          elevation={0}
-          sx={{
-            maxWidth: 240,
-            borderRadius: "20px",
-            overflow: "hidden",
-            padding: "10px",
-          }}
-        >
-          <Box position={"relative"}>
-            <Box
-              aria-label="delete"
-              size="small"
-              sx={{
-                cursor: "pointer",
-                position: "absolute",
-                right: "10px",
-                top: "5px",
-              }}
-            >
-              <FavoriteIcon
-                fontSize="large"
-                sx={{ color: "rgba(255, 255, 255, 0.5)", fontSize: 30 }}
-              />
-            </Box>
-            <CardMedia
-              sx={{ borderRadius: "15px" }}
-              component="img"
-              alt="green iguana"
-              height="180"
-              image="/img/cocktail.jpg"
-            />
-          </Box>
-          <Box display={"flex"}>
-            <Box sx={{ flex: 1, paddingX: "5px", paddingTop: "5px" }}>
-              <Typography
-                gutterBottom
-                variant="h6"
-                className={inter.className}
-                fontWeight={600}
-              >
-                Es Teh Manis
-              </Typography>
-              <Typography
-                gutterBottom
-                variant="h6"
-                color={"primary"}
-                fontWeight={500}
-              >
-                IDR 10.000.00
-              </Typography>
-            </Box>
-            <CardActions>
-              <IconButton color="primary" aria-label="add to shopping cart">
-                <AddShoppingCartIcon />
-              </IconButton>
-            </CardActions>
-          </Box>
-        </Card>
+          );
+        })}
       </Slider>
       {/* </Grid> */}
+      {cartItem == "" ? (
+        <AddToCart
+          open={open}
+          handleClose={handleClose}
+          idMenu={idMenuAddToCart}
+          title="Please Fill The Form"
+        />
+      ) : (
+        <IsHasCartItem
+          open={isHasCartopen}
+          handleClose={handleCloseIsHasCart}
+          idMenu={idMenuAddToCart}
+          title="Please Fill The Form"
+        />
+      )}
     </>
   );
 }

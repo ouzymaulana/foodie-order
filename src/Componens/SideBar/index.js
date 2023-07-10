@@ -13,6 +13,7 @@ import { GrHistory } from "react-icons/gr";
 import { useRouter } from "next/router";
 import { useDataSelectMenu } from "@/Context/SelectMenuSidebarContexProvider";
 import { usePageMenu } from "@/Context/PageContextProvider";
+import { grey } from "@mui/material/colors";
 
 export default function SideBarMenu() {
   const route = useRouter();
@@ -22,8 +23,6 @@ export default function SideBarMenu() {
   const handleChangeSelectMenu = (value) => {
     setSelectMenu(value);
   };
-
-  console.log(selectMenu);
 
   return (
     <Drawer
@@ -60,11 +59,20 @@ export default function SideBarMenu() {
               backgroundColor: "#FFCF81",
             },
             ...(selectMenu === "" && {
-              backgroundColor: "#FFCF81",
+              backgroundColor: "#FFBA53",
+              "&:hover": {
+                backgroundColor: "#FFBA53",
+              },
             }),
           }}
         >
-          <WidgetsOutlinedIcon
+          <Image
+            src="/img/iconSideBar/home_.svg"
+            width={40}
+            height={40}
+            alt="icon"
+          />
+          {/* <WidgetsOutlinedIcon
             sx={{
               display: "flex",
               justifyContent: "center",
@@ -72,10 +80,17 @@ export default function SideBarMenu() {
               fontSize: 40,
             }}
             color="action"
-          />
+          /> */}
           {/* <FaHandHoldingHeart />
           <VolunteerActivismOutlinedIcon /> */}
-          <Typography textAlign={"center"}>Menu</Typography>
+          <Typography
+            variant="subtitle2"
+            textAlign={"center"}
+            color={grey[600]}
+            fontWeight={600}
+          >
+            Menu
+          </Typography>
         </ListItem>
         <ListItem
           onClick={() => {
@@ -91,7 +106,10 @@ export default function SideBarMenu() {
               backgroundColor: "#FFCF81",
             },
             ...(selectMenu === "favorite" && {
-              backgroundColor: "#FFCF81",
+              backgroundColor: "#FFBA53",
+              "&:hover": {
+                backgroundColor: "#FFBA53",
+              },
             }),
           }}
         >
@@ -102,9 +120,19 @@ export default function SideBarMenu() {
             height={50}
             alt="icon"
           />
-          <Typography textAlign={"center"}>Favorite</Typography>
+          <Typography
+            variant="subtitle2"
+            textAlign={"center"}
+            color={grey[600]}
+            fontWeight={600}
+          >
+            Favorite
+          </Typography>
         </ListItem>
         <ListItem
+          onClick={() => {
+            setPage(1), route.push("/order-history");
+          }}
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -114,10 +142,29 @@ export default function SideBarMenu() {
             "&:hover": {
               backgroundColor: "#FFCF81",
             },
+            ...(selectMenu === "orderHistory" && {
+              backgroundColor: "#FFBA53",
+              "&:hover": {
+                backgroundColor: "#FFBA53",
+              },
+            }),
           }}
         >
-          <HistoryOutlinedIcon sx={{ fontSize: 45 }} color="action" />
-          <Typography textAlign={"center"}>Menu</Typography>
+          {/* <HistoryOutlinedIcon sx={{ fontSize: 45 }} color="action" /> */}
+          <Image
+            src="/img/iconSideBar/Group.svg"
+            width={45}
+            height={45}
+            alt="icon"
+          />
+          <Typography
+            variant="subtitle2"
+            textAlign={"center"}
+            color={grey[600]}
+            fontWeight={600}
+          >
+            Order History
+          </Typography>
         </ListItem>
         {/* ))} */}
       </List>

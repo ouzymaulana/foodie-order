@@ -114,6 +114,10 @@ const CartItemsSlice = createSlice({
         return updatedState;
       }
     },
+
+    deleteCartItem: (state, action) => {
+      state.cartItem = [];
+    },
   },
 });
 
@@ -129,5 +133,6 @@ export const {
   updateOrderLocAndOrderTime,
   incrementDecrementQuantity,
   deleteOneItemCart,
+  deleteCartItem,
 } = CartItemsSlice.actions;
 export default persistedItemCartReducer;

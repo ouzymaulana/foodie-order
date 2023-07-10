@@ -16,6 +16,7 @@ export default function App({ Component, pageProps }) {
     <>
       <Head>
         <title>foodie Order</title>
+        <link rel="icon" href="/img/logo.svg" />
       </Head>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>

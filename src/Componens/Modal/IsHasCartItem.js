@@ -19,6 +19,7 @@ export default function IsHasCartItem({ open, handleClose, idMenu, title }) {
       quantity: 1,
     };
     dispatch(setCartItem(menu));
+    formik.resetForm();
     handleClose();
   };
 

@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Tooltip, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import TopUpSaldo from "../Modal/TopUpSaldo";
@@ -7,6 +7,8 @@ import TranferBalance from "../Modal/TranferBalance";
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import { formatCurrency } from "@/Helper/formatCurrency";
+import { useDispatch, useSelector } from "react-redux";
+import { selectBalance, setbalance } from "@/Redux/Slices/BalanceSlice";
 
 export default function Balance() {
   const token = Cookies.get("token");
@@ -17,6 +19,15 @@ export default function Balance() {
   const handleClose = () => setOpen(false);
   const handleOpenTfModal = () => setOpenTfModal(true);
   const handleCloseTfModal = () => setOpenTfModal(false);
+
+  const balance = useSelector(selectBalance);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (balance === 0) {
+      dispatch(setbalance(jwtData.saldo));
+    }
+  }, []);
   return (
     <>
       <Box
@@ -35,7 +46,7 @@ export default function Balance() {
           <Typography variant="h6" fontWeight={600}>
             Your Balance
           </Typography>
-          <Typography variant="h6">{formatCurrency(jwtData.saldo)}</Typography>
+          <Typography variant="h6">{formatCurrency(balance)}</Typography>
         </Grid>
         <Grid
           flex={6}

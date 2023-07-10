@@ -7,9 +7,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { decrementBalance } from "@/Redux/Slices/BalanceSlice";
 
 export default function TranferBalance({ open, title, handleClose }) {
   const token = Cookies.get("token");
+  const dispatch = useDispatch();
   const handleTransferBalance = async () => {
     const response = await axios.post(
       "http://localhost:5000/user/transferBalance",
@@ -24,8 +27,8 @@ export default function TranferBalance({ open, title, handleClose }) {
       }
     );
 
-    if (response.data.data.status === "success") {
-      console.log("berhasil transfer");
+    if (response.data.status === "success") {
+      dispatch(decrementBalance(formik.values.transferAmount));
       handleClose();
     }
     console.log(response.data);

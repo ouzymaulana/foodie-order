@@ -20,6 +20,7 @@ import IsHasCartItem from "@/Componens/Modal/IsHasCartItem";
 import { useLimitMenu } from "@/Context/LimitContextProvider";
 import { usePageMenu } from "@/Context/PageContextProvider";
 import CardMenuLoading from "@/Componens/Loading/CardMenuLoading";
+import { useMenuContext } from "@/Context/DataMenuContextProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function MenuItem() {
@@ -30,24 +31,73 @@ export default function MenuItem() {
   const [loadingMenuTimer, setLoadingMenuTimer] = useState();
   const [idMenuAddToCart, setIdMenuAddToCart] = useState();
   const [open, setOpen] = useState(false);
+  const [isHasCartopen, setIsHasCartOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const handleCloseIsHasCart = () => setIsHasCartOpen(false);
   const dataFavorite = useSelector(selectDataFavorite);
   const dispatch = useDispatch();
   const { limit, setLimit } = useLimitMenu();
   const { page, setPage } = usePageMenu();
-
   const route = useRouter();
-
   const token = Cookies.get("token");
   const listInnerRef = useRef(null);
-
   const cartItem = useSelector(selectDataCart);
+  const { menu, setMenu } = useMenuContext();
+
+  const fetchData = async () => {
+    try {
+      // clearTimeout(loadingMenuTimer);
+      setLoadingMenu(true);
+      // const interval = setTimeout(async () => {
+      const response = await axios.get("http://localhost:5000/api/menu", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          kategori: route.query.kategori,
+          page,
+          limit,
+          nama: route.query.search,
+        },
+      });
+
+      if (data == "") {
+        setData(response.data.data);
+        setMenu(response.data.data);
+      } else {
+        setData((prevData) => [...prevData, ...response.data.data]);
+        setMenu((prevData) => [...prevData, ...response.data.data]);
+      }
+
+      setHasMore(response.data.hasMore);
+      console.log("hasmore pada fetch : ", response.data.hasMore);
+      console.log("category pada fetch : ", route.query.kategori);
+      setTotalItems(response.data.totalItems);
+
+      setPage(page + 1);
+
+      setLoadingMenu(false);
+      // }, 1000);
+      // setLoadingMenuTimer(interval);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("useEffect categori");
+    setHasMore(!hasMore);
+    // setPage(1);
+    setData([]);
+    console.log("data di useEffect : ", data);
+    fetchData();
+  }, [route.query.kategori, route.query.search]);
 
   function onIntersection(entries) {
     const firstEntery = entries[0];
     if (firstEntery.isIntersecting && hasMore) {
       fetchData();
-      console.log("====================================");
+      console.log("===============sesudah=====================");
       console.log(page);
       console.log(hasMore);
       console.log("====================================");
@@ -66,54 +116,6 @@ export default function MenuItem() {
     };
   }, [data]);
 
-  const fetchData = async () => {
-    try {
-      clearTimeout(loadingMenuTimer);
-      setLoadingMenu(true);
-      const interval = setInterval(async () => {
-        const response = await axios.get("http://localhost:5000/api/menu", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            kategori: route.query.kategori,
-            page,
-            limit,
-            nama: route.query.search,
-          },
-        });
-
-        if (data == "") {
-          setData(response.data.data);
-          clearInterval(interval);
-        } else {
-          setData((prevData) => [...prevData, ...response.data.data]);
-          clearInterval(interval);
-        }
-
-        setHasMore(response.data.hasMore);
-        console.log("hasmore pada fetch : ", response.data.hasMore);
-        console.log("category pada fetch : ", route.query.kategori);
-        setTotalItems(response.data.totalItems);
-
-        setPage(page + 1);
-
-        setLoadingMenu(false);
-      }, 1000);
-
-      setLoadingMenuTimer(interval);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    setHasMore(!hasMore);
-    // setPage(1);
-    setData([]);
-    fetchData();
-  }, [route.query.kategori, route.query.search]);
-
   const handleAddFavoriteMenu = async (id_menu) => {
     const emailLogin = jwt.decode(token);
     // verify secretKey
@@ -127,7 +129,6 @@ export default function MenuItem() {
 
       if (response.data.data.message === "Delete") {
         dispatch(deleteDataByIdMenu(id_menu));
-        // fetchData();
         getDataFavorite();
       }
 
@@ -157,10 +158,12 @@ export default function MenuItem() {
   };
 
   const handleOpen = (id_menu) => {
-    const dataCart = cartItem[0]?.menu || "";
-    const isHasData = data.find((item) => item.idMenu === id_menu);
+    const dataCart = cartItem[0]?.menu || [];
+    const isHasData = dataCart.find((item) => item.idMenu === id_menu);
+
     if (isHasData === undefined) {
-      setOpen(true);
+      // setOpen(true);
+      cartItem.length > 0 ? setIsHasCartOpen(true) : setOpen(true);
       setIdMenuAddToCart(id_menu);
     }
   };
@@ -209,26 +212,19 @@ export default function MenuItem() {
         />
       ) : (
         <IsHasCartItem
-          open={open}
-          handleClose={handleClose}
+          open={isHasCartopen}
+          handleClose={handleCloseIsHasCart}
           idMenu={idMenuAddToCart}
           title="Please Fill The Form"
         />
       )}
 
       {hasMore && (
-        <>
-          {/* {loadingMenu && (
-            <div style={{ minHeight: "100px" }}>
-              <CardMenuLoading />
-            </div>
-          )} */}
-          <div
-            id="scroll-trigger"
-            style={{ minHeight: "25px", minWidth: "200px" }}
-            ref={listInnerRef}
-          ></div>
-        </>
+        <div
+          id="scroll-trigger"
+          style={{ minHeight: "25px", minWidth: "200px" }}
+          ref={listInnerRef}
+        ></div>
       )}
     </>
   );

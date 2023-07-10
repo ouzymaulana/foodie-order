@@ -9,6 +9,7 @@ import { selectDataCart, setCartItem } from "@/Redux/Slices/CartItemsSlice.js";
 import Cookies from "js-cookie";
 import axios from "axios";
 import ModalLayout from "./ModalLayout/index.js";
+import jwt from "jsonwebtoken";
 
 export default function AddToCart({ open, handleClose, idMenu, title }) {
   const cartItem = useSelector(selectDataCart);

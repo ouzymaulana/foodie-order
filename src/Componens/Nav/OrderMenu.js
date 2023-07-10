@@ -20,20 +20,23 @@ export default function OrderMenu() {
 
   const getOneMenu = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/getMenuByidMenu",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            data: cartItem[0].menu,
-          },
+      const isDataItemCart = cartItem[0]?.menu || "";
+      if (isDataItemCart) {
+        const response = await axios.get(
+          "http://localhost:5000/api/getMenuByidMenu",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            params: {
+              data: cartItem[0].menu,
+            },
+          }
+        );
+        if (response) {
+          setItemMenu(response.data.data.menu);
+          // console.log("hahai : ", response.data.data.menu);
         }
-      );
-      if (response) {
-        setItemMenu(response.data.data.menu);
-        // console.log("hahai : ", response.data.data.menu);
       }
     } catch (error) {
       console.error(error);
@@ -60,6 +63,8 @@ export default function OrderMenu() {
             Order Menu
           </Typography>
         </Box>
+        <Typography variant="h6">Item</Typography>
+
         <Box
           flex={8}
           display={"flex"}
@@ -74,7 +79,6 @@ export default function OrderMenu() {
             },
           }}
         >
-          <Typography variant="h6">Item</Typography>
           {dataItemCart.map((item, i) => {
             const isHasMenu = itemMenu.find((menu) => menu.id === item.idMenu);
             return <OrderItem key={i} menu={isHasMenu} item={item} />;
