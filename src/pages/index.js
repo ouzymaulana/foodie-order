@@ -1,11 +1,9 @@
 import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import cookie from "cookie";
-import { Typography } from "@mui/material";
 import MainLayout from "@/Layout";
 import HomeMenu from "@/Views/HomeMenu";
-import { useState } from "react";
+import jwt from "jsonwebtoken";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +33,15 @@ export async function getServerSideProps(context) {
     return {
       redirect: {
         destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  const jwtData = jwt.decode(cookies);
+  if (jwtData.role === "admin") {
+    return {
+      redirect: {
+        destination: "/admin",
         permanent: false,
       },
     };

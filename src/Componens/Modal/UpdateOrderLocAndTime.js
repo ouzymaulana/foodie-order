@@ -10,6 +10,7 @@ import {
   selectDataCart,
   updateOrderLocAndOrderTime,
 } from "@/Redux/Slices/CartItemsSlice";
+import { Alert } from "../Alert/Alert";
 
 export default function UpdateOrderLocAndTime({ open, handleClose, title }) {
   const cartItem = useSelector(selectDataCart);
@@ -22,6 +23,7 @@ export default function UpdateOrderLocAndTime({ open, handleClose, title }) {
     ) {
       dispatch(updateOrderLocAndOrderTime(formik.values));
       handleClose();
+      Alert("success", "data successfully modified");
     }
   };
 

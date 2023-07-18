@@ -8,6 +8,7 @@ import { deleteCartItem, selectDataCart } from "@/Redux/Slices/CartItemsSlice";
 import { grey } from "@mui/material/colors";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { Alert } from "../Alert/Alert";
 
 export default function ConfirmCheckOut({
   dataItemCart,
@@ -44,6 +45,7 @@ export default function ConfirmCheckOut({
         setDisableButton(false);
         handleClose();
         dispatch(deleteCartItem());
+        Alert("success", "Food order successful");
       }
       console.log(response.data);
     } catch (error) {
@@ -51,7 +53,12 @@ export default function ConfirmCheckOut({
     }
   };
   return (
-    <ModalLayout open={open} handleClose={handleClose} title={title}>
+    <ModalLayout
+      open={open}
+      handleClose={handleClose}
+      title={title}
+      isClick={true}
+    >
       <Grid display={"flex"} flexDirection={"column"}>
         <Grid
           display={"flex"}

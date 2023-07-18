@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { updateOrderNote } from "@/Redux/Slices/CartItemsSlice.js";
+import { Alert } from "../Alert/Alert.js";
 
 export default function UpdateItemCart({ open, handleClose, item, title }) {
   const dispatch = useDispatch();
@@ -21,8 +22,9 @@ export default function UpdateItemCart({ open, handleClose, item, title }) {
       };
       dispatch(updateOrderNote(data));
       handleClose();
+      Alert("success", "note successfully modified");
     } else {
-      console.log("tidak ada yang diedit");
+      Alert("success", "no data changes");
     }
   };
 

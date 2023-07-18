@@ -4,6 +4,7 @@ import OrderHistoryView from "@/Views/OrderHistory";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import cookie from "cookie";
+import jwt from "jsonwebtoken";
 
 export default function OrderHistory() {
   return (
@@ -31,6 +32,15 @@ export async function getServerSideProps(context) {
     return {
       redirect: {
         destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  const jwtData = jwt.decode(cookies);
+  if (jwtData.role === "admin") {
+    return {
+      redirect: {
+        destination: "/admin",
         permanent: false,
       },
     };

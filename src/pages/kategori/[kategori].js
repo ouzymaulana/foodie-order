@@ -3,6 +3,7 @@ import HomeMenu from "@/Views/HomeMenu";
 import { parse } from "cookie";
 import Head from "next/head";
 import React from "react";
+import jwt from "jsonwebtoken";
 
 export default function ProductFilterByKategori() {
   return (
@@ -47,7 +48,9 @@ export default function ProductFilterByKategori() {
 export async function getServerSideProps(context) {
   const cookieHeader = context.req.headers.cookie;
 
-  if (!cookieHeader) {
+  const cookies = parse(cookieHeader).token;
+  console.log(cookies);
+  if (!cookies) {
     return {
       redirect: {
         destination: "/login",
@@ -55,14 +58,11 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  // Mendapatkan header cookies dari permintaan
-  const cookies = parse(cookieHeader).token;
-  // Lakukan sesuatu dengan cookies
-  console.log(cookies);
-  if (!cookies) {
+  const jwtData = jwt.decode(cookies);
+  if (jwtData.role === "admin") {
     return {
       redirect: {
-        destination: "/login",
+        destination: "/admin",
         permanent: false,
       },
     };

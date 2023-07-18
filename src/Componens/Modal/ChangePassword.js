@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ModalLayout from "./ModalLayout";
-import { Alert, Box, Button, Snackbar, Stack, TextField } from "@mui/material";
 import PasswordInput from "../InputForm/PasswordInput";
 import ButtonModal from "./ButtonModal";
 import InputForm from "../InputForm";
@@ -18,13 +17,6 @@ export default function ChangePassword({ open, handleClose, title }) {
   const handleOpenSnackBar = () => setOpenSnackBar(true);
   const handleCloseSnackBar = () => setOpenSnackBar(false);
 
-  // const handleClose = (event, reason) => {
-  //   if (reason === "clickaway") {
-  //     return;
-  //   }
-
-  //   setOpenSnackBar(false);
-  // };
   const HandleChangePassword = async () => {
     try {
       const response = await axios.patch(
@@ -45,6 +37,7 @@ export default function ChangePassword({ open, handleClose, title }) {
         formik.resetForm();
         handleClose();
         // setOpenSnackBar(true);
+        Alert("success", "Password has been updated");
       }
     } catch (error) {
       console.error(error);

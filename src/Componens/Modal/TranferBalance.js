@@ -9,6 +9,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { decrementBalance } from "@/Redux/Slices/BalanceSlice";
+import { Alert } from "../Alert/Alert";
 
 export default function TranferBalance({ open, title, handleClose }) {
   const token = Cookies.get("token");
@@ -30,8 +31,8 @@ export default function TranferBalance({ open, title, handleClose }) {
     if (response.data.status === "success") {
       dispatch(decrementBalance(formik.values.transferAmount));
       handleClose();
+      Alert("success", "Transfer was successful");
     }
-    console.log(response.data);
   };
 
   const formik = useFormik({

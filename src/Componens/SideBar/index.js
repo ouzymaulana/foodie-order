@@ -38,25 +38,22 @@ export default function SideBarMenu() {
       variant="permanent"
       anchor="left"
     >
-      <Toolbar sx={{ height: "80px" }}>
+      <Toolbar sx={{ height: { lg: "80px", sm: "60px", xs: "10px" } }}>
         <Image src="/img/logo.svg" height={100} width={100} alt="logo" />
       </Toolbar>
       <List sx={{ paddingX: "30px" }}>
-        {/* {["Menu", "Favorite", "Order History"].map((text, index) => ( */}
         <ListItem
           onClick={() => {
             setPage(1), route.push("/");
           }}
           sx={{
             display: "flex",
-            // justifyContent: "center",
-            // alignItems: "center",
             flexDirection: "column",
             borderRadius: "20px",
             cursor: "pointer",
             marginY: "15px",
             "&:hover": {
-              backgroundColor: "#FFCF81",
+              backgroundColor: "#FFE9C8",
             },
             ...(selectMenu === "" && {
               backgroundColor: "#FFBA53",
@@ -72,17 +69,6 @@ export default function SideBarMenu() {
             height={40}
             alt="icon"
           />
-          {/* <WidgetsOutlinedIcon
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              textAlign: "center",
-              fontSize: 40,
-            }}
-            color="action"
-          /> */}
-          {/* <FaHandHoldingHeart />
-          <VolunteerActivismOutlinedIcon /> */}
           <Typography
             variant="subtitle2"
             textAlign={"center"}
@@ -103,7 +89,7 @@ export default function SideBarMenu() {
             cursor: "pointer",
             marginY: "10px",
             "&:hover": {
-              backgroundColor: "#FFCF81",
+              backgroundColor: "#FFE9C8",
             },
             ...(selectMenu === "favorite" && {
               backgroundColor: "#FFBA53",
@@ -140,7 +126,7 @@ export default function SideBarMenu() {
             cursor: "pointer",
             marginY: "10px",
             "&:hover": {
-              backgroundColor: "#FFCF81",
+              backgroundColor: "#FFE9C8",
             },
             ...(selectMenu === "orderHistory" && {
               backgroundColor: "#FFBA53",

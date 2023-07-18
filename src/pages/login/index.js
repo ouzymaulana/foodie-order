@@ -11,9 +11,7 @@ import {
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import * as Yup from "yup";
-import SubmitButton from "@/Componens/Button/SubmitButton";
 import FoodieOrder from "@/Componens/Logo/FoodieOrder";
-import zxcvbn from "zxcvbn";
 import theme from "@/Helper/theme";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
@@ -22,6 +20,7 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import cookie from "cookie";
+import jwt from "jsonwebtoken";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
@@ -81,12 +80,18 @@ export default function Login() {
       }),
     });
 
-    console.log(response.ok);
     if (response.ok) {
       const data = await response.json();
       if (data.status !== "fail") {
         Cookies.set("token", data.data.token, { expires: 1 / 24 });
-        route.push("/");
+
+        const jwtData = jwt.decode(data.data.token);
+
+        if (jwtData.role === "admin") {
+          route.push("/admin");
+        } else {
+          route.push("/");
+        }
       } else {
         setAlertMessage(data.data.message);
         setIsAlart(true);
@@ -234,11 +239,16 @@ export async function getServerSideProps(context) {
     cookieHeader = "";
   }
   const cookies = cookie.parse(cookieHeader).token;
+  const jwtData = jwt.decode(cookies);
+  let checkRole;
+  if (jwtData) {
+    checkRole = jwtData.role === "admin" ? "/admin" : "/";
+  }
 
   if (cookies) {
     return {
       redirect: {
-        destination: "/",
+        destination: checkRole,
         permanent: false,
       },
     };

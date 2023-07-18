@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import cookie from "cookie";
 import MainLayout from "@/Layout";
 import FavoriteMenu from "@/Views/FavoriteMenu";
+import jwt from "jsonwebtoken";
 
 export default function Favorite() {
   return (
@@ -22,7 +23,8 @@ export default function Favorite() {
 export async function getServerSideProps(context) {
   const cookieHeader = context.req.headers.cookie;
 
-  if (!cookieHeader) {
+  const cookies = cookie.parse(cookieHeader).token;
+  if (!cookies) {
     return {
       redirect: {
         destination: "/login",
@@ -30,14 +32,11 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  // Mendapatkan header cookies dari permintaan
-  const cookies = cookie.parse(cookieHeader).token;
-  // Lakukan sesuatu dengan cookies
-  console.log(cookies);
-  if (!cookies) {
+  const jwtData = jwt.decode(cookies);
+  if (jwtData.role === "admin") {
     return {
       redirect: {
-        destination: "/login",
+        destination: "/admin",
         permanent: false,
       },
     };

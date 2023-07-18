@@ -1,4 +1,4 @@
-import CartOrderHistory from "@/Componens/Card/CartOrderHistory";
+import SecondCartOrderHistory from "@/Componens/Card/CartOrderHistory/SecondCartOrderHistory";
 import Balance from "@/Componens/Nav/Balance";
 import OrderMenu from "@/Componens/Nav/OrderMenu";
 import { useDataSelectMenu } from "@/Context/SelectMenuSidebarContexProvider";
@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 export default function OrderHistoryView() {
   const token = Cookies.get("token");
   const { selectMenu, setSelectMenu } = useDataSelectMenu();
-  const [orderData, setOrderData] = useState();
+  const [orderData, setOrderData] = useState([]);
 
   const getOrderData = async () => {
     try {
@@ -22,16 +22,13 @@ export default function OrderHistoryView() {
       });
 
       if (response.data.data.orderData) {
-        setOrderData(response.data.data);
+        setOrderData(response.data.data.orderData);
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  console.log("====================================");
-  console.log(orderData);
-  console.log("====================================");
   useEffect(() => {
     setSelectMenu("orderHistory");
     getOrderData();
@@ -54,26 +51,16 @@ export default function OrderHistoryView() {
         </Typography>
         <Grid
           display={"flex"}
-          flexWrap={"wrap"}
-          columnGap={11.3}
-          rowGap={5}
-          paddingX={5}
-          // gap={5.2}
+          flexDirection={"column"}
+          gap={2}
           marginTop={2}
           paddingBottom={3}
+          justifyContent={"center"}
+          alignItems={"center"}
         >
-          {/* {orderData.map((item, i) => ( */}
-          <CartOrderHistory item={"item"} />
-
-          {/* <CartOrderHistory /> */}
-          {/* {dataFavorite.map((item, i) => (
-          <CardMenu
-            item={item}
-            isFavorite={true}
-            handleAddFavoriteMenu={handleAddFavoriteMenu}
-            key={i}
-          />
-        ))} */}
+          {orderData.map((item, i) => (
+            <SecondCartOrderHistory key={i} item={item} />
+          ))}
         </Grid>
       </Grid>
       <Grid flex={3}>
