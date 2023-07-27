@@ -1,9 +1,12 @@
+import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
+import { usePageMenu } from "@/Context/PageContextProvider";
 import { useDataSearchMenu } from "@/Context/SearchValueOnTableContextProvider";
 import theme from "@/Helper/theme";
 import { TextField, styled } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
@@ -25,57 +28,94 @@ const CssTextField = styled(TextField)({
 });
 
 export default function InputSearch({ title }) {
-  const [isLoading, setIsLoading] = useState();
+  const [inputSearch, setInputSearch] = useState("");
+  const { setPage } = usePageMenu();
+  const [valueUseDebounce] = useDebounce(inputSearch, 1000);
   const route = useRouter();
 
   const { searchValue, setSearchValue } = useDataSearchMenu();
 
-  const handleSearch = (event) => {
-    clearTimeout(isLoading);
-    const newTimer = setTimeout(() => {
-      const searchValueData = event.target.value;
-      const newSearchValues = { ...searchValue, [title]: searchValueData };
+  const handleSearch = () => {
+    setPage(1);
 
-      const filteredSearchValues = Object.keys(newSearchValues)
-        .filter((key) => newSearchValues[key] !== "") // Menghapus kunci dengan value kosong
-        .reduce((obj, key) => {
-          obj[key] = newSearchValues[key]; // Membuat objek baru dengan kunci yang memiliki value
-          return obj;
-        }, {});
+    const priceWithoutRp = searchValue.price
+      ? searchValue.price.replace("Rp", "")
+      : "";
+    const searchValueData = inputSearch;
+    let newSearchValues = {
+      ...route.query,
+      ...searchValue,
+      [title]: searchValueData,
+      ["page"]: 1,
+      price: priceWithoutRp,
+    };
 
-      // if (searchValueData !== "") {
-      route.push({
-        pathname: route.pathname,
-        query: { ...route.query, ...filteredSearchValues },
-      });
-      // }
-    }, 1000);
+    const dataWithValue = Object.keys(newSearchValues)
+      .filter(
+        (key) =>
+          newSearchValues[key] !== "" &&
+          newSearchValues[key] !== "Rp" &&
+          newSearchValues[key] !== "all"
+      )
+      .reduce((obj, key) => {
+        obj[key] = newSearchValues[key];
+        return obj;
+      }, {});
 
-    setIsLoading(newTimer);
+    route.push({
+      pathname: route.pathname,
+      query: dataWithValue,
+    });
   };
 
   useEffect(() => {
-    console.log("====================================");
-    console.log(searchValue);
-    console.log("====================================");
-  }, [searchValue]);
+    handleSearch();
+  }, [valueUseDebounce]);
 
+  useEffect(() => {
+    if (route.isReady) {
+      const entry = Object.entries(route.query).find(
+        ([key, value]) => key === title
+      );
+
+      if (entry) {
+        const [key, value] = entry;
+        setInputSearch(value);
+      } else {
+        setInputSearch("");
+      }
+    }
+  }, []);
+  // useEffect(() => {
+  //   if (route.isReady.key) {
+  //     const entry = Object.entries(route.query).find(
+  //       ([key, value]) => key === title
+  //     );
+
+  //     if (entry) {
+  //       const [key, value] = entry;
+  //       setInputSearch(value);
+  //     } else {
+  //       setInputSearch("");
+  //     }
+  //   }
+  // }, [route.query]);
   return (
     <CssTextField
       autoComplete="off"
       sx={{
         width: "100%",
       }}
-      // value={searchValue}
-      value={searchValue[title] || ""}
+      // value={searchValue[title] || ""}
+      value={inputSearch || ""}
       onChange={(event) => {
-        setSearchValue({
-          ...searchValue,
-          [title]: event.target.value !== "" ? event.target.value : "",
-        }),
-          handleSearch(event);
+        setInputSearch(event.target.value),
+          setSearchValue({
+            ...searchValue,
+            [title]: event.target.value !== "" ? event.target.value : "",
+          });
+        // handleSearch(event);
       }}
-      // onKeyDown={(event) => (event.key === "Enter" ? handleSearch(event) : "")}
     />
   );
 }

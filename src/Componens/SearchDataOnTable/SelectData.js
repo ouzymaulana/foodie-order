@@ -1,3 +1,4 @@
+import { usePageMenu } from "@/Context/PageContextProvider";
 import { useDataSearchMenu } from "@/Context/SearchValueOnTableContextProvider";
 import theme from "@/Helper/theme";
 import {
@@ -9,7 +10,8 @@ import {
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
@@ -19,74 +21,92 @@ const CssTextField = styled(TextField)({
 
     "& fieldset": {
       borderRadius: theme.spacing(1),
-      width: "100%",
-      // border: "none",
     },
     "&:hover fieldset": {
       borderColor: grey[400],
-      // borderColor: "#FFAF37",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#FFAF37",
+      borderWidth: 3,
     },
   },
 });
 
-export default function SelectData({
-  title,
-  selectData1,
-  selectData2,
-  selectData3,
-  selectData,
-}) {
+export default function SelectData({ title, selectData }) {
   const route = useRouter();
   const { searchValue, setSearchValue } = useDataSearchMenu();
+  const { setPage } = usePageMenu();
+  const [inputSearch, setInputSearch] = useState("");
+  const [valueUseDebounce] = useDebounce(inputSearch, 1000);
 
-  const handleSearch = (event) => {
-    const searchValueData = event.target.value;
-    const newSearchValues = { ...searchValue, [title]: searchValueData };
-    if (searchValueData !== "") {
-      route.push({
-        pathname: route.pathname,
-        query: { ...route.query, ...newSearchValues },
-      });
+  const handleSearch = () => {
+    setPage(1);
+    // const searchValueData =
+    //   event.target.value === "all" ? "" : event.target.value;
+    let searchValueData;
+    if (inputSearch === "all") {
+      searchValueData = "";
+    } else {
+      searchValueData = inputSearch;
     }
-    // if (
-    //   searchValueData !== "" &&
-    //   searchValueData !== "progress/done" &&
-    //   searchValueData !== "siang/sore"
-    // ) {
-    //   route.push({
-    //     pathname: route.pathname,
-    //     query: { ...route.query, field: title, search: searchValueData },
-    //   });
-    //   // setSearchValue(searchValueData);
-    // } else {
-    //   route.push({
-    //     pathname: route.pathname,
-    //   });
-    // }
+    const newSearchValues = {
+      ...route.query,
+      ...searchValue,
+      [title]: searchValueData,
+      ["page"]: 1,
+    };
+
+    const dataWithValue = Object.keys(newSearchValues)
+      .filter(
+        (key) => newSearchValues[key] !== "" && newSearchValues[key] !== "Rp"
+      )
+      .reduce((obj, key) => {
+        obj[key] = newSearchValues[key];
+        return obj;
+      }, {});
+    route.push({
+      pathname: route.pathname,
+      query: dataWithValue,
+    });
   };
+
+  useEffect(() => {
+    if (route.isReady) {
+      const entry = Object.entries(route.query).find(
+        ([key, value]) => key === title
+      );
+
+      if (entry) {
+        const [key, value] = entry;
+        setInputSearch(value);
+      } else {
+        setInputSearch("");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    handleSearch();
+  }, [valueUseDebounce]);
 
   return (
     <CssTextField
       id="outlined-select-currency"
       sx={{ width: "100%" }}
       select
-      defaultValue={selectData3}
+      defaultValue={inputSearch || selectData[0].value}
+      value={inputSearch || selectData[0].value}
       onChange={(event) => {
-        handleSearch(event),
+        // handleSearch(event),
+        setInputSearch(event.target.value),
           setSearchValue({ ...searchValue, [title]: event.target.value });
       }}
     >
       {selectData.map((item, i) => (
-        <MenuItem key={item} value={item}>
-          {item}
+        <MenuItem key={i} value={item.value}>
+          {item.text}
         </MenuItem>
       ))}
-      {/* <MenuItem key={selectData2} value={selectData2}>
-        {selectData2}
-      </MenuItem>
-      <MenuItem key={selectData3} value={selectData3}>
-        {selectData3}
-      </MenuItem> */}
     </CssTextField>
   );
 }

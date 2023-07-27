@@ -1,31 +1,54 @@
+import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
+import { usePageMenu } from "@/Context/PageContextProvider";
 import { useDataSearchMenu } from "@/Context/SearchValueOnTableContextProvider";
 import theme from "@/Helper/theme";
 import { grey } from "@mui/material/colors";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IMaskInput } from "react-imask";
+import { createNumberMask } from "text-mask-addons";
+import { useDebounce } from "use-debounce";
 
 export default function InputNumber({ title }) {
+  const { openLoadingCircular, setOpenLoadingCircular } =
+    useLoadingCircularProgress();
   const [isFocused, setIsFocused] = useState(false);
+  const [isHasValue, setIsHasValue] = useState(true);
   const { searchValue, setSearchValue } = useDataSearchMenu();
-  const [isLoading, setIsLoading] = useState();
+  const [inputSearch, setInputSearch] = useState("");
+  const [valueUseDebounce] = useDebounce(inputSearch, 1000);
   const route = useRouter();
   const ref = useRef(null);
   const inputRef = useRef(null);
+  const { setPage } = usePageMenu();
 
-  const handleSearch = (event) => {
-    clearTimeout(isLoading);
-    const newTimer = setTimeout(() => {
-      const searchValueData = event.target.value;
-      const newSearchValues = { ...searchValue, [title]: searchValueData };
-      if (searchValueData !== "") {
-        route.push({
-          pathname: route.pathname,
-          query: { ...route.query, ...newSearchValues },
-        });
-      }
-    }, 1000);
-    setIsLoading(newTimer);
+  const handleSearch = () => {
+    setPage(1);
+    const searchValueData = inputSearch.replace("Rp", "").replace(".", "");
+    // const searchValueData = inputSearch.slice(2).replace(".", "");
+    const newSearchValues = {
+      ...route.query,
+      ...searchValue,
+      [title]: searchValueData,
+      ["page"]: 1,
+    };
+
+    const dataWithValue = Object.keys(newSearchValues)
+      .filter(
+        (key) =>
+          newSearchValues[key] !== "" &&
+          newSearchValues[key] !== "Rp" &&
+          newSearchValues[key] !== "all"
+      )
+      .reduce((obj, key) => {
+        obj[key] = newSearchValues[key];
+        return obj;
+      }, {});
+
+    route.push({
+      pathname: route.pathname,
+      query: dataWithValue,
+    });
   };
 
   const inputStyle = {
@@ -41,21 +64,62 @@ export default function InputNumber({ title }) {
     // boxShadow: "none",
     borderStyle: "solid",
   };
+
+  useEffect(() => {
+    const inputElement = document.getElementById("currency-mask");
+    const currencyMask = IMask(inputElement, {
+      mask: "Rpnum",
+      blocks: {
+        num: {
+          mask: Number,
+          thousandsSeparator: ".",
+        },
+      },
+    });
+
+    return () => {
+      currencyMask.destroy();
+    };
+  }, []);
+
+  useEffect(() => {
+    handleSearch();
+  }, [valueUseDebounce]);
+
+  useEffect(() => {
+    if (route.isReady) {
+      const entry = Object.entries(route.query).find(
+        ([key, value]) => key === title
+      );
+
+      if (entry) {
+        const [key, value] = entry;
+        setInputSearch(value);
+      } else {
+        setInputSearch("");
+      }
+    }
+  }, []);
+
   return (
     <IMaskInput
+      autoComplete="off"
+      id="currency-mask"
       style={inputStyle}
-      radix="."
+      // radix="."
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
-      mask={Number}
+      mask={null}
       ref={ref}
+      // value={inputSearch || ""}
+      defaultValue={inputSearch.slice(2).replace(".", "") || ""}
       inputRef={inputRef}
       onAccept={(value, mask) => console.log(value)}
       onChange={(event) => {
-        setSearchValue({ ...searchValue, [title]: event.target.value }),
-          handleSearch(event);
+        setInputSearch(event.target.value),
+          setSearchValue({ ...searchValue, [title]: event.target.value });
+        // handleSearch(event);
       }}
-      onKeyDown={(event) => (event.key === "Enter" ? handleSearch(event) : "")}
     />
   );
 }

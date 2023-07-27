@@ -14,6 +14,7 @@ export default function AdminHeader() {
         justifyContent: "center",
         boxShadow: "none",
         width: "110rem",
+        zIndex: 990,
       }}
     >
       <Grid Grid display={"flex"} justifyContent={"space-between"} gap={1}>

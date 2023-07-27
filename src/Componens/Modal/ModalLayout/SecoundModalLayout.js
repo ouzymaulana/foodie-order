@@ -15,14 +15,20 @@ const style = {
   p: 4,
 };
 
-export default function ModalLayout({ children, open, handleClose, title }) {
+export default function SecoundModalLayout({
+  children,
+  open,
+  handleClose,
+  title,
+}) {
   return (
     <div>
       <Modal
         open={open}
+        onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{ marginTop: "120px" }}
+        sx={{ marginTop: "100px" }}
       >
         <Box sx={style}>
           {/* <Grid display={"flex"} flexDirection={"column"} gap={3}> */}

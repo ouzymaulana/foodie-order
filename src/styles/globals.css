@@ -89,6 +89,10 @@ body {
   overflow-x: hidden;
 }
 
+.swal-custom-class {
+  z-index: 9999; /* Set the desired z-index value here */
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

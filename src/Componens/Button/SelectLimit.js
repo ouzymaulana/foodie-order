@@ -1,45 +1,92 @@
 import { useLimitTable } from "@/Context/DashboardLimitTableContextProvider";
+import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
 import { useDataSearchMenu } from "@/Context/SearchValueOnTableContextProvider";
-import { FormControl, MenuItem, Select } from "@mui/material";
+import theme from "@/Helper/theme";
+import styled from "@emotion/styled";
+import { FormControl, MenuItem, Select, TextField } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function SelectLimit({ orderData }) {
+const CssTextField = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    fontSize: "1rem",
+    height: "40px",
+    width: "100%",
+
+    "& fieldset": {
+      borderRadius: theme.spacing(1),
+    },
+    "&:hover fieldset": {
+      borderColor: grey[400],
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "#FFAF37",
+      borderWidth: 3,
+    },
+  },
+});
+
+export default function SelectLimit() {
   const { limitTable, setLimitTable } = useLimitTable();
   const { searchValue, setSearchValue } = useDataSearchMenu();
   const { push, pathname, query } = useRouter();
 
   const handleSetlimit = () => {
-    const newSearchValues = { ...searchValue, ["limit"]: limitTable };
+    // clearTimeout(isLoading);
+    // setOpenLoadingCircular(true);
+    // const newTimer = setTimeout(() => {
+    const newSearchValues = {
+      ...query,
+      ...searchValue,
+      ["limit"]: limitTable,
+    };
+    const dataWithValue = Object.keys(newSearchValues)
+      .filter(
+        (key) =>
+          newSearchValues[key] !== "" &&
+          newSearchValues[key] !== "Rp" &&
+          newSearchValues[key] !== "all"
+      )
+      .reduce((obj, key) => {
+        obj[key] = newSearchValues[key];
+        return obj;
+      }, {});
     push({
       pathname: pathname,
-      query: { ...query, ...newSearchValues },
+      query: dataWithValue,
     });
+    //   setOpenLoadingCircular(false);
+    // }, 500);
+    // setIsLoading(newTimer);
   };
 
   useEffect(() => {
-    console.log("jalan");
     handleSetlimit();
-  }, [limitTable]);
+  }, [limitTable, query.limit]);
+
   return (
-    <FormControl sx={{ m: 1, minWidth: 80, border: 0, outline: "none" }}>
-      <Select
-        displayEmpty
-        inputProps={{ "aria-label": "Without label" }}
-        size="small"
-        sx={{
-          "& > div": {
-            border: "none",
-          },
-        }}
-        defaultValue={limitTable}
-        onChange={(event) => setLimitTable(event.target.value)}
-      >
-        <MenuItem value={10}>10</MenuItem>
-        <MenuItem value={20}>20</MenuItem>
-        <MenuItem value={40}>40</MenuItem>
-        <MenuItem value={80}>80</MenuItem>
-      </Select>
-    </FormControl>
+    <CssTextField
+      select
+      inputProps={{ "aria-label": "Without label" }}
+      size="small"
+      sx={{
+        "& > div": {
+          border: "none",
+        },
+        "&:hover fieldset": {
+          borderColor: grey[400],
+        },
+      }}
+      // defaultValue={query.limit || 10}
+      // defaultChecked={query.limit}
+      value={query.limit || 10}
+      onChange={(event) => setLimitTable(event.target.value)}
+    >
+      <MenuItem value={10}>10</MenuItem>
+      <MenuItem value={20}>20</MenuItem>
+      <MenuItem value={40}>40</MenuItem>
+      <MenuItem value={80}>80</MenuItem>
+    </CssTextField>
   );
 }

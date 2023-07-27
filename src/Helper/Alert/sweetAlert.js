@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 
-export function Alert(icon, title) {
+export function sweetAlert(icon, title) {
   return Swal.fire({
     position: "center",
     icon: icon,

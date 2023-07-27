@@ -8,18 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import DataOrderTable from "./DataOrderTable";
-import {
-  FormControl,
-  Grid,
-  IconButton,
-  MenuItem,
-  Pagination,
-  Select,
-  Stack,
-  TextField,
-  styled,
-} from "@mui/material";
-import theme from "@/Helper/theme";
+import { Grid, IconButton, Pagination, Stack } from "@mui/material";
 import SelectData from "@/Componens/SearchDataOnTable/SelectData";
 import InputDate from "@/Componens/SearchDataOnTable/InputDate";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
@@ -66,14 +55,6 @@ export default function DataOrderMenu({ orderData, getOrderData }) {
     // setSortBy(sortBy === "asc" ? "desc" : "asc");
   };
 
-  const handleSearch = (event) => {
-    const dataSearch = event.target.value;
-    if (dataSearch !== "") {
-      setSearchValue(dataSearch);
-      // getDataOrderMenu();
-    }
-  };
-
   useEffect(() => {
     setAllOrderData(getOrderData.orderData);
     setHashMore(getOrderData.hashMore);
@@ -82,170 +63,198 @@ export default function DataOrderMenu({ orderData, getOrderData }) {
 
   return (
     <>
-      <TableContainer
-        component={Paper}
+      <Paper
         sx={{
-          // overflowX: "initial",
-
-          "&::-webkit-scrollbar": {
-            width: "0.3em",
-            background: "#eeeeee",
-          },
-          "::-webkit-scrollbar-thumb": {
-            backgroundColor: "#c1c1c1",
-            borderRadius: "10px",
-          },
+          width: "100%",
+          height: "98%",
+          overflow: "hidden",
+          position: "relative",
         }}
       >
-        <Table
-          stickyHeader
-          aria-label="collapsible table"
-          sx={{ overflow: "hidden" }}
+        <TableContainer
+          component={Paper}
+          sx={{
+            maxHeight: "89%",
+            // maxHeight: 700,
+
+            "&::-webkit-scrollbar": {
+              width: "0.3em",
+              background: "#eeeeee",
+            },
+            "::-webkit-scrollbar-thumb": {
+              backgroundColor: "#c1c1c1",
+              borderRadius: "10px",
+            },
+          }}
         >
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell>
-                <Grid display={"flex"} flexDirection={"column"}>
-                  <Typography fontSize={"1rem"} fontWeight={600}>
-                    User Name
-                  </Typography>
-                  <Grid display={"flex"} gap={0.6} alignItems={"center"}>
-                    <InputSearch title="nama" />
-                    <IconButton
-                      aria-label="delete"
-                      size="small"
-                      onClick={() => createSortHandler("nama")}
-                    >
-                      <SwapVertIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </TableCell>
-              <TableCell>
-                <Grid display={"flex"} flexDirection={"column"}>
-                  <Typography fontSize={"1rem"} fontWeight={600}>
-                    Order Time
-                  </Typography>
-                  <Grid display={"flex"} alignItems={"center"} gap={0.6}>
-                    <SelectData
-                      title="order-time"
-                      selectData1={"siang"}
-                      selectData2={"sore"}
-                      selectData3={"siang/sore"}
-                      selectData={["siang", "sore", "siang/sore"]}
-                    />
-                    <IconButton
-                      aria-label="delete"
-                      size="small"
-                      onClick={() => createSortHandler("waktu_pemesanan")}
-                    >
-                      <SwapVertIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </TableCell>
-              <TableCell>
-                <Grid display={"flex"} flexDirection={"column"}>
-                  <Typography fontSize={"1rem"} fontWeight={600}>
-                    Order Date
-                  </Typography>
-                  <Grid display={"flex"} gap={0.6} alignItems={"center"}>
-                    <InputDate title={"order-date"} />
-                    <IconButton
-                      aria-label="delete"
-                      size="small"
-                      onClick={() => createSortHandler("createdAt")}
-                    >
-                      <SwapVertIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </TableCell>
-              <TableCell>
-                <Grid display={"flex"} flexDirection={"column"}>
-                  <Typography fontSize={"1rem"} fontWeight={600}>
-                    Delivery Address
-                  </Typography>
-                  <Grid display={"flex"} gap={0.6} alignItems={"center"}>
-                    <InputSearch title="delivery-address" />
-                    <IconButton
-                      aria-label="delete"
-                      size="small"
-                      onClick={() => createSortHandler("alamat_antar")}
-                    >
-                      <SwapVertIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </TableCell>
-              <TableCell>
-                <Grid display={"flex"} flexDirection={"column"}>
-                  <Typography fontSize={"1rem"} fontWeight={600}>
-                    Status
-                  </Typography>
-                  <Grid display={"flex"} alignItems={"center"} gap={0.6}>
-                    <SelectData
-                      title="status"
-                      selectData1={"progress"}
-                      selectData2={"done"}
-                      selectData3={"progress/done"}
-                      selectData={["progress", "done", "progress/done"]}
-                    />
-                    <IconButton
-                      aria-label="delete"
-                      size="small"
-                      onClick={() => createSortHandler("status")}
-                    >
-                      <SwapVertIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </TableCell>
-              <TableCell>
-                <Grid display={"flex"} flexDirection={"column"}>
-                  <Typography fontSize={"1rem"} fontWeight={600}>
-                    Total Pay
-                  </Typography>
-                  <Grid display={"flex"}>
-                    <Grid display={"flex"} alignItems={"center"} gap={0.6}>
-                      {/* <InputSearch title="total-pay" /> */}
-                      <InputNumber title={"total-pay"} />
+          <Table
+            stickyHeader
+            aria-label="collapsible table"
+            sx={{ position: "relative", borderBottom: "none" }}
+          >
+            <TableHead>
+              <TableRow sx={{ borderBottom: "none" }}>
+                <TableCell />
+                <TableCell>
+                  <Grid display={"flex"} flexDirection={"column"}>
+                    <Typography fontSize={"1rem"} fontWeight={600}>
+                      User Name
+                    </Typography>
+                    <Grid display={"flex"} gap={0.6} alignItems={"center"}>
+                      <InputSearch title="nama" />
                       <IconButton
                         aria-label="delete"
                         size="small"
-                        onClick={() => createSortHandler("total_bayar")}
+                        onClick={() => createSortHandler("nama")}
                       >
                         <SwapVertIcon />
                       </IconButton>
                     </Grid>
-                    {/* <TableSortLabel
+                  </Grid>
+                </TableCell>
+                <TableCell>
+                  <Grid display={"flex"} flexDirection={"column"}>
+                    <Typography fontSize={"1rem"} fontWeight={600}>
+                      Order Time
+                    </Typography>
+                    <Grid display={"flex"} alignItems={"center"} gap={0.6}>
+                      <SelectData
+                        title="order-time"
+                        selectData3={"siang/sore"}
+                        selectData={["siang/sore", "siang", "sore"]}
+                      />
+                      <IconButton
+                        aria-label="delete"
+                        size="small"
+                        onClick={() => createSortHandler("waktu_pemesanan")}
+                      >
+                        <SwapVertIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                </TableCell>
+                <TableCell>
+                  <Grid display={"flex"} flexDirection={"column"}>
+                    <Typography fontSize={"1rem"} fontWeight={600}>
+                      Order Date
+                    </Typography>
+                    <Grid display={"flex"} gap={0.6} alignItems={"center"}>
+                      <InputDate title={"order-date"} />
+                      <IconButton
+                        aria-label="delete"
+                        size="small"
+                        onClick={() => createSortHandler("createdAt")}
+                      >
+                        <SwapVertIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                </TableCell>
+                <TableCell>
+                  <Grid display={"flex"} flexDirection={"column"}>
+                    <Typography fontSize={"1rem"} fontWeight={600}>
+                      Delivery Address
+                    </Typography>
+                    <Grid display={"flex"} gap={0.6} alignItems={"center"}>
+                      <InputSearch title="delivery-address" />
+                      <IconButton
+                        aria-label="delete"
+                        size="small"
+                        onClick={() => createSortHandler("alamat_antar")}
+                      >
+                        <SwapVertIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                </TableCell>
+                <TableCell>
+                  <Grid display={"flex"} flexDirection={"column"}>
+                    <Typography fontSize={"1rem"} fontWeight={600}>
+                      Status
+                    </Typography>
+                    <Grid display={"flex"} alignItems={"center"} gap={0.6}>
+                      <SelectData
+                        title="status"
+                        selectData3={"progress/done"}
+                        selectData={["progress/done", "progress", "done"]}
+                      />
+                      <IconButton
+                        aria-label="delete"
+                        size="small"
+                        onClick={() => createSortHandler("status")}
+                      >
+                        <SwapVertIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                </TableCell>
+                <TableCell>
+                  <Grid display={"flex"} flexDirection={"column"}>
+                    <Typography fontSize={"1rem"} fontWeight={600}>
+                      Total Pay
+                    </Typography>
+                    <Grid display={"flex"}>
+                      <Grid display={"flex"} alignItems={"center"} gap={0.6}>
+                        {/* <InputSearch title="total-pay" /> */}
+                        <InputNumber title={"total-pay"} />
+                        <IconButton
+                          aria-label="delete"
+                          size="small"
+                          onClick={() => createSortHandler("total_bayar")}
+                        >
+                          <SwapVertIcon />
+                        </IconButton>
+                      </Grid>
+                      {/* <TableSortLabel
                     active={true}
                     direction={sortBy}
                     onClick={() => createSortHandler()}
                   /> */}
+                    </Grid>
                   </Grid>
-                </Grid>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {allOrderData.map((row, i) => (
+                <DataOrderTable key={i} orderData={row} />
+              ))}
+            </TableBody>
+            {/* <TableFooter
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              position: "sticky",
+              bottom: 0,
+              backgroundColor: "red",
+              width: "100%",
+            }}
+          >
+            <TableRow>
+              <TableCell colSpan={7}>
+                <TablePagination colSpan={7}>data</TablePagination>
               </TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody sx={{ overflow: "auto" }}>
-            {allOrderData.map((row, i) => (
-              <DataOrderTable key={i} orderData={row} />
-            ))}
-          </TableBody>
-        </Table>
+          </TableFooter> */}
+          </Table>
+        </TableContainer>
         <Stack
-          overflow={"hidden"}
+          // sx={{ backgroundColor: "red" }}
           spacing={2}
-          paddingY={1}
+          // paddingY={1}
+          paddingRight={1}
           display={"flex"}
           alignItems={"center"}
           flexDirection={"row"}
           justifyContent={"end"}
+          position={"absolute"}
+          bottom={0}
+          right={0}
         >
-          <SelectLimit orderData={orderData} />
+          <SelectLimit />
           <Pagination
+            variant="outlined"
+            shape="rounded"
             sx={{ paddingBottom: 2 }}
             color={"primary"}
             count={Math.ceil(orderData.length / limitTable)}
@@ -257,16 +266,7 @@ export default function DataOrderMenu({ orderData, getOrderData }) {
             }}
           />
         </Stack>
-        {/* <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={5}
-          rowsPerPage={5}
-          page={2}
-          // onPageChange={handleChangePage}
-          // onRowsPerPageChange={handleChangeRowsPerPage}
-        /> */}
-      </TableContainer>
+      </Paper>
     </>
   );
 }

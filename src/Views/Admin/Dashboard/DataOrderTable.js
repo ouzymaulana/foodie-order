@@ -20,7 +20,7 @@ export default function DataOrderTable({ orderData }) {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "" } }}>
+      <TableRow hover sx={{ "& > *": { borderBottom: "" } }}>
         <TableCell>
           <IconButton
             aria-label="expand row"

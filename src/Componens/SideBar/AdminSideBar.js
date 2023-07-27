@@ -15,9 +15,15 @@ import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomi
 import FastfoodRoundedIcon from "@mui/icons-material/FastfoodRounded";
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import { useDataSelectMenu } from "@/Context/SelectMenuSidebarContexProvider";
+import { useRouter } from "next/router";
 
 export default function AdminSideBar() {
+  const route = useRouter();
   const { selectMenu, setSelectMenu } = useDataSelectMenu();
+
+  // console.log("===============pathname=====================");
+  // console.log(route.query);
+  // console.log("====================================");
   return (
     <Drawer
       sx={{
@@ -28,6 +34,7 @@ export default function AdminSideBar() {
           width: "18rem",
           boxSizing: "border-box",
         },
+        zIndex: 990,
       }}
       variant="permanent"
       anchor="left"
@@ -45,9 +52,13 @@ export default function AdminSideBar() {
       <List>
         <ListItem sx={{ paddingX: 3 }}>
           <ListItemButton
+            onClick={() => {
+              route.push("/admin");
+            }}
             sx={{
               borderRadius: 3.5,
-              ...(selectMenu === "" && {
+              // ...(selectMenu === "" && {
+              ...(route.pathname === "/admin" && {
                 backgroundColor: "#FFBA53",
                 "&:hover": {
                   backgroundColor: "#FFBA53",
@@ -62,7 +73,20 @@ export default function AdminSideBar() {
           </ListItemButton>
         </ListItem>
         <ListItem sx={{ paddingX: 3 }}>
-          <ListItemButton sx={{ borderRadius: 3.5 }}>
+          <ListItemButton
+            onClick={() => {
+              route.push("/admin/menu-management");
+            }}
+            sx={{
+              borderRadius: 3.5,
+              ...(route.pathname === "/admin/menu-management" && {
+                backgroundColor: "#FFBA53",
+                "&:hover": {
+                  backgroundColor: "#FFBA53",
+                },
+              }),
+            }}
+          >
             <ListItemIcon>
               <FastfoodRoundedIcon />
             </ListItemIcon>
@@ -70,7 +94,20 @@ export default function AdminSideBar() {
           </ListItemButton>
         </ListItem>
         <ListItem sx={{ paddingX: 3 }}>
-          <ListItemButton sx={{ borderRadius: 3.5 }}>
+          <ListItemButton
+            onClick={() => {
+              route.push("/admin/user-management");
+            }}
+            sx={{
+              borderRadius: 3.5,
+              ...(route.pathname === "/admin/user-management" && {
+                backgroundColor: "#FFBA53",
+                "&:hover": {
+                  backgroundColor: "#FFBA53",
+                },
+              }),
+            }}
+          >
             <ListItemIcon>
               <GroupRoundedIcon />
             </ListItemIcon>

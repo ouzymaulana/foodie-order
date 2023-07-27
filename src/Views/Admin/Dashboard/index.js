@@ -1,5 +1,5 @@
 import CartDashboard from "@/Componens/Card/CartDasboard";
-import { Grid, Typography } from "@mui/material";
+import { Backdrop, CircularProgress, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
@@ -7,9 +7,11 @@ import DataOrderMenu from "./DataOrderMenu";
 import CollapsibleTable from "./DataOrderTable";
 import FilterCard from "@/Componens/Popover/FilterCard";
 import { useDataSelectFilter } from "@/Context/SelectFilterCardContextProvider";
+import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
 
 export default function DashboardView({ getOrderData }) {
   const { selectFilter, setSelectFilter } = useDataSelectFilter();
+  const { setOpenLoadingCircular } = useLoadingCircularProgress();
   const [orderData, setOrderData] = useState([]);
   const token = Cookies.get("token");
 
@@ -23,8 +25,9 @@ export default function DashboardView({ getOrderData }) {
           createdAt: selectFilter,
         },
       });
+      setOpenLoadingCircular(false);
 
-      if (response.status === 200) {
+      if (response.data.status !== "fail") {
         setOrderData(response.data.data.orderData);
       }
     } catch (error) {
@@ -34,6 +37,7 @@ export default function DashboardView({ getOrderData }) {
 
   useEffect(() => {
     getOrderMenu();
+    setOpenLoadingCircular(false);
   }, [selectFilter]);
 
   return (
@@ -48,14 +52,15 @@ export default function DashboardView({ getOrderData }) {
           borderRadius={4}
           sx={{
             backgroundColor: "white",
-            height: "calc(100vh - 80px - 20px - 10rem - 40px - 20px)",
+            height: "calc(100vh - 40px - 13px)",
+            // height: "calc(100vh - 80px - 20px - 10rem - 40px - 20px)",
           }}
           width={"100%"}
           overflow={"hidden"}
           padding={3}
           display={"flex"}
           flexDirection={"column"}
-          gap={2}
+          // gap={2}
         >
           <Grid>
             <Typography variant="h6" fontWeight={600}>

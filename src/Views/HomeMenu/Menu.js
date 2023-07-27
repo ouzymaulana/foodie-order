@@ -97,10 +97,6 @@ export default function MenuItem() {
     const firstEntery = entries[0];
     if (firstEntery.isIntersecting && hasMore) {
       fetchData();
-      console.log("===============sesudah=====================");
-      console.log(page);
-      console.log(hasMore);
-      console.log("====================================");
     }
   }
 

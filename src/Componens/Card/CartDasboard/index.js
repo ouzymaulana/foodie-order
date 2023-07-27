@@ -79,7 +79,7 @@ export default function CartDashboard({
               alignItems={"end"}
             >
               <Typography variant="h4" fontWeight={600}>
-                {orderData.length}
+                {orderData.length || 0}
               </Typography>
             </Grid>
           </Grid>
@@ -104,7 +104,7 @@ export default function CartDashboard({
               alignItems={"end"}
             >
               <Typography variant="h4" fontWeight={600}>
-                {orderOnProgress.length}
+                {orderOnProgress.length || 0}
               </Typography>
             </Grid>
           </Grid>
@@ -129,7 +129,7 @@ export default function CartDashboard({
               alignItems={"end"}
             >
               <Typography variant="h4" fontWeight={600}>
-                {orderDone.length}
+                {orderDone.length || 0}
               </Typography>
             </Grid>
           </Grid>

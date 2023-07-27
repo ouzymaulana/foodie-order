@@ -1,4 +1,4 @@
-import { Box, MenuItem, TextField, styled } from "@mui/material";
+import { Box, Input, MenuItem, TextField, styled } from "@mui/material";
 import { ErrorMessage, Field } from "formik";
 import theme from "@/Helper/theme";
 import React from "react";
@@ -35,10 +35,22 @@ export default function InputForm({
   onchange,
   dataError,
   touched,
+  dataSelect,
+  fileType,
+  handleChangeFile,
 }) {
   return (
     <Box display={"flex"} flexDirection={"column"}>
-      {multiline === true ? (
+      {fileType === true ? (
+        <CssTextField
+          type="file"
+          name={title}
+          autoComplete="off"
+          value={value}
+          // onChange={onchange}
+          onChange={(event) => handleChangeFile(event.target.files[0])}
+        />
+      ) : multiline === true ? (
         <CssTextField
           multiline
           name={title}
@@ -59,8 +71,13 @@ export default function InputForm({
           onChange={onchange}
           // onBlur={formik.handleBlur}
         >
-          <MenuItem value={"siang"}>siang</MenuItem>
-          <MenuItem value={"sore"}>sore</MenuItem>
+          {dataSelect.map((item, i) => (
+            <MenuItem key={i} value={item}>
+              {item}
+            </MenuItem>
+          ))}
+          {/* <MenuItem value={"siang"}>siang</MenuItem>
+          <MenuItem value={"sore"}>sore</MenuItem> */}
         </CssTextField>
       ) : (
         <CssTextField

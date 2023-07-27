@@ -8,6 +8,7 @@ import LimitContextProvider from "@/Context/LimitContextProvider";
 import PageContextProvider from "@/Context/PageContextProvider";
 import SelectMenuSidebarContexProvider from "@/Context/SelectMenuSidebarContexProvider";
 import DataMenuContextProvider from "@/Context/DataMenuContextProvider";
+import LoadingCircularProgressContextProvider from "@/Context/LoadingCircularProgressContextProvider";
 // import MenuContextProvider from "@/Context/MenuContextProvider";
 
 export default function MainLayout({ children }) {
@@ -18,21 +19,23 @@ export default function MainLayout({ children }) {
           <PageContextProvider>
             <DataMenuContextProvider>
               <SelectMenuSidebarContexProvider>
-                <Navbar />
-                <SideBarMenu />
+                <LoadingCircularProgressContextProvider>
+                  <Navbar />
+                  <SideBarMenu />
 
-                <Grid
-                  sx={{
-                    backgroundColor: "#F1F1F1",
-                    // height: "20vh",
-                    height: "calc(100vh - 80px)",
-                    marginTop: "80px",
-                    marginLeft: "10rem",
-                    padding: "20px",
-                  }}
-                >
-                  {children}
-                </Grid>
+                  <Grid
+                    sx={{
+                      backgroundColor: "#F1F1F1",
+                      // height: "20vh",
+                      height: "calc(100vh - 80px)",
+                      marginTop: "80px",
+                      marginLeft: "10rem",
+                      padding: "20px",
+                    }}
+                  >
+                    {children}
+                  </Grid>
+                </LoadingCircularProgressContextProvider>
               </SelectMenuSidebarContexProvider>
             </DataMenuContextProvider>
           </PageContextProvider>

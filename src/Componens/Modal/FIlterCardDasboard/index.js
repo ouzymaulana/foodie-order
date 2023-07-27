@@ -18,6 +18,7 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useDataSelectFilter } from "@/Context/SelectFilterCardContextProvider";
 import theme from "@/Helper/theme";
+import SecoundModalLayout from "../ModalLayout/SecoundModalLayout";
 
 const DatePickerStyled = styled(DatePicker)({
   "& label.Mui-focused": {
@@ -44,24 +45,46 @@ const DatePickerStyled = styled(DatePicker)({
 
 export default function FilterCartModal({ open, handleClose, filterBy }) {
   const { selectFilter, setSelectFilter } = useDataSelectFilter();
+  const [selectValue, setSelectValue] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [lastDate, setLastDate] = useState(null);
+
+  console.log(startDate);
 
   const handleDateChange = (date) => {
-    const formattedDate = date.format("YYYY-MM-DD");
-    setSelectFilter({ daily: formattedDate });
+    setSelectValue(date);
   };
-  const handleMountChange = (date) => {
-    const formattedDate = date.format("YYYY-MM");
-    setSelectFilter({ mounthly: formattedDate });
-  };
-  const handleYearChange = (date) => {
-    const formattedDate = date.format("YYYY");
-    setSelectFilter({ year: formattedDate });
+
+  const handleSubmit = () => {
+    if (filterBy === "Daily" && selectValue) {
+      const formattedDate = selectValue.format("YYYY-MM-DD");
+      setSelectFilter({ daily: formattedDate });
+    } else if (filterBy === "Mounthly" && selectValue) {
+      const formattedMonth = selectValue.format("YYYY-MM");
+      setSelectFilter({ mounthly: formattedMonth });
+    } else if (filterBy === "Year" && selectValue) {
+      const formattedYear = selectValue.format("YYYY");
+      setSelectFilter({ year: formattedYear });
+    } else if (filterBy === "Customise" && startDate && lastDate) {
+      const formattedStartDate = startDate.format("YYYY-MM-DD");
+      const formattedLastDate = lastDate.format("YYYY-MM-DD");
+      setSelectFilter({
+        startDate: formattedStartDate,
+        lastDate: formattedLastDate,
+      });
+    }
+
+    handleClose();
   };
 
   return (
-    <ModalLayout open={open} handleClose={handleClose} title={"filter by apa"}>
+    <SecoundModalLayout
+      open={open}
+      handleClose={handleClose}
+      title={"filter by apa"}
+    >
       <Grid display={"flex"} flexDirection={"column"}>
-        <FormControl>
+        <form onSubmit={() => console.log("bisa")}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             {filterBy === "Daily" && (
               <DateCalendar
@@ -72,20 +95,28 @@ export default function FilterCartModal({ open, handleClose, filterBy }) {
             {filterBy === "Mounthly" && (
               <MonthCalendar
                 sx={{ width: "100%" }}
-                onChange={handleMountChange}
+                // onChange={handleMountChange}
+                onChange={handleDateChange}
               />
             )}
             {filterBy === "Year" && (
               <YearCalendar
                 sx={{ width: "100%" }}
-                onChange={handleYearChange}
+                // onChange={handleYearChange}
+                onChange={handleDateChange}
               />
             )}
             {filterBy === "Customise" && (
               // <YearCalendar sx={{ width: "100%" }} onChange={handleYearChange} />
               <Grid display={"flex"} flexDirection={"column"} gap={2}>
-                <DatePickerStyled label="Date start" />
-                <DatePickerStyled label="Date end" />
+                <DatePickerStyled
+                  label="Start Date"
+                  onChange={(event) => setStartDate(event)}
+                />
+                <DatePickerStyled
+                  label="Last Date"
+                  onChange={(event) => setLastDate(event)}
+                />
               </Grid>
             )}
           </LocalizationProvider>
@@ -98,28 +129,11 @@ export default function FilterCartModal({ open, handleClose, filterBy }) {
           >
             close
           </Button> */}
-          <Box display={"flex"} paddingTop={3} flexDirection={"row"} gap={2}>
+          <Box display={"flex"} paddingTop={3}>
             <Button
-              onClick={() => handleClose()}
-              variant="contained"
-              sx={{
-                // padding: "10px",
-                backgroundColor: "#212A3E",
-                width: "70%",
-                color: "white",
-                borderRadius: "10px",
-                fontSize: { lg: "16px", xs: "10px" },
-                ":hover": {
-                  bgcolor: "#191825",
-                },
-              }}
+              onClick={handleSubmit}
               size="small"
-            >
-              cancel
-            </Button>
-            <Button
-              size="small"
-              type="submit"
+              // type="submit"
               variant="contained"
               sx={{
                 padding: "10px",
@@ -136,8 +150,8 @@ export default function FilterCartModal({ open, handleClose, filterBy }) {
               Submit
             </Button>
           </Box>
-        </FormControl>
+        </form>
       </Grid>
-    </ModalLayout>
+    </SecoundModalLayout>
   );
 }
