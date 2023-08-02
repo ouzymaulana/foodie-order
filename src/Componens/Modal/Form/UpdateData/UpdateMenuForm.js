@@ -1,5 +1,5 @@
 import { Button, Grid, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalLayout from "../../ModalLayout";
 import InputForm from "@/Componens/InputForm";
 import ButtonModal from "../../ButtonModal";
@@ -7,17 +7,38 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useUpdateMenuModal } from "@/Context/MenuManagement/UpdateMenuModalContextProvider";
+import { Alert } from "@/Componens/Alert/Alert";
+import { useRouter } from "next/router";
+import { textFieldImage } from "@/Helper/formValidation";
 
-export default function UpdateMenuForm({ dataMenu, title, open, handleClose }) {
+export default function UpdateMenuForm({ title }) {
+  const { updateMenuModal, setUpdateMenuModal } = useUpdateMenuModal();
+  const [isImageFailed, setIsImageFailed] = useState({
+    status: null,
+    message: null,
+  });
   const [selectFile, setSelectFile] = useState("");
   const token = Cookies.get("token");
+  const { reload, replace, asPath } = useRouter();
+
+  const handleCloseUpdateMenu = () =>
+    setUpdateMenuModal({ ...updateMenuModal, isOpen: false });
+
+  const dataMenu = updateMenuModal.data || "";
 
   const handleChangeFile = (value) => {
-    setSelectFile(value);
+    const validationImage = textFieldImage(value);
+
+    if (validationImage.status === "failed") {
+      setIsImageFailed(validationImage);
+    } else {
+      setIsImageFailed(validationImage);
+      setSelectFile(value);
+    }
   };
 
   const handleSubmit = async () => {
-    console.log("masuk");
     const response = await axios.put(
       "http://localhost:5000/api/admin/menu",
       {
@@ -38,18 +59,22 @@ export default function UpdateMenuForm({ dataMenu, title, open, handleClose }) {
       }
     );
 
-    console.log(response.data);
+    if (response.data.status === "success") {
+      handleCloseUpdateMenu();
+      Alert("success", "successfully added new menu");
+      replace(asPath);
+    }
   };
 
   const formik = useFormik({
     // setting initial values
     initialValues: {
-      nama: dataMenu.nama,
-      kategori: dataMenu.kategori,
-      harga: dataMenu.harga,
-      nama_tempat: dataMenu.nama_tempat,
-      alamat: dataMenu.alamat,
-      gambar: dataMenu.gambar,
+      nama: "",
+      kategori: "",
+      harga: "",
+      nama_tempat: "",
+      alamat: "",
+      gambar: "",
     },
 
     validationSchema: Yup.object({
@@ -61,16 +86,32 @@ export default function UpdateMenuForm({ dataMenu, title, open, handleClose }) {
       // gambar: Yup.string(),
     }),
 
-    // handle submission
     onSubmit: handleSubmit,
   });
 
   const clearDataForm = () => {
-    formik.resetForm();
+    return null;
   };
 
+  useEffect(() => {
+    formik.setValues({
+      waktuPesanan: updateMenuModal.data?.waktuPesanan || "",
+      alamatAntar: updateMenuModal.data?.alamatAntar || "",
+      nama: updateMenuModal.data?.nama || "",
+      kategori: updateMenuModal.data?.kategori || "",
+      harga: updateMenuModal.data?.harga || "",
+      nama_tempat: updateMenuModal.data?.nama_tempat || "",
+      alamat: updateMenuModal.data?.alamat || "",
+      gambar: updateMenuModal.data?.gambar || "",
+    });
+  }, [updateMenuModal]);
+
   return (
-    <ModalLayout open={open} handleClose={handleClose} title={title}>
+    <ModalLayout
+      open={updateMenuModal.isOpen}
+      handleClose={handleCloseUpdateMenu}
+      title={title}
+    >
       {/* <form> */}
       <form onSubmit={formik.handleSubmit}>
         <Grid display={"flex"} flexDirection={"column"} gap={3}>
@@ -112,11 +153,8 @@ export default function UpdateMenuForm({ dataMenu, title, open, handleClose }) {
             fileType={true}
             title={"gambar"}
             label={"gambar"}
-            // value={dataMenu.gambar}
             onchange={handleChangeFile}
-            // onchange={formik.handleChange}
-            // dataError={formik.errors.gambar}
-            // touched={formik.touched.gambar}
+            isImageFailed={isImageFailed}
           />
           <InputForm
             multiline={true}
@@ -129,8 +167,8 @@ export default function UpdateMenuForm({ dataMenu, title, open, handleClose }) {
           />
           <ButtonModal
             disable={false}
-            open={open}
-            handleClose={handleClose}
+            open={updateMenuModal.isOpen}
+            handleClose={handleCloseUpdateMenu}
             resetInput={clearDataForm}
           />
         </Grid>

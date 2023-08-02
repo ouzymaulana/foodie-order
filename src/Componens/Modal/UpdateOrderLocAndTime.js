@@ -44,7 +44,7 @@ export default function UpdateOrderLocAndTime({ open, handleClose, title }) {
   });
 
   const clearDataForm = () => {
-    formik.resetForm();
+    return null;
   };
 
   useEffect(() => {
@@ -61,6 +61,7 @@ export default function UpdateOrderLocAndTime({ open, handleClose, title }) {
             title={"waktuPesanan"}
             label={"Order Time"}
             select={true}
+            dataSelect={["siang", "sore"]}
             value={formik.values.waktuPesanan}
             onchange={formik.handleChange}
             dataError={formik.errors.waktuPesanan}

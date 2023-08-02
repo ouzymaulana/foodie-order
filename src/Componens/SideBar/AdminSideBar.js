@@ -35,6 +35,7 @@ export default function AdminSideBar() {
           boxSizing: "border-box",
         },
         zIndex: 990,
+        // display: { sm: "none", xs: "none" },
       }}
       variant="permanent"
       anchor="left"

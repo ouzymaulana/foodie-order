@@ -12,17 +12,55 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import InboxIcon from "@mui/icons-material/Inbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import ReadMoreRoundedIcon from "@mui/icons-material/ReadMoreRounded";
 import UpdateMenuForm from "../Modal/Form/UpdateData/UpdateMenuForm";
+import { actionEditModal } from "@/Helper/Modal/ActionModal";
+import { useDetailMenuModal } from "@/Context/MenuManagement/DetailMenuContextProvider";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { deleteMenuAlert } from "../Alert/Alert";
+import { useDispatch, useSelector } from "react-redux";
+import { useIsHasUpdated } from "@/Context/IsHasUpdatedContextProvider";
+import {
+  deleteDataByIdMenu,
+  selectDataMenu,
+} from "@/Redux/Slices/DataMenuSlice";
+import { useRouter } from "next/router";
+import { useUpdateMenuModal } from "@/Context/MenuManagement/UpdateMenuModalContextProvider";
 
-export default function ActionTable({ dataMenu }) {
+export default function ActionTable({ dataItemMenu }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const { setOpenDetailMenu } = useDetailMenuModal();
+  const { setIshasUpdated } = useIsHasUpdated();
+  const { setUpdateMenuModal } = useUpdateMenuModal();
+  const dataMenu = useSelector(selectDataMenu);
+  const dispatch = useDispatch();
+  const { reload, replace } = useRouter();
+
+  const handleOpenDetailMenu = (dataItemMenu) => {
+    setOpenDetailMenu({ isOpen: true, data: dataItemMenu });
+    setAnchorEl(null);
+  };
+
+  const handleOpenUpdateMenu = (dataItemMenu) => {
+    setUpdateMenuModal({ isOpen: true, data: dataItemMenu });
+    setAnchorEl(null);
+  };
+
+  const handleDelete = async () => {
+    setIshasUpdated(true);
+    setAnchorEl(null);
+    deleteMenuAlert(
+      dispatch,
+      deleteDataByIdMenu,
+      setIshasUpdated,
+      dataItemMenu.id,
+      dataMenu,
+      reload
+    );
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -60,7 +98,25 @@ export default function ActionTable({ dataMenu }) {
         <Box sx={{ width: "100%", maxWidth: 360 }}>
           <nav aria-label="main mailbox folders">
             <List sx={{ paddingBottom: "0", paddingTop: "0" }}>
-              <ListItem disablePadding onClick={() => handleOpen()}>
+              {/* <ListItem
+                disablePadding
+                onClick={() => actionEditModal(dataItemMenu, handleClose, open)}
+              > */}
+              <ListItem
+                disablePadding
+                onClick={() => handleOpenDetailMenu(dataItemMenu)}
+              >
+                <ListItemButton>
+                  <ListItemIcon>
+                    <ReadMoreRoundedIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Detail" />
+                </ListItemButton>
+              </ListItem>
+              <ListItem
+                disablePadding
+                onClick={() => handleOpenUpdateMenu(dataItemMenu)}
+              >
                 <ListItemButton>
                   <ListItemIcon>
                     <BorderColorRoundedIcon />
@@ -68,7 +124,7 @@ export default function ActionTable({ dataMenu }) {
                   <ListItemText primary="Edit" />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding>
+              <ListItem disablePadding onClick={() => handleDelete()}>
                 <ListItemButton>
                   <ListItemIcon>
                     <DeleteRoundedIcon />
@@ -81,12 +137,6 @@ export default function ActionTable({ dataMenu }) {
         </Box>
         {/* <Typography sx={{ p: 2 }}>The content of the Popover.</Typography> */}
       </Popover>
-      <UpdateMenuForm
-        dataMenu={dataMenu}
-        title="please fill the input"
-        open={open}
-        handleClose={handleClose}
-      />
     </>
   );
 }

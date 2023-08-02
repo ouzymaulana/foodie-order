@@ -1,4 +1,5 @@
 import AddUserForm from "@/Componens/Modal/Form/AddData/AddUserForm";
+import UpdateUserForm from "@/Componens/Modal/Form/UpdateData/UpdateUserForm";
 import ReusableTable from "@/Componens/Table";
 import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
 import { useSortBy } from "@/Context/SortByContextProvider";
@@ -124,7 +125,7 @@ export default function UserManagementView({
           </Grid>
         </Grid>
         <Grid>
-          <ReusableTable DataTabel={getDataUser} columns={columns} />
+          <ReusableTable dataTabel={getDataUser} columns={columns} />
         </Grid>
       </Grid>
       <AddUserForm
@@ -132,6 +133,7 @@ export default function UserManagementView({
         handleClose={handleClose}
         open={open}
       />
+      <UpdateUserForm title={"User Update Form"} />
     </>
   );
 }

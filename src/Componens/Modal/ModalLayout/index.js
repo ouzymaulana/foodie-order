@@ -7,7 +7,7 @@ const style = {
   top: "20%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
+  // width: "600px",
   bgcolor: "background.paper",
   // border: "2px solid #000",
   borderRadius: 4,
@@ -24,7 +24,7 @@ export default function ModalLayout({ children, open, handleClose, title }) {
         aria-describedby="modal-modal-description"
         sx={{ marginTop: "120px" }}
       >
-        <Box sx={style}>
+        <Box sx={style} width={{ lg: 600, md: 600, sm: 500, xs: 360 }}>
           {/* <Grid display={"flex"} flexDirection={"column"} gap={3}> */}
           <Box display={"flex"} justifyContent={"center"}>
             <Typography

@@ -1,6 +1,8 @@
 import { AppBar, Grid, Typography } from "@mui/material";
 import style from "../../styles/LoginVerifikasi.module.scss";
 import React from "react";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export default function AdminHeader() {
   return (
@@ -18,7 +20,17 @@ export default function AdminHeader() {
       }}
     >
       <Grid Grid display={"flex"} justifyContent={"space-between"} gap={1}>
-        <Grid flex={3}>
+        <Grid flex={4} display={"flex"}>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2, display: { lg: "auto" } }}
+            // display: { sm: "none", xs: "none" },
+          >
+            <MenuIcon fontSize="large" />
+          </IconButton>
           <Typography
             fontFamily="Harlow Solid"
             className={style.foodieorder}

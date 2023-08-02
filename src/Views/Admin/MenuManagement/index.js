@@ -1,11 +1,16 @@
 import AddMenuForm from "@/Componens/Modal/Form/AddData/AddMenuForm";
+import DetailDataMenu from "@/Componens/Modal/Form/DetailData/DetailDataMenu";
+import UpdateMenuForm from "@/Componens/Modal/Form/UpdateData/UpdateMenuForm";
 import ReusableTable from "@/Componens/Table";
+import { useIsHasUpdated } from "@/Context/IsHasUpdatedContextProvider";
 import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
 import { useSortBy } from "@/Context/SortByContextProvider";
 import { useSortType } from "@/Context/SortTypeContextProvider";
 import { useDataTotalItem } from "@/Context/TotalItemContextProvider";
+import { selectDataMenu, setDataMenu } from "@/Redux/Slices/DataMenuSlice";
 import { Button, Grid, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function MenuManagementView({
   getDataMenu,
@@ -19,12 +24,14 @@ export default function MenuManagementView({
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
-
+  const dataMenu = useSelector(selectDataMenu);
+  const { ishasUpdated } = useIsHasUpdated();
+  const dispatch = useDispatch();
   const { setOpenLoadingCircular } = useLoadingCircularProgress();
 
-  // Atur setOpenLoadingCircular saat server-side rendering selesai
   useEffect(() => {
     setOpenLoadingCircular(false);
+    dispatch(setDataMenu(getDataMenu));
   }, []);
 
   useEffect(() => {
@@ -34,7 +41,14 @@ export default function MenuManagementView({
 
   useEffect(() => {
     setTotalItem(getTotalItem);
-  }, [totalItem]);
+    dispatch(setDataMenu(getDataMenu));
+  }, [totalItem, dataMenu, getDataMenu]);
+
+  // useEffect(() => {
+  //   if (ishasUpdated === true) {
+  //     dispatch(setDataMenu(dataMenu));
+  //   }
+  // }, [dataMenu]);
 
   const columns = [
     {
@@ -137,7 +151,7 @@ export default function MenuManagementView({
           </Grid>
         </Grid>
         <Grid>
-          <ReusableTable DataTabel={getDataMenu} columns={columns} />
+          <ReusableTable dataTabel={dataMenu} columns={columns} />
         </Grid>
       </Grid>
       <AddMenuForm
@@ -145,7 +159,8 @@ export default function MenuManagementView({
         handleClose={handleClose}
         open={open}
       />
-      {/* pop up action here */}
+      <DetailDataMenu title="Detail Menu" />
+      <UpdateMenuForm title="please fill the input" />
     </>
   );
 }

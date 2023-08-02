@@ -24,12 +24,12 @@ import {
 import jwt from "jsonwebtoken";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CardMenu from "@/Componens/Card";
-import { usePageMenu } from "@/Context/PageContextProvider";
 import { useDataSelectMenu } from "@/Context/SelectMenuSidebarContexProvider";
+import { useScrollPageMenu } from "@/Context/ScrollPageContextProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function FavoriteMenuItem() {
-  const { page, setPage } = usePageMenu();
+  const { page, setPage } = useScrollPageMenu();
   const { selectMenu, setSelectMenu } = useDataSelectMenu();
   const [limit, setLimit] = useState(10);
   // const [page, setPage] = useState(1);

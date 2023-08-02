@@ -40,6 +40,75 @@ export default function DashboardView({ getOrderData }) {
     setOpenLoadingCircular(false);
   }, [selectFilter]);
 
+  const columns = [
+    {
+      label: "User Name",
+      field: "nama",
+      routefield: "user-name",
+      minWidth: 170,
+      filter: "inputText",
+      sort: false,
+    },
+    {
+      label: "Order Time",
+      field: "waktu_pemesanan",
+      routefield: "order-time",
+      minWidth: 170,
+      filter: "inputSelect",
+      sort: false,
+      selectData: [
+        { text: "all", value: "all" },
+        { text: "siang", value: "siang" },
+        { text: "sore", value: "sore" },
+      ],
+    },
+    {
+      label: "Order Date",
+      field: "createdAt",
+      routefield: "order-date",
+      minWidth: 170,
+      filter: "inputDate",
+      sort: true,
+    },
+    {
+      label: "Delivery Address",
+      field: "alamat_antar",
+      routefield: "delivery-address",
+      minWidth: 170,
+      filter: "inputText",
+      sort: false,
+    },
+    {
+      label: "Status",
+      field: "status",
+      routefield: "status",
+      minWidth: 170,
+      filter: "inputSelect",
+      sort: false,
+      selectData: [
+        { text: "all", value: "all" },
+        { text: "siang", value: "siang" },
+        { text: "sore", value: "sore" },
+      ],
+    },
+    {
+      label: "Total Pay",
+      field: "total_bayar",
+      routefield: "total-pay",
+      minWidth: 170,
+      filter: "inputNumber",
+      sort: true,
+    },
+    {
+      label: "",
+      field: "action",
+      minWidth: 0,
+      filter: "",
+      sort: false,
+      action: true,
+      actionLable: "orderMenu",
+    },
+  ];
   return (
     <>
       <Grid display={"flex"} flexDirection={"column"} gap={5}>

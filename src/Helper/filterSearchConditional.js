@@ -7,6 +7,7 @@ import { formatCurrency } from "./formatCurrency";
 import { homanFormatDate } from "./formarDate";
 import ActionTable from "@/Componens/Table/ActionTable";
 import { Typography } from "@mui/material";
+import ActionTableUser from "@/Componens/Table/ActionTableUser";
 
 export function filterSearchConditional(column) {
   if (column.filter === "inputText") {
@@ -50,8 +51,10 @@ export function formatDataConditional(row, column) {
 export function actionFieldTableConditional(row, column) {
   if (column.field === "action") {
     if (column.actionLable === "menuManagement") {
-      return <ActionTable dataMenu={row} />;
+      return <ActionTable dataItemMenu={row} />;
     } else if (column.actionLable === "userManagement") {
+      return <ActionTableUser dataItemUser={row} />;
+    } else if (column.actionLable === "orderMenu") {
       return <Typography>soon</Typography>;
     }
   }

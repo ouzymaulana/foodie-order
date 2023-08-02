@@ -2,6 +2,7 @@ import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import FavoriteMenuReducer from "./Slices/FavoriteMenuSlice";
 import persistedItemCartReducer from "./Slices/CartItemsSlice";
 import persistedBalanceReducer from "./Slices/BalanceSlice";
+import DataMenuReducer from "./Slices/DataMenuSlice";
 import {
   FLUSH,
   PAUSE,
@@ -16,6 +17,7 @@ const store = configureStore({
     dataFavorite: FavoriteMenuReducer,
     cartItem: persistedItemCartReducer,
     balance: persistedBalanceReducer,
+    dataMenu: DataMenuReducer,
   },
   devTools: true,
   middleware: getDefaultMiddleware({

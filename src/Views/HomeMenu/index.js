@@ -11,7 +11,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function HomeMenu() {
   const route = useRouter();
-  console.log(route.query);
   return (
     <>
       <Grid

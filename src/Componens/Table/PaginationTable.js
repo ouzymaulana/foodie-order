@@ -10,14 +10,11 @@ import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressCon
 export default function PaginationTable({ dataRows, limitTable }) {
   const { setOpenLoadingCircular } = useLoadingCircularProgress();
   const { searchValue, setSearchValue } = useDataSearchMenu();
-  const { totalItem, setTotalItem } = useDataTotalItem();
+  const { totalItem } = useDataTotalItem();
   const { page, setPage } = usePageMenu();
   const router = useRouter();
 
   const handleSetPage = () => {
-    // setOpenLoadingCircular(true);
-    // clearTimeout(isLoading);
-    // const newTimer = setTimeout(() => {
     const parsedPage = parseInt(page);
     const newSearchValues = {
       ...router.query,
@@ -40,9 +37,6 @@ export default function PaginationTable({ dataRows, limitTable }) {
       query: dataWithValue,
       // query: { ...router.query, ...newSearchValues },
     });
-    //   setOpenLoadingCircular(false);
-    // }, 800);
-    // setIsLoading(newTimer);
   };
 
   useEffect(() => {

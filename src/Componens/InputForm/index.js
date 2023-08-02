@@ -38,6 +38,7 @@ export default function InputForm({
   dataSelect,
   fileType,
   handleChangeFile,
+  isImageFailed,
 }) {
   return (
     <Box display={"flex"} flexDirection={"column"}>
@@ -90,6 +91,11 @@ export default function InputForm({
       )}
       {touched && dataError && (
         <span style={{ color: "red", fontFamily: "Inter" }}>{dataError}</span>
+      )}
+      {isImageFailed !== undefined && isImageFailed.status === "failed" && (
+        <span style={{ color: "red", fontFamily: "Inter" }}>
+          {isImageFailed.message}
+        </span>
       )}
     </Box>
   );

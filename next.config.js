@@ -1,6 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  swcMinify: true,
+  optimizeFonts: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "5000",
+        // protocol: "http://localhost:5000/images/",
+      },
+    ],
+  },
+
   // webpack(config) {
   //   config.module.rules.push({
   //     test: /\.(woff|woff2|eot|ttf|otf)$/,

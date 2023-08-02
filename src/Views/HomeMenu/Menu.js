@@ -21,6 +21,7 @@ import { useLimitMenu } from "@/Context/LimitContextProvider";
 import { usePageMenu } from "@/Context/PageContextProvider";
 import CardMenuLoading from "@/Componens/Loading/CardMenuLoading";
 import { useMenuContext } from "@/Context/DataMenuContextProvider";
+import { useScrollPageMenu } from "@/Context/ScrollPageContextProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function MenuItem() {
@@ -37,7 +38,8 @@ export default function MenuItem() {
   const dataFavorite = useSelector(selectDataFavorite);
   const dispatch = useDispatch();
   const { limit, setLimit } = useLimitMenu();
-  const { page, setPage } = usePageMenu();
+  const { page, setPage } = useScrollPageMenu();
+  // const { page, setPage } = usePageMenu();
   const route = useRouter();
   const token = Cookies.get("token");
   const listInnerRef = useRef(null);
@@ -46,9 +48,7 @@ export default function MenuItem() {
 
   const fetchData = async () => {
     try {
-      // clearTimeout(loadingMenuTimer);
       setLoadingMenu(true);
-      // const interval = setTimeout(async () => {
       const response = await axios.get("http://localhost:5000/api/menu", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -77,8 +77,6 @@ export default function MenuItem() {
       setPage(page + 1);
 
       setLoadingMenu(false);
-      // }, 1000);
-      // setLoadingMenuTimer(interval);
     } catch (error) {
       console.error(error);
     }

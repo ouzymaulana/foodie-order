@@ -60,9 +60,9 @@ export async function getServerSideProps(context) {
   }
 
   let getDataMenu = [];
-  let getTotalItem;
-  let sortByData;
-  let sortTypeData;
+  let getTotalItem = null;
+  let sortByData = null;
+  let sortTypeData = null;
   try {
     const response = await axios.get("http://localhost:5000/api/admin/menu", {
       headers: {

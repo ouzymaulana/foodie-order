@@ -83,6 +83,7 @@ export default function AddToCart({ open, handleClose, idMenu, title }) {
             title={"waktuPesanan"}
             label={"Order Time"}
             select={true}
+            dataSelect={["siang", "sore"]}
             value={formik.values.waktuPesanan}
             onchange={formik.handleChange}
             dataError={formik.errors.waktuPesanan}

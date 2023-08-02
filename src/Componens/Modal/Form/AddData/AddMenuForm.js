@@ -8,16 +8,50 @@ import Cookies from "js-cookie";
 import InputForm from "@/Componens/InputForm";
 import ButtonModal from "../../ButtonModal";
 import { Alert } from "../../../Alert/Alert";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addDataMenu,
+  selectDataMenu,
+  setDataMenu,
+} from "@/Redux/Slices/DataMenuSlice";
+import { useIsHasUpdated } from "@/Context/IsHasUpdatedContextProvider";
+import { useRouter } from "next/router";
+import { textFieldImage } from "@/Helper/formValidation";
 
 export default function AddMenuForm({ open, handleClose, title }) {
   const [selectFile, setSelectFile] = useState("");
+  const dataMenu = useSelector(selectDataMenu);
+  const { setIshasUpdated } = useIsHasUpdated();
   const token = Cookies.get("token");
+  const dispatch = useDispatch();
+  const route = useRouter();
+  const [isImageFailed, setIsImageFailed] = useState({
+    status: null,
+    message: null,
+  });
 
   const handleChangeFile = (value) => {
-    setSelectFile(value);
+    const validationImage = textFieldImage(value);
+
+    if (validationImage.status === "failed") {
+      setIsImageFailed(validationImage);
+    } else {
+      setIsImageFailed(validationImage);
+      setSelectFile(value);
+    }
   };
 
   const handleSubmit = async () => {
+    if (isImageFailed.status === null) {
+      return setIsImageFailed({
+        status: "failed",
+        message: "File is required",
+      });
+    }
+    setIshasUpdated(true);
+    const selectFileCopy = { ...selectFile };
+    selectFileCopy.name = selectFile.name.replace(/\s/g, "");
+
     const formData = new FormData();
     formData.append("gambar", selectFile);
     formData.append("nama", formik.values.nama);
@@ -26,7 +60,15 @@ export default function AddMenuForm({ open, handleClose, title }) {
     formData.append("nama_tempat", formik.values.nama_tempat);
     formData.append("alamat", formik.values.alamat);
 
-    console.log(formData);
+    const getMenu = {
+      nama: formik.values.nama,
+      kategori: formik.values.kategori,
+      harga: formik.values.harga,
+      nama_tempat: formik.values.nama_tempat,
+      alamat: formik.values.alamat,
+      gambar: selectFile.name.replace(/\s/g, ""),
+    };
+
     const response = await axios.post(
       "http://localhost:5000/api/admin/menu/create",
       formData,
@@ -38,8 +80,10 @@ export default function AddMenuForm({ open, handleClose, title }) {
       }
     );
     if (response.data.status === "success") {
+      dispatch(addDataMenu(getMenu));
       handleClose();
       Alert("success", "successfully added new menu");
+      route.replace(route.asPath);
     }
   };
   const formik = useFormik({
@@ -58,7 +102,6 @@ export default function AddMenuForm({ open, handleClose, title }) {
       kategori: Yup.string().required(),
       harga: Yup.number().required(),
       nama_tempat: Yup.string().required(),
-      // gambar: Yup.string().required(),
       alamat: Yup.string().required(),
     }),
 
@@ -69,6 +112,7 @@ export default function AddMenuForm({ open, handleClose, title }) {
   const clearDataForm = () => {
     formik.resetForm();
   };
+
   return (
     <ModalLayout open={open} title={title}>
       <form onSubmit={formik.handleSubmit}>
@@ -112,11 +156,8 @@ export default function AddMenuForm({ open, handleClose, title }) {
             fileType={true}
             title={"gambar"}
             label={"Image"}
-            // value={selectFile}
             handleChangeFile={handleChangeFile}
-            // onchange={formik.handleChange}
-            // dataError={formik.errors.gambar}
-            // touched={formik.touched.gambar}
+            isImageFailed={isImageFailed}
           />
           <InputForm
             multiline={true}
