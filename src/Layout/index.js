@@ -10,6 +10,7 @@ import SelectMenuSidebarContexProvider from "@/Context/SelectMenuSidebarContexPr
 import DataMenuContextProvider from "@/Context/DataMenuContextProvider";
 import LoadingCircularProgressContextProvider from "@/Context/LoadingCircularProgressContextProvider";
 import ScrollPageContextProvider from "@/Context/ScrollPageContextProvider";
+import ActionTableContextProvider from "@/Context/ModalActionTable/ActionTableContextProvider";
 // import MenuContextProvider from "@/Context/MenuContextProvider";
 
 export default function MainLayout({ children }) {
@@ -22,21 +23,23 @@ export default function MainLayout({ children }) {
               <DataMenuContextProvider>
                 <SelectMenuSidebarContexProvider>
                   <LoadingCircularProgressContextProvider>
-                    <Navbar />
-                    <SideBarMenu />
+                    <ActionTableContextProvider>
+                      <Navbar />
+                      <SideBarMenu />
 
-                    <Grid
-                      sx={{
-                        backgroundColor: "#F1F1F1",
-                        // height: "20vh",
-                        height: "calc(100vh - 80px)",
-                        marginTop: "80px",
-                        marginLeft: "10rem",
-                        padding: "20px",
-                      }}
-                    >
-                      {children}
-                    </Grid>
+                      <Grid
+                        sx={{
+                          backgroundColor: "#F1F1F1",
+                          // height: "20vh",
+                          height: "calc(100vh - 80px)",
+                          marginTop: "80px",
+                          marginLeft: "10rem",
+                          padding: "20px",
+                        }}
+                      >
+                        {children}
+                      </Grid>
+                    </ActionTableContextProvider>
                   </LoadingCircularProgressContextProvider>
                 </SelectMenuSidebarContexProvider>
               </DataMenuContextProvider>

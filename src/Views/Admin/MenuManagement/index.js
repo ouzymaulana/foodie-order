@@ -25,7 +25,6 @@ export default function MenuManagementView({
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
   const dataMenu = useSelector(selectDataMenu);
-  const { ishasUpdated } = useIsHasUpdated();
   const dispatch = useDispatch();
   const { setOpenLoadingCircular } = useLoadingCircularProgress();
 
@@ -43,12 +42,6 @@ export default function MenuManagementView({
     setTotalItem(getTotalItem);
     dispatch(setDataMenu(getDataMenu));
   }, [totalItem, dataMenu, getDataMenu]);
-
-  // useEffect(() => {
-  //   if (ishasUpdated === true) {
-  //     dispatch(setDataMenu(dataMenu));
-  //   }
-  // }, [dataMenu]);
 
   const columns = [
     {
@@ -150,9 +143,9 @@ export default function MenuManagementView({
             </Button>
           </Grid>
         </Grid>
-        <Grid>
-          <ReusableTable dataTabel={dataMenu} columns={columns} />
-        </Grid>
+        {/* <Grid> */}
+        <ReusableTable dataTabel={dataMenu} columns={columns} />
+        {/* </Grid> */}
       </Grid>
       <AddMenuForm
         title={"Please Fill The Form"}

@@ -41,10 +41,26 @@ export default function SelectData({ title, selectData }) {
 
   const handleSearch = () => {
     setPage(1);
-    // const searchValueData =
-    //   event.target.value === "all" ? "" : event.target.value;
+    const priceWithoutRp = searchValue.price
+      ? searchValue.price.replace("Rp", "")
+      : "";
+    const totalPayWithoutRp = searchValue["total-pay"]
+      ? searchValue["total-pay"].replace("Rp", "")
+      : "";
+
     let searchValueData;
+    // const newTitle = title;
     if (inputSearch === "all") {
+      const data = Object.keys(searchValue)
+        .filter((key) => searchValue[key] !== "all")
+        .reduce((obj, key) => {
+          obj[key] = searchValue[key];
+          return obj;
+        }, {});
+
+      setSearchValue(data);
+
+      // setSearchvalue hilangin
       searchValueData = "";
     } else {
       searchValueData = inputSearch;
@@ -54,6 +70,8 @@ export default function SelectData({ title, selectData }) {
       ...searchValue,
       [title]: searchValueData,
       ["page"]: 1,
+      price: priceWithoutRp,
+      ["total-pay"]: totalPayWithoutRp,
     };
 
     const dataWithValue = Object.keys(newSearchValues)
@@ -97,7 +115,6 @@ export default function SelectData({ title, selectData }) {
       defaultValue={inputSearch || selectData[0].value}
       value={inputSearch || selectData[0].value}
       onChange={(event) => {
-        // handleSearch(event),
         setInputSearch(event.target.value),
           setSearchValue({ ...searchValue, [title]: event.target.value });
       }}

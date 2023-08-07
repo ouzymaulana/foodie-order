@@ -8,7 +8,7 @@ import { deleteCartItem, selectDataCart } from "@/Redux/Slices/CartItemsSlice";
 import { grey } from "@mui/material/colors";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { Alert } from "../Alert/Alert";
+import { Alert } from "../Alert";
 
 export default function ConfirmCheckOut({
   dataItemCart,
@@ -87,7 +87,11 @@ export default function ConfirmCheckOut({
                 <Box display={"flex"}>
                   <Box paddingBottom={0} flex={1}>
                     <Image
-                      src="/img/cocktail.jpg"
+                      // src="/img/cocktail.jpg"
+                      src={
+                        `http://localhost:5000/images/` + isHasMenu?.gambar ||
+                        ""
+                      }
                       height={65}
                       width={65}
                       alt="gambar-menu"

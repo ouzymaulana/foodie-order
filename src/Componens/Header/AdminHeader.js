@@ -3,8 +3,13 @@ import style from "../../styles/LoginVerifikasi.module.scss";
 import React from "react";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import jwt from "jsonwebtoken";
+import Profile from "./Profile";
+import Cookies from "js-cookie";
 
 export default function AdminHeader() {
+  const token = Cookies.get("token");
+  const jwtData = jwt.decode(token);
   return (
     <AppBar
       position="fixed"
@@ -19,9 +24,9 @@ export default function AdminHeader() {
         zIndex: 990,
       }}
     >
-      <Grid Grid display={"flex"} justifyContent={"space-between"} gap={1}>
+      <Grid display={"flex"} justifyContent={"space-between"} gap={1}>
         <Grid flex={4} display={"flex"}>
-          <IconButton
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -30,7 +35,7 @@ export default function AdminHeader() {
             // display: { sm: "none", xs: "none" },
           >
             <MenuIcon fontSize="large" />
-          </IconButton>
+          </IconButton> */}
           <Typography
             fontFamily="Harlow Solid"
             className={style.foodieorder}
@@ -40,7 +45,9 @@ export default function AdminHeader() {
             F0odieOrder
           </Typography>
         </Grid>
-        <Grid flex={6}></Grid>
+        <Grid flex={6}>
+          <Profile nama={jwtData?.nama || ""} role={jwtData?.role || ""} />
+        </Grid>
       </Grid>
     </AppBar>
   );

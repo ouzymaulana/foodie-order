@@ -16,14 +16,11 @@ import FastfoodRoundedIcon from "@mui/icons-material/FastfoodRounded";
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import { useDataSelectMenu } from "@/Context/SelectMenuSidebarContexProvider";
 import { useRouter } from "next/router";
+import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
 
 export default function AdminSideBar() {
   const route = useRouter();
-  const { selectMenu, setSelectMenu } = useDataSelectMenu();
-
-  // console.log("===============pathname=====================");
-  // console.log(route.query);
-  // console.log("====================================");
+  const { setOpenLoadingCircular } = useLoadingCircularProgress();
   return (
     <Drawer
       sx={{
@@ -55,6 +52,7 @@ export default function AdminSideBar() {
           <ListItemButton
             onClick={() => {
               route.push("/admin");
+              setOpenLoadingCircular(true);
             }}
             sx={{
               borderRadius: 3.5,
@@ -77,6 +75,7 @@ export default function AdminSideBar() {
           <ListItemButton
             onClick={() => {
               route.push("/admin/menu-management");
+              setOpenLoadingCircular(true);
             }}
             sx={{
               borderRadius: 3.5,
@@ -98,6 +97,7 @@ export default function AdminSideBar() {
           <ListItemButton
             onClick={() => {
               route.push("/admin/user-management");
+              setOpenLoadingCircular(true);
             }}
             sx={{
               borderRadius: 3.5,

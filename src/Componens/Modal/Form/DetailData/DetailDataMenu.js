@@ -1,25 +1,21 @@
 import React from "react";
 import ModalLayout from "../../ModalLayout";
 import { Box, Button, CardMedia, Grid, Typography } from "@mui/material";
-import { useDetailMenuModal } from "@/Context/MenuManagement/DetailMenuContextProvider";
-import { useDataDetailMenuModal } from "@/Context/MenuManagement/UpdateMenuModalContextProvider";
-import Image from "next/image";
-import { format } from "date-fns";
+import { useActionTableModal } from "@/Context/ModalActionTable/ActionTableContextProvider";
 import { formatDate, homanFormatDate } from "@/Helper/formarDate";
-import theme from "@/Helper/theme";
 import { grey } from "@mui/material/colors";
 import { formatCurrency } from "@/Helper/formatCurrency";
 
 export default function DetailDataMenu({ title }) {
-  const { openDetailMenu, setOpenDetailMenu } = useDetailMenuModal();
+  const { openActionTable, setOpenActionTable } = useActionTableModal();
   const handleCloseDetailMenu = () =>
-    setOpenDetailMenu({ ...openDetailMenu, isOpen: false });
+    setOpenActionTable({ ...openActionTable, isOpen: false });
 
   // const data = URL.createObjectURL()
 
   return (
     <ModalLayout
-      open={openDetailMenu.isOpen}
+      open={openActionTable.isOpen}
       handleClose={handleCloseDetailMenu}
       title={title}
     >
@@ -35,7 +31,7 @@ export default function DetailDataMenu({ title }) {
             alt="image-menu"
             height="300"
             image={
-              `http://localhost:5000/images/` + openDetailMenu.data?.gambar ||
+              `http://localhost:5000/images/` + openActionTable.data?.gambar ||
               ""
             }
           />
@@ -48,18 +44,18 @@ export default function DetailDataMenu({ title }) {
             alignItems={"center"}
           >
             <Typography variant="h6" fontWeight={600}>
-              {openDetailMenu.data?.nama || ""}
+              {openActionTable.data?.nama || ""}
             </Typography>
             <Typography color={grey[600]} paddingTop={{ lg: 1 }}>
-              {homanFormatDate(openDetailMenu.data?.createdAt) || ""}
+              {homanFormatDate(openActionTable.data?.createdAt) || ""}
             </Typography>
           </Grid>
           <Typography variant="h6">
-            {formatCurrency(openDetailMenu.data?.harga) || ""}
+            {formatCurrency(openActionTable.data?.harga) || ""}
           </Typography>
-          <Typography>{openDetailMenu.data?.nama_tempat || ""}</Typography>
+          <Typography>{openActionTable.data?.nama_tempat || ""}</Typography>
           <Typography width={"80%"}>
-            {openDetailMenu.data?.alamat || ""}
+            {openActionTable.data?.alamat || ""}
           </Typography>
         </Grid>
         <Box flex={1} paddingTop={2}>

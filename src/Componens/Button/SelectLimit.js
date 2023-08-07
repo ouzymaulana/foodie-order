@@ -43,10 +43,9 @@ export default function SelectLimit() {
     };
     const dataWithValue = Object.keys(newSearchValues)
       .filter(
-        (key) =>
-          newSearchValues[key] !== "" &&
-          newSearchValues[key] !== "Rp" &&
-          newSearchValues[key] !== "all"
+        (key) => newSearchValues[key] !== ""
+        // newSearchValues[key] !== "Rp" &&
+        // newSearchValues[key] !== "all"
       )
       .reduce((obj, key) => {
         obj[key] = newSearchValues[key];

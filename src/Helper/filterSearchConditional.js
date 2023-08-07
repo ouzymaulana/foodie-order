@@ -8,6 +8,7 @@ import { homanFormatDate } from "./formarDate";
 import ActionTable from "@/Componens/Table/ActionTable";
 import { Typography } from "@mui/material";
 import ActionTableUser from "@/Componens/Table/ActionTableUser";
+import CollapseButton from "@/Componens/Button/CollapseButton";
 
 export function filterSearchConditional(column) {
   if (column.filter === "inputText") {
@@ -33,16 +34,17 @@ export function sortDataConditional(column, sortBy, sortType, handleSort) {
       />
     );
   } else {
-    // Return a default element if none of the conditions are met
     return <></>;
   }
 }
 
-export function formatDataConditional(row, column) {
-  if (column.field === "harga") {
+export function formatDataConditional(row, column, open, setOpen) {
+  if (column.field === "harga" || column.field === "total_bayar") {
     return formatCurrency(row[column.field]);
   } else if (column.field === "createdAt") {
     return homanFormatDate(row[column.field]);
+  } else if (column.collapse) {
+    return <CollapseButton open={open} setOpen={setOpen} />;
   } else {
     return row[column.field];
   }

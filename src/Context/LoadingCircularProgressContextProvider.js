@@ -5,7 +5,8 @@ export const useLoadingCircularProgress = () =>
   useContext(LoadingCircularProgress);
 
 const LoadingCircularProgressContextProvider = ({ children }) => {
-  const [openLoadingCircular, setOpenLoadingCircular] = useState(true);
+  const [openLoadingCircular, setOpenLoadingCircular] = useState();
+  // const [openLoadingCircular, setOpenLoadingCircular] = useState(true);
   return (
     <LoadingCircularProgress.Provider
       value={{ openLoadingCircular, setOpenLoadingCircular }}

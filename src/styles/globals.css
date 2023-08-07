@@ -91,6 +91,7 @@ body {
 
 .swal-custom-class {
   z-index: 9999; /* Set the desired z-index value here */
+  border-radius: 50px;
 }
 
 body {

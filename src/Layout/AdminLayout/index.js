@@ -4,8 +4,7 @@ import AdminSideBar from "@/Componens/SideBar/AdminSideBar";
 import DashboardLimitTableContextProvider from "@/Context/DashboardLimitTableContextProvider";
 import IsHasUpdatedProvider from "@/Context/IsHasUpdatedContextProvider";
 import LoadingCircularProgressContextProvider from "@/Context/LoadingCircularProgressContextProvider";
-import UpdateMenuModalContextProvider from "@/Context/MenuManagement/UpdateMenuModalContextProvider";
-import DetailMenuContextProvider from "@/Context/MenuManagement/DetailMenuContextProvider";
+import ActionTableContextProvider from "@/Context/ModalActionTable/ActionTableContextProvider";
 import PageContextProvider from "@/Context/PageContextProvider";
 import PopoverActionMenuTableContextProvider from "@/Context/PopoverActionMenuTableContextProvider";
 import SearchDataOnTableContexProvider from "@/Context/SearchValueOnTableContextProvider";
@@ -16,7 +15,6 @@ import SortTypeContextProvider from "@/Context/SortTypeContextProvider";
 import TotalItemContexProvider from "@/Context/TotalItemContextProvider";
 import { Grid } from "@mui/material";
 import React from "react";
-import UpdateUserModalContextProvider from "@/Context/UserManagement/UpdateUserModalContextProvider";
 
 export default function AdminLayout({ children }) {
   return (
@@ -31,30 +29,26 @@ export default function AdminLayout({ children }) {
                     <SortTypeContextProvider>
                       <LoadingCircularProgressContextProvider>
                         <PopoverActionMenuTableContextProvider>
-                          <DetailMenuContextProvider>
-                            <UpdateMenuModalContextProvider>
-                              <UpdateUserModalContextProvider>
-                                <IsHasUpdatedProvider>
-                                  <AdminHeader />
-                                  <AdminSideBar />
-                                  <Grid
-                                    sx={{
-                                      backgroundColor: "#F1F1F1",
-                                      // height: "20vh",
-                                      height: "calc(100vh - 80px)",
-                                      marginTop: "80px",
-                                      marginLeft: "18rem",
-                                      padding: "20px",
-                                    }}
-                                    overflow={"auto"}
-                                  >
-                                    {children}
-                                  </Grid>
-                                  <LoadingCircular />
-                                </IsHasUpdatedProvider>
-                              </UpdateUserModalContextProvider>
-                            </UpdateMenuModalContextProvider>
-                          </DetailMenuContextProvider>
+                          <ActionTableContextProvider>
+                            <IsHasUpdatedProvider>
+                              <AdminHeader />
+                              <AdminSideBar />
+                              <Grid
+                                sx={{
+                                  backgroundColor: "#F1F1F1",
+                                  // height: "20vh",
+                                  height: "calc(100vh - 80px)",
+                                  marginTop: "80px",
+                                  marginLeft: "18rem",
+                                  padding: "20px",
+                                }}
+                                overflow={"auto"}
+                              >
+                                {children}
+                              </Grid>
+                              <LoadingCircular />
+                            </IsHasUpdatedProvider>
+                          </ActionTableContextProvider>
                         </PopoverActionMenuTableContextProvider>
                       </LoadingCircularProgressContextProvider>
                     </SortTypeContextProvider>

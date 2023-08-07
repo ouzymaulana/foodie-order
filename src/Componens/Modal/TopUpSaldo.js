@@ -10,7 +10,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { topUpBalance } from "@/Redux/Slices/BalanceSlice";
-import { Alert } from "../Alert/Alert";
+import { Alert } from "../Alert";
 
 export default function TopUpSaldo({ open, title, handleClose }) {
   const token = Cookies.get("token");

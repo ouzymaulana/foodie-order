@@ -7,10 +7,12 @@ import ModalLayout from "../../ModalLayout";
 import * as Yup from "yup";
 import ButtonModal from "../../ButtonModal";
 import axios from "axios";
-import { Alert } from "@/Componens/Alert/Alert";
+import { Alert } from "@/Componens/Alert";
+import { useRouter } from "next/router";
 
 export default function AddUserForm({ title, handleClose, open }) {
   const token = Cookies.get("token");
+  const { replace, asPath } = useRouter();
 
   const handleSubmit = async () => {
     try {
@@ -30,7 +32,9 @@ export default function AddUserForm({ title, handleClose, open }) {
       );
 
       handleClose();
+      formik.resetForm();
       if (response.data.status === "success") {
+        replace(asPath);
         Alert("success", "successfully added new user");
       } else {
         Alert("warning", "Failed to add new user");

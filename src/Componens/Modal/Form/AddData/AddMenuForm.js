@@ -7,21 +7,20 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import InputForm from "@/Componens/InputForm";
 import ButtonModal from "../../ButtonModal";
-import { Alert } from "../../../Alert/Alert";
+import { Alert } from "../../../Alert";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addDataMenu,
   selectDataMenu,
   setDataMenu,
 } from "@/Redux/Slices/DataMenuSlice";
-import { useIsHasUpdated } from "@/Context/IsHasUpdatedContextProvider";
 import { useRouter } from "next/router";
 import { textFieldImage } from "@/Helper/formValidation";
+import UpdateInputFile from "@/Componens/InputForm/UpdateInputFile";
 
 export default function AddMenuForm({ open, handleClose, title }) {
   const [selectFile, setSelectFile] = useState("");
   const dataMenu = useSelector(selectDataMenu);
-  const { setIshasUpdated } = useIsHasUpdated();
   const token = Cookies.get("token");
   const dispatch = useDispatch();
   const route = useRouter();
@@ -48,7 +47,6 @@ export default function AddMenuForm({ open, handleClose, title }) {
         message: "File is required",
       });
     }
-    setIshasUpdated(true);
     const selectFileCopy = { ...selectFile };
     selectFileCopy.name = selectFile.name.replace(/\s/g, "");
 
@@ -79,6 +77,7 @@ export default function AddMenuForm({ open, handleClose, title }) {
         },
       }
     );
+    formik.resetForm();
     if (response.data.status === "success") {
       dispatch(addDataMenu(getMenu));
       handleClose();
@@ -152,12 +151,19 @@ export default function AddMenuForm({ open, handleClose, title }) {
             dataError={formik.errors.nama_tempat}
             touched={formik.touched.nama_tempat}
           />
-          <InputForm
+          {/* <InputForm
             fileType={true}
             title={"gambar"}
             label={"Image"}
             handleChangeFile={handleChangeFile}
             isImageFailed={isImageFailed}
+          /> */}
+          <UpdateInputFile
+            title={"gambar"}
+            onchange={handleChangeFile}
+            isImageFailed={isImageFailed}
+            currentValue={selectFile.name || ""}
+            // value={openActionTable.data?.gambar || ""}
           />
           <InputForm
             multiline={true}

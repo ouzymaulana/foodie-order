@@ -2,14 +2,24 @@ import { Grid, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
 import React, { useEffect } from "react";
-import theme from "@/Helper/theme";
-import { useUpdateUserModal } from "@/Context/UserManagement/UpdateUserModalContextProvider";
+import { useActionTableModal } from "@/Context/ModalActionTable/ActionTableContextProvider";
+import { useRouter } from "next/router";
+import { deleteUserAlert } from "../Alert/User";
 
 export default function ActionTableUser({ dataItemUser }) {
-  const { setUpdateUserModal } = useUpdateUserModal();
+  const { openActionTable, setOpenActionTable } = useActionTableModal();
+  const { replace, asPath } = useRouter();
 
   const handleOpenUpdateUser = () => {
-    setUpdateUserModal({ isOpen: true, data: dataItemUser });
+    setOpenActionTable({
+      ...openActionTable,
+      isOpenUpdateUser: true,
+      data: dataItemUser,
+    });
+  };
+
+  const handleOpenDeleteUser = () => {
+    deleteUserAlert(dataItemUser.id, replace, asPath);
   };
 
   return (
@@ -21,7 +31,11 @@ export default function ActionTableUser({ dataItemUser }) {
       >
         <BorderColorRoundedIcon color="primary" fontSize="small" />
       </IconButton>
-      <IconButton aria-label="delete" size="small">
+      <IconButton
+        aria-label="delete"
+        size="small"
+        onClick={handleOpenDeleteUser}
+      >
         <DeleteIcon fontSize="small" color="primary" />
       </IconButton>
     </Grid>

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import ModalLayout from "../../ModalLayout";
-import { Button, Grid, Typography } from "@mui/material";
-import { useUpdateUserModal } from "@/Context/UserManagement/UpdateUserModalContextProvider";
+import { Grid } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import InputForm from "@/Componens/InputForm";
@@ -9,14 +8,16 @@ import ButtonModal from "../../ButtonModal";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import { useActionTableModal } from "@/Context/ModalActionTable/ActionTableContextProvider";
+import { Alert } from "@/Componens/Alert";
 
 export default function UpdateUserForm({ title }) {
-  const { updateUserModal, setUpdateUserModal } = useUpdateUserModal();
+  const { openActionTable, setOpenActionTable } = useActionTableModal();
   const token = Cookies.get("token");
   const { replace, asPath } = useRouter();
 
   const handleCloseUpdateUser = () =>
-    setUpdateUserModal({ ...updateUserModal, isOpen: false });
+    setOpenActionTable({ ...openActionTable, isOpenUpdateUser: false });
 
   const handleSubmit = async () => {
     try {
@@ -33,12 +34,13 @@ export default function UpdateUserForm({ title }) {
             Authorization: `Bearer ${token}`,
           },
           params: {
-            id: updateUserModal.data.id,
+            id: openActionTable.data.id,
           },
         }
       );
 
       if (response.data.status === "success") {
+        handleCloseUpdateUser();
         Alert("success", "successfully update new user");
         replace(asPath);
       }
@@ -72,15 +74,15 @@ export default function UpdateUserForm({ title }) {
 
   useEffect(() => {
     formik.setValues({
-      nama: updateUserModal.data?.nama,
-      email: updateUserModal.data?.email,
-      divisi: updateUserModal.data?.divisi,
-      role: updateUserModal.data?.role,
+      nama: openActionTable.data?.nama,
+      email: openActionTable.data?.email,
+      divisi: openActionTable.data?.divisi,
+      role: openActionTable.data?.role,
     });
-  }, [updateUserModal]);
+  }, [openActionTable]);
   return (
     <ModalLayout
-      open={updateUserModal.isOpen}
+      open={openActionTable.isOpenUpdateUser}
       handleClose={handleCloseUpdateUser}
       title={title}
     >
@@ -124,7 +126,7 @@ export default function UpdateUserForm({ title }) {
           />
           <ButtonModal
             disable={false}
-            open={updateUserModal.isOpen}
+            open={openActionTable.isOpenUpdateUser}
             handleClose={handleCloseUpdateUser}
             resetInput={clearDataForm}
           />

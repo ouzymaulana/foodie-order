@@ -41,21 +41,25 @@ export default function InputSearch({ title }) {
     const priceWithoutRp = searchValue.price
       ? searchValue.price.replace("Rp", "")
       : "";
+    const totalPayWithoutRp = searchValue["total-pay"]
+      ? searchValue["total-pay"].replace("Rp", "")
+      : "";
     const searchValueData = inputSearch;
+
     let newSearchValues = {
       ...route.query,
       ...searchValue,
       [title]: searchValueData,
       ["page"]: 1,
       price: priceWithoutRp,
+      ["total-pay"]: totalPayWithoutRp,
     };
 
     const dataWithValue = Object.keys(newSearchValues)
       .filter(
-        (key) =>
-          newSearchValues[key] !== "" &&
-          newSearchValues[key] !== "Rp" &&
-          newSearchValues[key] !== "all"
+        (key) => newSearchValues[key] !== ""
+        //  && newSearchValues[key] !== "Rp"
+        // newSearchValues[key] !== "all"
       )
       .reduce((obj, key) => {
         obj[key] = newSearchValues[key];
@@ -86,20 +90,6 @@ export default function InputSearch({ title }) {
       }
     }
   }, []);
-  // useEffect(() => {
-  //   if (route.isReady.key) {
-  //     const entry = Object.entries(route.query).find(
-  //       ([key, value]) => key === title
-  //     );
-
-  //     if (entry) {
-  //       const [key, value] = entry;
-  //       setInputSearch(value);
-  //     } else {
-  //       setInputSearch("");
-  //     }
-  //   }
-  // }, [route.query]);
   return (
     <CssTextField
       autoComplete="off"

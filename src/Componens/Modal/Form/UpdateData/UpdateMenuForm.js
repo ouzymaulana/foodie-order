@@ -7,13 +7,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useUpdateMenuModal } from "@/Context/MenuManagement/UpdateMenuModalContextProvider";
-import { Alert } from "@/Componens/Alert/Alert";
+import { Alert } from "@/Componens/Alert";
 import { useRouter } from "next/router";
 import { textFieldImage } from "@/Helper/formValidation";
+import { useActionTableModal } from "@/Context/ModalActionTable/ActionTableContextProvider";
+import UpdateInputFile from "@/Componens/InputForm/UpdateInputFile";
 
 export default function UpdateMenuForm({ title }) {
-  const { updateMenuModal, setUpdateMenuModal } = useUpdateMenuModal();
+  const { openActionTable, setOpenActionTable } = useActionTableModal();
   const [isImageFailed, setIsImageFailed] = useState({
     status: null,
     message: null,
@@ -22,10 +23,12 @@ export default function UpdateMenuForm({ title }) {
   const token = Cookies.get("token");
   const { reload, replace, asPath } = useRouter();
 
-  const handleCloseUpdateMenu = () =>
-    setUpdateMenuModal({ ...updateMenuModal, isOpen: false });
+  const handleCloseUpdateMenu = () => {
+    setOpenActionTable({ ...openActionTable, isOpenUpdateMenu: false });
+    setSelectFile("");
+  };
 
-  const dataMenu = updateMenuModal.data || "";
+  const dataMenu = openActionTable.data || "";
 
   const handleChangeFile = (value) => {
     const validationImage = textFieldImage(value);
@@ -39,18 +42,24 @@ export default function UpdateMenuForm({ title }) {
   };
 
   const handleSubmit = async () => {
-    const response = await axios.put(
-      "http://localhost:5000/api/admin/menu",
-      {
-        nama: formik.values.nama,
-        kategori: formik.values.kategori,
-        harga: formik.values.harga,
-        nama_tempat: formik.values.nama_tempat,
-        alamat: formik.values.alamat,
-        gambar: formik.values.gambar,
-      },
+    const dataJSON = {
+      nama: formik.values.nama,
+      kategori: formik.values.kategori,
+      harga: formik.values.harga,
+      nama_tempat: formik.values.nama_tempat,
+      alamat: formik.values.alamat,
+    };
+
+    const formData = new FormData();
+    formData.append("gambar", selectFile);
+    formData.append("otherData", JSON.stringify(dataJSON));
+
+    const response = await axios.patch(
+      "http://localhost:5000/api/admin/menu/update",
+      formData,
       {
         headers: {
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
         params: {
@@ -95,20 +104,18 @@ export default function UpdateMenuForm({ title }) {
 
   useEffect(() => {
     formik.setValues({
-      waktuPesanan: updateMenuModal.data?.waktuPesanan || "",
-      alamatAntar: updateMenuModal.data?.alamatAntar || "",
-      nama: updateMenuModal.data?.nama || "",
-      kategori: updateMenuModal.data?.kategori || "",
-      harga: updateMenuModal.data?.harga || "",
-      nama_tempat: updateMenuModal.data?.nama_tempat || "",
-      alamat: updateMenuModal.data?.alamat || "",
-      gambar: updateMenuModal.data?.gambar || "",
+      nama: openActionTable.data?.nama || "",
+      kategori: openActionTable.data?.kategori || "",
+      harga: openActionTable.data?.harga || "",
+      nama_tempat: openActionTable.data?.nama_tempat || "",
+      alamat: openActionTable.data?.alamat || "",
+      gambar: openActionTable.data?.gambar || "",
     });
-  }, [updateMenuModal]);
+  }, [openActionTable]);
 
   return (
     <ModalLayout
-      open={updateMenuModal.isOpen}
+      open={openActionTable.isOpenUpdateMenu}
       handleClose={handleCloseUpdateMenu}
       title={title}
     >
@@ -149,12 +156,14 @@ export default function UpdateMenuForm({ title }) {
             dataError={formik.errors.nama_tempat}
             touched={formik.touched.nama_tempat}
           />
-          <InputForm
-            fileType={true}
+          <UpdateInputFile
             title={"gambar"}
             label={"gambar"}
             onchange={handleChangeFile}
             isImageFailed={isImageFailed}
+            defaultValue={openActionTable.data?.gambar}
+            currentValue={selectFile.name}
+            // value={openActionTable.data?.gambar || ""}
           />
           <InputForm
             multiline={true}
@@ -167,7 +176,7 @@ export default function UpdateMenuForm({ title }) {
           />
           <ButtonModal
             disable={false}
-            open={updateMenuModal.isOpen}
+            open={openActionTable.isOpenUpdateMenu}
             handleClose={handleCloseUpdateMenu}
             resetInput={clearDataForm}
           />

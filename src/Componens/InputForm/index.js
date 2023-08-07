@@ -1,4 +1,11 @@
-import { Box, Input, MenuItem, TextField, styled } from "@mui/material";
+import {
+  Box,
+  Input,
+  MenuItem,
+  TextField,
+  Typography,
+  styled,
+} from "@mui/material";
 import { ErrorMessage, Field } from "formik";
 import theme from "@/Helper/theme";
 import React from "react";
@@ -47,7 +54,7 @@ export default function InputForm({
           type="file"
           name={title}
           autoComplete="off"
-          value={value}
+          // value={value}
           // onChange={onchange}
           onChange={(event) => handleChangeFile(event.target.files[0])}
         />

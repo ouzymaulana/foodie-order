@@ -37,12 +37,22 @@ export default function InputDate({ title }) {
 
   const handleSearch = (date) => {
     setPage(1);
+
+    const priceWithoutRp = searchValue.price
+      ? searchValue.price.replace("Rp", "")
+      : "";
+    const totalPayWithoutRp = searchValue["total-pay"]
+      ? searchValue["total-pay"].replace("Rp", "")
+      : "";
+
     const searchValueData = date !== null ? date.format("YYYY-MM-DD") : "";
     const newSearchValues = {
       ...route.query,
       ...searchValue,
       [title]: searchValueData,
       ["page"]: 1,
+      price: priceWithoutRp,
+      ["total-pay"]: totalPayWithoutRp,
     };
     const dataWithValue = Object.keys(newSearchValues)
       .filter(

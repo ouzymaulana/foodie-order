@@ -3,10 +3,11 @@ import React from "react";
 
 const style = {
   marginTop: "5rem",
-  position: "absolute",
-  top: "20%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  // position: "absolute",
+  // top: "20%",
+  // bottom: "50%",
+  // left: "50%",
+  // transform: "translate(-50%, -50%)",
   // width: "600px",
   bgcolor: "background.paper",
   // border: "2px solid #000",
@@ -22,7 +23,14 @@ export default function ModalLayout({ children, open, handleClose, title }) {
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{ marginTop: "120px" }}
+        sx={{
+          // marginTop: "120px",
+          // backgroundColor: "red",
+          // position: "relative",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
         <Box sx={style} width={{ lg: 600, md: 600, sm: 500, xs: 360 }}>
           {/* <Grid display={"flex"} flexDirection={"column"} gap={3}> */}

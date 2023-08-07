@@ -34,12 +34,7 @@ export default function InputNumber({ title }) {
     };
 
     const dataWithValue = Object.keys(newSearchValues)
-      .filter(
-        (key) =>
-          newSearchValues[key] !== "" &&
-          newSearchValues[key] !== "Rp" &&
-          newSearchValues[key] !== "all"
-      )
+      .filter((key) => newSearchValues[key] !== "")
       .reduce((obj, key) => {
         obj[key] = newSearchValues[key];
         return obj;
@@ -61,7 +56,6 @@ export default function InputNumber({ title }) {
     borderColor: isFocused ? theme.palette.primary.main : grey[400],
     borderWidth: isFocused ? 3 : "1px",
     outline: "none",
-    // boxShadow: "none",
     borderStyle: "solid",
   };
 
@@ -106,19 +100,19 @@ export default function InputNumber({ title }) {
       autoComplete="off"
       id="currency-mask"
       style={inputStyle}
-      // radix="."
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
       mask={null}
       ref={ref}
-      // value={inputSearch || ""}
       defaultValue={inputSearch.slice(2).replace(".", "") || ""}
       inputRef={inputRef}
       onAccept={(value, mask) => console.log(value)}
       onChange={(event) => {
         setInputSearch(event.target.value),
-          setSearchValue({ ...searchValue, [title]: event.target.value });
-        // handleSearch(event);
+          setSearchValue({
+            ...searchValue,
+            [title]: event.target.value.replace("Rp", "").replace(".", ""),
+          });
       }}
     />
   );

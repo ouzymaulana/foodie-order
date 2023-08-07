@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { decrementBalance } from "@/Redux/Slices/BalanceSlice";
-import { Alert } from "../Alert/Alert";
+import { Alert } from "../Alert";
 
 export default function TranferBalance({ open, title, handleClose }) {
   const token = Cookies.get("token");

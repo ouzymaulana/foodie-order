@@ -34,7 +34,6 @@ export default function ButtonModal({
       </Button>
       <Button
         type="submit"
-        // onClick={() => resetInput()}
         disabled={disable}
         variant="contained"
         className={inter.className}

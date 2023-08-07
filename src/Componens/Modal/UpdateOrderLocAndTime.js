@@ -10,7 +10,7 @@ import {
   selectDataCart,
   updateOrderLocAndOrderTime,
 } from "@/Redux/Slices/CartItemsSlice";
-import { Alert } from "../Alert/Alert";
+import { Alert } from "../Alert";
 
 export default function UpdateOrderLocAndTime({ open, handleClose, title }) {
   const cartItem = useSelector(selectDataCart);

@@ -18,6 +18,8 @@ import {
   formatDataConditional,
   sortDataConditional,
 } from "@/Helper/filterSearchConditional";
+import CollapseTable from "./CollapseTable";
+import TableBodyReusable from "./TableBodyReusable";
 
 export default function ReusableTable({ dataTabel, columns }) {
   const [dataRows, setDataRows] = React.useState([]);
@@ -25,14 +27,8 @@ export default function ReusableTable({ dataTabel, columns }) {
   const { sortBy, setSortBy } = useSortBy();
   const { sortType, setSortType } = useSortType();
   const { push, pathname, query } = useRouter();
-  const [open, setOpen] = React.useState(false);
-  const [dataMenu, setDataMenu] = React.useState(false);
-  const handleClose = () => setOpen(false);
+  // const [open, setOpen] = React.useState(false);
 
-  // const handleOpen = (value) => {
-  //   setDataMenu(value);
-  //   setOpen(true);
-  // };
   const handleSort = (value) => {
     let newSortType = "asc";
     if (value === sortBy && sortType === "asc") {
@@ -56,74 +52,63 @@ export default function ReusableTable({ dataTabel, columns }) {
   React.useEffect(() => {
     setDataRows(dataTabel);
   }, [dataTabel]);
+
   return (
     <>
-      <Paper sx={{ width: "100%", height: "100%", overflow: "hidden" }}>
-        {/* <TableContainer sx={{ height: "calc(100vh - 40px - 80px - 120px)" }}> */}
-        <TableContainer
-          sx={{
-            maxHeight: 700,
-            "&::-webkit-scrollbar": {
-              width: "0.4em",
-              // background: "#eeeeee",
-            },
-            "::-webkit-scrollbar-thumb": {
-              backgroundColor: "#eeeeee",
-              borderRadius: "10px",
-            },
-          }}
-        >
-          <Table stickyHeader aria-label="sticky table" sx={{ width: "100%" }}>
-            <TableHead>
-              <TableRow>
-                {columns.map((column, index) => (
-                  <TableCell
-                    key={index}
-                    // align={column.align}
-                    sx={{
-                      minWidth: column.minWidth,
-                      fontWeight: "bold",
-                    }}
+      {/* <Paper sx={{ width: "100%", height: "100%", overflow: "hidden" }}> */}
+      {/* <TableContainer sx={{ height: "calc(100vh - 40px - 80px - 120px)" }}> */}
+      <TableContainer
+        sx={{
+          maxHeight: 800,
+          "&::-webkit-scrollbar": {
+            width: "0.4em",
+          },
+          "::-webkit-scrollbar-thumb": {
+            backgroundColor: "#eeeeee",
+            borderRadius: "10px",
+          },
+        }}
+      >
+        <Table stickyHeader aria-label="sticky table" sx={{ width: "100%" }}>
+          <TableHead>
+            <TableRow>
+              {columns.map((column, index) => (
+                <TableCell
+                  key={index}
+                  // align={column.align}
+                  sx={{
+                    minWidth: column.minWidth,
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Typography
+                    fontSize={{ lg: "1.2rem", sm: "0.5rem" }}
+                    fontWeight={"bold"}
                   >
-                    <Typography
-                      fontSize={{ lg: "1.2rem", sm: "0.5rem" }}
-                      fontWeight={"bold"}
-                    >
-                      {column.label}
-                    </Typography>
-                    <Grid display={"flex"} alignItems={"center"} gap={0.6}>
-                      {filterSearchConditional(column)}
-                      {sortDataConditional(
-                        column,
-                        sortBy,
-                        sortType,
-                        handleSort
-                      )}
-                    </Grid>
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {dataRows.map((row, index) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                  {columns.map((column, colIndex) => (
-                    <TableCell
-                      sx={{ fontSize: "1rem", paddingY: "20px" }}
-                      key={colIndex}
-                    >
-                      {formatDataConditional(row, column)}
-
-                      {actionFieldTableConditional(row, column)}
-                    </TableCell>
-                  ))}
-                </TableRow>
+                    {column.label}
+                  </Typography>
+                  <Grid display={"flex"} alignItems={"center"} gap={0.6}>
+                    {filterSearchConditional(column)}
+                    {sortDataConditional(column, sortBy, sortType, handleSort)}
+                  </Grid>
+                </TableCell>
               ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <PaginationTable dataRows={dataRows} limitTable={limitTable} />
-      </Paper>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {dataRows.map((row, index) => (
+              <TableBodyReusable
+                columns={columns}
+                row={row}
+                index={index}
+                key={index}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <PaginationTable limitTable={limitTable} />
+      {/* </Paper> */}
     </>
   );
 }

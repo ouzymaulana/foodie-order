@@ -15,12 +15,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import ReadMoreRoundedIcon from "@mui/icons-material/ReadMoreRounded";
-import UpdateMenuForm from "../Modal/Form/UpdateData/UpdateMenuForm";
-import { actionEditModal } from "@/Helper/Modal/ActionModal";
-import { useDetailMenuModal } from "@/Context/MenuManagement/DetailMenuContextProvider";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { deleteMenuAlert } from "../Alert/Alert";
+import { useActionTableModal } from "@/Context/ModalActionTable/ActionTableContextProvider";
 import { useDispatch, useSelector } from "react-redux";
 import { useIsHasUpdated } from "@/Context/IsHasUpdatedContextProvider";
 import {
@@ -28,37 +23,42 @@ import {
   selectDataMenu,
 } from "@/Redux/Slices/DataMenuSlice";
 import { useRouter } from "next/router";
-import { useUpdateMenuModal } from "@/Context/MenuManagement/UpdateMenuModalContextProvider";
+import { deleteMenuAlert } from "../Alert/Menu";
 
 export default function ActionTable({ dataItemMenu }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { setOpenDetailMenu } = useDetailMenuModal();
+  const { openActionTable, setOpenActionTable } = useActionTableModal();
   const { setIshasUpdated } = useIsHasUpdated();
-  const { setUpdateMenuModal } = useUpdateMenuModal();
   const dataMenu = useSelector(selectDataMenu);
   const dispatch = useDispatch();
-  const { reload, replace } = useRouter();
+  const { replace, asPath } = useRouter();
 
   const handleOpenDetailMenu = (dataItemMenu) => {
-    setOpenDetailMenu({ isOpen: true, data: dataItemMenu });
+    setOpenActionTable({
+      ...openActionTable,
+      isOpen: true,
+      data: dataItemMenu,
+    });
     setAnchorEl(null);
   };
 
   const handleOpenUpdateMenu = (dataItemMenu) => {
-    setUpdateMenuModal({ isOpen: true, data: dataItemMenu });
+    setOpenActionTable({
+      ...openActionTable,
+      isOpenUpdateMenu: true,
+      data: dataItemMenu,
+    });
     setAnchorEl(null);
   };
 
   const handleDelete = async () => {
-    setIshasUpdated(true);
     setAnchorEl(null);
     deleteMenuAlert(
       dispatch,
       deleteDataByIdMenu,
-      setIshasUpdated,
       dataItemMenu.id,
-      dataMenu,
-      reload
+      replace,
+      asPath
     );
   };
 
@@ -121,7 +121,7 @@ export default function ActionTable({ dataItemMenu }) {
                   <ListItemIcon>
                     <BorderColorRoundedIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Edit" />
+                  <ListItemText primary="Update" />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding onClick={() => handleDelete()}>

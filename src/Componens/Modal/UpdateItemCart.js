@@ -7,7 +7,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { updateOrderNote } from "@/Redux/Slices/CartItemsSlice.js";
-import { Alert } from "../Alert/Alert.js";
+import { Alert } from "../Alert/index.js";
 
 export default function UpdateItemCart({ open, handleClose, item, title }) {
   const dispatch = useDispatch();

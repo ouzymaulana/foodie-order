@@ -9,6 +9,9 @@ import ListItemText from "@mui/material/ListItemText";
 import ChangePassword from "../Modal/ChangePassword";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
+import CashWithDrawwal from "../Modal/Form/UpdateData/CashWithDrawwal";
+import { useActionTableModal } from "@/Context/ModalActionTable/ActionTableContextProvider";
 
 function stringAvatar(name) {
   // return {
@@ -30,7 +33,8 @@ function stringAvatar(name) {
   }
 }
 
-export default function Profile({ nama }) {
+export default function Profile({ nama, role }) {
+  const { openActionTable, setOpenActionTable } = useActionTableModal();
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -49,20 +53,37 @@ export default function Profile({ nama }) {
   const id = openPopover ? "simple-popover" : undefined;
 
   const handleLogOut = () => {
-    console.log("log out");
     Cookies.remove("token");
     route.push("/login");
   };
 
+  const handleCashWithDrawwal = () => {
+    setOpenActionTable({
+      ...openActionTable,
+      isOpenCashWithDrawwal: true,
+    });
+  };
+
+  console.log("====================================");
+  console.log(role);
+  console.log("====================================");
+
   return (
     <>
-      <Grid display={"flex"} flex={3} gap={5} justifyContent={"end"}>
-        <Box
-          sx={{ backgroundColor: "white" }}
-          borderRadius={5}
-          // flex={0.2}
-          width={60}
-        ></Box>
+      <Grid display={"flex"} flex={3} gap={1} justifyContent={"end"}>
+        {role === "admin" && (
+          <Box
+            onClick={() => handleCashWithDrawwal()}
+            sx={{ backgroundColor: "white", cursor: "pointer" }}
+            borderRadius={5}
+            width={60}
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <LocalMallOutlinedIcon sx={{ color: grey[500] }} />
+          </Box>
+        )}
         <Grid width={180} display={"flex"} flexDirection={"row"}>
           <Typography
             onClick={handleClick}
@@ -117,11 +138,12 @@ export default function Profile({ nama }) {
               sx={{
                 width: 56,
                 height: 56,
-                borderRadius: "10",
+                borderRadius: 5,
                 backgroundColor: "white",
-                color: grey[400],
+                color: grey[500],
                 fontWeight: "500",
               }}
+              variant="rounded"
             />
           </Box>
         </Grid>
@@ -131,6 +153,7 @@ export default function Profile({ nama }) {
         handleClose={handleClose}
         title="Please Fill The Form"
       />
+      <CashWithDrawwal title={"Cash Advance"} />
     </>
   );
 }

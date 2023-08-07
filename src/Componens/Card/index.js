@@ -46,7 +46,8 @@ export default function CardMenu({
             component="img"
             alt="green"
             height="180"
-            image="/img/cocktail.jpg"
+            // image="/img/cocktail.jpg"
+            image={`http://localhost:5000/images/` + item.gambar || ""}
           />
         </Box>
         <Box display={"flex"} flexDirection={"column"} paddingX={"3px"}>

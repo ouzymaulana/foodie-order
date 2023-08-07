@@ -1,17 +1,18 @@
 import CartDashboard from "@/Componens/Card/CartDasboard";
-import { Backdrop, CircularProgress, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import DataOrderMenu from "./DataOrderMenu";
-import CollapsibleTable from "./DataOrderTable";
-import FilterCard from "@/Componens/Popover/FilterCard";
 import { useDataSelectFilter } from "@/Context/SelectFilterCardContextProvider";
 import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
+import ReusableTable from "@/Componens/Table";
+import { useDataTotalItem } from "@/Context/TotalItemContextProvider";
+import UpdateStatusOrderMenu from "@/Componens/Modal/Form/UpdateData/UpdateStatusOrderMenu";
 
-export default function DashboardView({ getOrderData }) {
+export default function DashboardView({ getOrderData, totalOrderItems }) {
   const { selectFilter, setSelectFilter } = useDataSelectFilter();
   const { setOpenLoadingCircular } = useLoadingCircularProgress();
+  const { totalItem, setTotalItem } = useDataTotalItem();
   const [orderData, setOrderData] = useState([]);
   const token = Cookies.get("token");
 
@@ -36,18 +37,32 @@ export default function DashboardView({ getOrderData }) {
   };
 
   useEffect(() => {
+    setTotalItem(totalOrderItems);
+    // dispatch(setDataMenu(getDataMenu));
+  }, [totalItem, getOrderData]);
+
+  useEffect(() => {
     getOrderMenu();
     setOpenLoadingCircular(false);
   }, [selectFilter]);
 
   const columns = [
     {
+      label: "",
+      field: "action",
+      minWidth: 0,
+      filter: "",
+      sort: false,
+      collapse: true,
+      collapseLable: "orderMenu",
+    },
+    {
       label: "User Name",
       field: "nama",
       routefield: "user-name",
       minWidth: 170,
       filter: "inputText",
-      sort: false,
+      sort: true,
     },
     {
       label: "Order Time",
@@ -85,10 +100,11 @@ export default function DashboardView({ getOrderData }) {
       minWidth: 170,
       filter: "inputSelect",
       sort: false,
+      fieldWithUpdate: true,
       selectData: [
         { text: "all", value: "all" },
-        { text: "siang", value: "siang" },
-        { text: "sore", value: "sore" },
+        { text: "progress", value: "progress" },
+        { text: "done", value: "done" },
       ],
     },
     {
@@ -99,16 +115,8 @@ export default function DashboardView({ getOrderData }) {
       filter: "inputNumber",
       sort: true,
     },
-    {
-      label: "",
-      field: "action",
-      minWidth: 0,
-      filter: "",
-      sort: false,
-      action: true,
-      actionLable: "orderMenu",
-    },
   ];
+
   return (
     <>
       <Grid display={"flex"} flexDirection={"column"} gap={5}>
@@ -121,24 +129,25 @@ export default function DashboardView({ getOrderData }) {
           borderRadius={4}
           sx={{
             backgroundColor: "white",
-            height: "calc(100vh - 40px - 13px)",
-            // height: "calc(100vh - 80px - 20px - 10rem - 40px - 20px)",
+            // height: "calc(100vh - 40px - 13px)",
           }}
           width={"100%"}
           overflow={"hidden"}
           padding={3}
           display={"flex"}
           flexDirection={"column"}
-          // gap={2}
         >
           <Grid>
             <Typography variant="h6" fontWeight={600}>
               Order Menu
             </Typography>
           </Grid>
-          <DataOrderMenu orderData={orderData} getOrderData={getOrderData} />
+          <Grid>
+            <ReusableTable dataTabel={getOrderData} columns={columns} />
+          </Grid>
         </Grid>
       </Grid>
+      <UpdateStatusOrderMenu title="Update Order Status" />
     </>
   );
 }

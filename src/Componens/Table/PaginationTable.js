@@ -5,14 +5,21 @@ import { usePageMenu } from "@/Context/PageContextProvider";
 import { useRouter } from "next/router";
 import { useDataSearchMenu } from "@/Context/SearchValueOnTableContextProvider";
 import { useDataTotalItem } from "@/Context/TotalItemContextProvider";
-import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
 
-export default function PaginationTable({ dataRows, limitTable }) {
-  const { setOpenLoadingCircular } = useLoadingCircularProgress();
+export default function PaginationTable({ limitTable }) {
   const { searchValue, setSearchValue } = useDataSearchMenu();
   const { totalItem } = useDataTotalItem();
   const { page, setPage } = usePageMenu();
   const router = useRouter();
+
+  console.log("===========TotalItem=LimitTable========================");
+  console.log(totalItem);
+  console.log(limitTable);
+  console.log("====================================");
+
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
 
   const handleSetPage = () => {
     const parsedPage = parseInt(page);
@@ -22,12 +29,7 @@ export default function PaginationTable({ dataRows, limitTable }) {
       ["page"]: parsedPage,
     };
     const dataWithValue = Object.keys(newSearchValues)
-      .filter(
-        (key) =>
-          newSearchValues[key] !== "" &&
-          newSearchValues[key] !== "Rp" &&
-          newSearchValues[key] !== "all"
-      )
+      .filter((key) => newSearchValues[key] !== "")
       .reduce((obj, key) => {
         obj[key] = newSearchValues[key];
         return obj;
@@ -35,7 +37,6 @@ export default function PaginationTable({ dataRows, limitTable }) {
     router.push({
       pathname: router.pathname,
       query: dataWithValue,
-      // query: { ...router.query, ...newSearchValues },
     });
   };
 
@@ -45,7 +46,7 @@ export default function PaginationTable({ dataRows, limitTable }) {
   return (
     <Stack
       spacing={2}
-      padding={2}
+      // padding={2}
       display={"flex"}
       flexDirection={"row"}
       justifyContent={"end"}
@@ -59,8 +60,7 @@ export default function PaginationTable({ dataRows, limitTable }) {
         variant="outlined"
         size="large"
         color="primary"
-        onChange={(event, value) => setPage(event.target.textContent)}
-        // onChange={(event) => setPage(event.target.textContent)}
+        onChange={handleChange}
       />
     </Stack>
   );

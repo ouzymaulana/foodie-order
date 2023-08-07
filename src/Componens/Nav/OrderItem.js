@@ -63,11 +63,16 @@ export default function OrderItem({ menu, item }) {
     getOneMenu();
   }, []);
 
+  console.log("==============cart======================");
+  console.log(menu);
+  console.log("====================================");
+
   return (
     <>
       <Box display={"flex"}>
         <Image
-          src="/img/cocktail.jpg"
+          // src="/img/cocktail.jpg"
+          src={`http://localhost:5000/images/` + menu?.gambar || ""}
           height={80}
           width={80}
           alt="gambar-menu"

@@ -1,12 +1,12 @@
 import AdminLayout from "@/Layout/AdminLayout";
-import DashboardView from "@/Views/Admin/Dashboard";
 import Head from "next/head";
 import React from "react";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";
 import axios from "axios";
+import DashboardView from "@/Views/Admin/Dashboard";
 
-export default function Dashboard({ getOrderData }) {
+export default function Dashboard({ getOrderData, totalOrderItems }) {
   return (
     <>
       <Head>
@@ -15,7 +15,11 @@ export default function Dashboard({ getOrderData }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <AdminLayout>
-        <DashboardView getOrderData={getOrderData} />
+        {/* <DashboardView getOrderData={getOrderData} /> */}
+        <DashboardView
+          getOrderData={getOrderData}
+          totalOrderItems={totalOrderItems}
+        />
       </AdminLayout>
     </>
   );
@@ -49,6 +53,8 @@ export async function getServerSideProps(context) {
   }
 
   let getOrderData = [];
+  let totalOrderItems;
+  let newOrderData = [];
   try {
     const response = await axios.get(
       "http://localhost:5000/api/all-order-menu",
@@ -69,13 +75,17 @@ export async function getServerSideProps(context) {
     );
 
     if (response.status === 200) {
-      getOrderData = response.data.data;
+      // getOrderData = response.data.data.orderData;
+      totalOrderItems = response.data.data.totalItems;
+      getOrderData = response.data.data.newOrderData;
     }
+
+    console.log(getOrderData);
   } catch (error) {
     console.error(error);
   }
 
   return {
-    props: { getOrderData },
+    props: { getOrderData, totalOrderItems },
   };
 }
