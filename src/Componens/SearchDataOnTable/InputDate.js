@@ -10,13 +10,15 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 const CssTextField = styled(DatePicker)({
+  "& label.Mui-focused": {
+    color: "black",
+  },
   "& .MuiOutlinedInput-root": {
     fontSize: "1rem",
     height: "40px",
-    width: "100%",
-    borderColor: "#808080",
 
     "& fieldset": {
+      borderColor: grey[400],
       borderRadius: theme.spacing(1),
     },
     "&:hover fieldset": {
@@ -94,9 +96,8 @@ export default function InputDate({ title }) {
         autoComplete="off"
         sx={{
           width: "180px",
-          borderColor: grey[400],
         }}
-        value={dayjs(inputSearch)}
+        // value={dayjs(inputSearch) || ""}
         onChange={(event) => {
           setInputSearch(event),
             handleSearch(event),

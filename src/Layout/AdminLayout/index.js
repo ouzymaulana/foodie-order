@@ -1,6 +1,7 @@
 import AdminHeader from "@/Componens/Header/AdminHeader";
 import LoadingCircular from "@/Componens/Loading/LoadingCircular";
 import AdminSideBar from "@/Componens/SideBar/AdminSideBar";
+import TestSidebar from "@/Componens/SideBar/testSideBar";
 import DashboardLimitTableContextProvider from "@/Context/DashboardLimitTableContextProvider";
 import IsHasUpdatedProvider from "@/Context/IsHasUpdatedContextProvider";
 import LoadingCircularProgressContextProvider from "@/Context/LoadingCircularProgressContextProvider";
@@ -12,11 +13,15 @@ import SelectFilterCardContexProvider from "@/Context/SelectFilterCardContextPro
 import SelectMenuSidebarContexProvider from "@/Context/SelectMenuSidebarContexProvider";
 import SortByContextProvider from "@/Context/SortByContextProvider";
 import SortTypeContextProvider from "@/Context/SortTypeContextProvider";
+import DrawerToggleContextProvider from "@/Context/Toggle/DrawerToggleContextProvider";
 import TotalItemContexProvider from "@/Context/TotalItemContextProvider";
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery } from "@mui/material";
 import React from "react";
 
 export default function AdminLayout({ children }) {
+  const isDesktop = useMediaQuery("(min-width:600px)");
+
+  const drawer = isDesktop ? <AdminSideBar /> : <TestSidebar />;
   return (
     <>
       <SelectMenuSidebarContexProvider>
@@ -31,22 +36,25 @@ export default function AdminLayout({ children }) {
                         <PopoverActionMenuTableContextProvider>
                           <ActionTableContextProvider>
                             <IsHasUpdatedProvider>
-                              <AdminHeader />
-                              <AdminSideBar />
-                              <Grid
-                                sx={{
-                                  backgroundColor: "#F1F1F1",
-                                  // height: "20vh",
-                                  height: "calc(100vh - 80px)",
-                                  marginTop: "80px",
-                                  marginLeft: "18rem",
-                                  padding: "20px",
-                                }}
-                                overflow={"auto"}
-                              >
-                                {children}
-                              </Grid>
-                              <LoadingCircular />
+                              <DrawerToggleContextProvider>
+                                <AdminHeader />
+                                {/* <AdminSideBar /> */}
+                                {drawer}
+                                <Grid
+                                  sx={{
+                                    backgroundColor: "#F1F1F1",
+                                    // height: "20vh",
+                                    height: "calc(100vh - 80px)",
+                                    marginTop: { md: "80px", xs: 5.4 },
+                                    marginLeft: { lg: "18rem" },
+                                    padding: "20px",
+                                  }}
+                                  overflow={"auto"}
+                                >
+                                  {children}
+                                </Grid>
+                                <LoadingCircular />
+                              </DrawerToggleContextProvider>
                             </IsHasUpdatedProvider>
                           </ActionTableContextProvider>
                         </PopoverActionMenuTableContextProvider>

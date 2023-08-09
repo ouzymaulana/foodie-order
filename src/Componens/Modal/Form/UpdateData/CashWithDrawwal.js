@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import ModalLayout from "../../ModalLayout";
 import { useActionTableModal } from "@/Context/ModalActionTable/ActionTableContextProvider";
-import { Grid } from "@mui/material";
+import { Alert, Grid } from "@mui/material";
 import InputForm from "@/Componens/InputForm";
 import ButtonModal from "../../ButtonModal";
 import PasswordInput from "@/Componens/InputForm/PasswordInput";
@@ -9,10 +9,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Cookies from "js-cookie";
 import axios from "axios";
+import NumberInput from "@/Componens/InputForm/NumberInput";
 
 export default function CashWithDrawwal({ title }) {
   const { openActionTable, setOpenActionTable } = useActionTableModal();
   const token = Cookies.get("token");
+  const [isAlert, setIsAlart] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const handleClose = () => {
     setOpenActionTable({ ...openActionTable, isOpenCashWithDrawwal: false });
@@ -33,23 +36,31 @@ export default function CashWithDrawwal({ title }) {
         }
       );
 
-      console.log("tarik tunai : ", response.data);
+      if (response.data.status === "success") {
+        handleClose();
+        Alert("success", "Successful balance withdrawal");
+      }
+
+      if (response.data.status === "fail") {
+        console.log(response.data.data.message);
+        setAlertMessage(response.data.data.message);
+        setIsAlart(true);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
   const formik = useFormik({
-    // setting initial values
     initialValues: {
       withdrawalAmount: "",
       password: "",
     },
 
     validationSchema: Yup.object({
-      withdrawalAmount: Yup.number("Withdrawal Amount").required(
-        "Withdrawal Amount harus diisi"
-      ),
+      withdrawalAmount: Yup.number()
+        .typeError("Withdrawal Amount harus berupa angka")
+        .required("Withdrawal Amount harus diisi"),
       password: Yup.string().required(),
     }),
 
@@ -58,6 +69,7 @@ export default function CashWithDrawwal({ title }) {
 
   const clearDataForm = () => {
     formik.resetForm();
+    setIsAlart(false);
   };
   return (
     <ModalLayout
@@ -65,6 +77,11 @@ export default function CashWithDrawwal({ title }) {
       handleClose={handleClose}
       title={title}
     >
+      {isAlert && (
+        <Alert severity="error" sx={{ marginBottom: "20px" }}>
+          {alertMessage}
+        </Alert>
+      )}
       <form onSubmit={formik.handleSubmit}>
         <Grid display={"flex"} flexDirection={"column"} gap={3}>
           <InputForm

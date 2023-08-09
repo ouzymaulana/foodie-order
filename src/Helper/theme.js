@@ -11,7 +11,8 @@ const base = createTheme({
       main: grey[600],
     },
     error: {
-      main: grey[400],
+      main: "#F31559",
+      // main: grey[400],
     },
     success: {
       main: "#1de9b6",

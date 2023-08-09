@@ -1,4 +1,3 @@
-import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
 import { usePageMenu } from "@/Context/PageContextProvider";
 import { useDataSearchMenu } from "@/Context/SearchValueOnTableContextProvider";
 import theme from "@/Helper/theme";
@@ -6,14 +5,10 @@ import { grey } from "@mui/material/colors";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { IMaskInput } from "react-imask";
-import { createNumberMask } from "text-mask-addons";
 import { useDebounce } from "use-debounce";
 
 export default function InputNumber({ title }) {
-  const { openLoadingCircular, setOpenLoadingCircular } =
-    useLoadingCircularProgress();
   const [isFocused, setIsFocused] = useState(false);
-  const [isHasValue, setIsHasValue] = useState(true);
   const { searchValue, setSearchValue } = useDataSearchMenu();
   const [inputSearch, setInputSearch] = useState("");
   const [valueUseDebounce] = useDebounce(inputSearch, 1000);

@@ -1,4 +1,4 @@
-import { Pagination, Stack } from "@mui/material";
+import { Pagination, Stack, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SelectLimit from "../Button/SelectLimit";
 import { usePageMenu } from "@/Context/PageContextProvider";
@@ -12,10 +12,13 @@ export default function PaginationTable({ limitTable }) {
   const { page, setPage } = usePageMenu();
   const router = useRouter();
 
-  console.log("===========TotalItem=LimitTable========================");
-  console.log(totalItem);
-  console.log(limitTable);
-  console.log("====================================");
+  const theme = useTheme();
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("md"));
+
+  // console.log("===========TotalItem=LimitTable========================");
+  // console.log(totalItem);
+  // console.log(limitTable);
+  // console.log("====================================");
 
   const handleChange = (event, value) => {
     setPage(value);
@@ -58,7 +61,7 @@ export default function PaginationTable({ limitTable }) {
         count={Math.ceil(totalItem / limitTable)}
         page={parseInt(page)}
         variant="outlined"
-        size="large"
+        size={isMdScreen ? "large" : "small"}
         color="primary"
         onChange={handleChange}
       />

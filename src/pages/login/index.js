@@ -55,20 +55,6 @@ export default function Login() {
   const handleSubmit = async () => {
     const url = "http://localhost:5000/login";
 
-    // fetch("http://localhost:5000/users", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     email: formik.values.email,
-    //     password: formik.values.password,
-    //   }),
-    // })
-    //   .then((res) => console.log("msdfs"))
-    //   .then((resJSON) => console.log(resJSON))
-    //   .catch((error) => console.error("Error:", error));
-
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -127,7 +113,7 @@ export default function Login() {
   return (
     <>
       <LoginVerifikasiLayout>
-        <Grid sx={{ width: "35rem" }}>
+        <Grid sx={{ width: { lg: "35rem" } }}>
           <FoodieOrder />
           <Grid pt={2}>
             <Typography

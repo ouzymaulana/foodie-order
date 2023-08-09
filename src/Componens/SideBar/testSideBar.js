@@ -10,14 +10,22 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import { useDrawerToggleContext } from "@/Context/Toggle/DrawerToggleContextProvider";
+import { Toolbar } from "@mui/material";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
+import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
+import FastfoodRoundedIcon from "@mui/icons-material/FastfoodRounded";
+import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 
 export default function TestSidebar() {
   const [state, setState] = React.useState({
-    top: false,
     left: false,
-    bottom: false,
-    right: false,
   });
+  const { drawer, setDrawer } = useDrawerToggleContext();
+  const { setOpenLoadingCircular } = useLoadingCircularProgress();
+  const route = useRouter();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -28,59 +36,121 @@ export default function TestSidebar() {
       return;
     }
 
-    setState({ ...state, [anchor]: open });
+    setDrawer({ ...drawer, [anchor]: open });
   };
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
+      sx={{ width: 250 }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
+      <Toolbar
+        sx={{
+          height: "80px",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Image src="/img/logo.svg" height={80} width={80} alt="logo" />
+      </Toolbar>
+      <Divider variant="middle" />
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem sx={{ width: "100%" }}>
+          <ListItemButton
+            onClick={() => {
+              route.push("/admin");
+              setOpenLoadingCircular(true);
+            }}
+            sx={{
+              borderRadius: 3.5,
+              ...(route.pathname === "/admin" && {
+                backgroundColor: "#FFBA53",
+                "&:hover": {
+                  backgroundColor: "#FFBA53",
+                },
+              }),
+            }}
+          >
+            <ListItemIcon>
+              <DashboardCustomizeOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Dashboard"}
+              primaryTypographyProps={{ style: { fontSize: "0.8rem" } }}
+            />
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton
+            onClick={() => {
+              route.push("/admin/menu-management");
+              setOpenLoadingCircular(true);
+            }}
+            sx={{
+              borderRadius: 3.5,
+              ...(route.pathname === "/admin/menu-management" && {
+                backgroundColor: "#FFBA53",
+                "&:hover": {
+                  backgroundColor: "#FFBA53",
+                },
+              }),
+            }}
+          >
+            <ListItemIcon>
+              <FastfoodRoundedIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Menu Management"}
+              primaryTypographyProps={{ style: { fontSize: "0.8rem" } }}
+            />
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton
+            onClick={() => {
+              route.push("/admin/user-management");
+              setOpenLoadingCircular(true);
+            }}
+            sx={{
+              borderRadius: 3.5,
+              ...(route.pathname === "/admin/user-management" && {
+                backgroundColor: "#FFBA53",
+                "&:hover": {
+                  backgroundColor: "#FFBA53",
+                },
+              }),
+            }}
+          >
+            <ListItemIcon>
+              <GroupRoundedIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={"User Management"}
+              primaryTypographyProps={{ style: { fontSize: "0.8rem" } }}
+            />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
 
   return (
     <div>
-      {["left"].map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-          <SwipeableDrawer
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-            onOpen={toggleDrawer(anchor, true)}
-          >
-            {list(anchor)}
-          </SwipeableDrawer>
-        </React.Fragment>
-      ))}
+      {/* {["left"].map((anchor) => ( */}
+      <React.Fragment>
+        <Button onClick={toggleDrawer("left", true)}>left</Button>
+        <SwipeableDrawer
+          anchor={"left"}
+          open={drawer["left"]}
+          onClose={toggleDrawer("left", false)}
+          onOpen={toggleDrawer("left", true)}
+        >
+          {list("left")}
+        </SwipeableDrawer>
+      </React.Fragment>
+      {/* ))} */}
     </div>
   );
 }

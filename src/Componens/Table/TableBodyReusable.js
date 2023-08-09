@@ -26,14 +26,9 @@ export default function TableBodyReusable({ columns, row }) {
             {formatDataConditional(row, column, open, setOpen)}
 
             {actionFieldTableConditional(row, column)}
-            {
-              column.fieldWithUpdate &&
-                isHovering &&
-                isHasUpdateButtonOneField(row, column.field)
-              // <IconButton onClick={() => handleUpdateOrderMenu()} sx={{ ml: "10px" }} aria-label="delete" size="small">
-              //   <EditIcon fontSize="inherit" />
-              // </IconButton>
-            }
+            {column.fieldWithUpdate &&
+              isHovering &&
+              isHasUpdateButtonOneField(row, column.field)}
           </TableCell>
         ))}
       </TableRow>

@@ -49,23 +49,18 @@ export default function UpdateInputFile({
   isImageFailed,
 }) {
   const fileInputRef = useRef(null);
-
   const handleInputChange = (event) => {
+    console.log("MASUK ONCHANGE");
     const file = event.target.files[0];
-
-    console.log(file);
+    // console.log(file);
     onchange(file);
   };
 
-  // const imageUrl = URL.createObjectURL(value);
-  // console.log("===========Ref=========================");
-  // console.log(fileInputRef);
-  // console.log("== : ", fileInputRef.current?.value || "");
-  // console.log("====================================");
+  const imageUrl = currentValue ? URL.createObjectURL(currentValue) : null;
 
   return (
     <Grid display={"flex"} flexDirection={"column"} gap={3}>
-      {defaultValue && (
+      {defaultValue && !currentValue && (
         <Grid display={"flex"} justifyContent={"center"}>
           <Grid
             width={"35%"}
@@ -83,7 +78,32 @@ export default function UpdateInputFile({
               component="img"
               alt="image-menu"
               height="130"
-              image={`http://localhost:5000/images/` + defaultValue || ""}
+              image={
+                imageUrl || `http://localhost:5000/images/` + defaultValue || ""
+              }
+            />
+          </Grid>
+        </Grid>
+      )}
+      {currentValue && (
+        <Grid display={"flex"} justifyContent={"center"}>
+          <Grid
+            width={"35%"}
+            borderRadius={"10px"}
+            sx={{ border: "solid #FFAF37" }}
+            overflow={"hidden"}
+            padding={0.6}
+          >
+            <CardMedia
+              sx={{
+                borderRadius: "8px",
+                objectFit: "cover",
+                objectPosition: "center",
+              }}
+              component="img"
+              alt="image-menu"
+              height="130"
+              image={imageUrl || ""}
             />
           </Grid>
         </Grid>
@@ -93,8 +113,11 @@ export default function UpdateInputFile({
           sx={{ paddingRight: "calc(100% - 10)" }}
           name={title}
           autoComplete="off"
-          value={currentValue || defaultValue}
+          value={currentValue.name || defaultValue}
           label={label}
+          InputProps={{
+            readOnly: true,
+          }}
         />
         <FileInput
           type="file"

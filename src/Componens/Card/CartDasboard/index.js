@@ -11,30 +11,6 @@ export default function CartDashboard({
   orderData,
   getOrderMenu,
 }) {
-  // const [orderOnProgress, setOrderOnProgress] = useState([])
-  // const { selectFilter, setSelectFilter } = useDataSelectFilter();
-  // const [orderData, setOrderData] = useState([]);
-  // const token = Cookies.get("token");
-
-  // const getOrderMenu = async () => {
-  //   try {
-  //     const response = await axios.get("http://localhost:5000/api/order-menu", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       params: {
-  //         createdAt: selectFilter,
-  //       },
-  //     });
-
-  //     if (response.status === 200) {
-  //       setOrderData(response.data.data.orderData);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   const orderOnProgress = orderData.filter(
     (item) => item.status === "progress"
   );
@@ -55,8 +31,10 @@ export default function CartDashboard({
         <FilterCard />
         <Grid
           display={"flex"}
-          gap={5}
-          flexDirection={{ lg: "row", sm: "column" }}
+          flexWrap={"wrap"}
+          gap={{ md: 4, xs: 2 }}
+          // flexDirection={{ lg: "row", sm: "column" }}
+          justifyContent={"space-between"}
         >
           <Grid
             width={"25rem"}

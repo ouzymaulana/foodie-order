@@ -30,6 +30,9 @@ export default function AddMenuForm({ open, handleClose, title }) {
   });
 
   const handleChangeFile = (value) => {
+    console.log("====================================");
+    console.log("MASUK");
+    console.log("====================================");
     const validationImage = textFieldImage(value);
 
     if (validationImage.status === "failed") {
@@ -110,6 +113,7 @@ export default function AddMenuForm({ open, handleClose, title }) {
 
   const clearDataForm = () => {
     formik.resetForm();
+    setSelectFile("");
   };
 
   return (
@@ -151,18 +155,11 @@ export default function AddMenuForm({ open, handleClose, title }) {
             dataError={formik.errors.nama_tempat}
             touched={formik.touched.nama_tempat}
           />
-          {/* <InputForm
-            fileType={true}
-            title={"gambar"}
-            label={"Image"}
-            handleChangeFile={handleChangeFile}
-            isImageFailed={isImageFailed}
-          /> */}
           <UpdateInputFile
             title={"gambar"}
             onchange={handleChangeFile}
             isImageFailed={isImageFailed}
-            currentValue={selectFile.name || ""}
+            currentValue={selectFile || ""}
             // value={openActionTable.data?.gambar || ""}
           />
           <InputForm

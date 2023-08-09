@@ -162,7 +162,7 @@ export default function UpdateMenuForm({ title }) {
             onchange={handleChangeFile}
             isImageFailed={isImageFailed}
             defaultValue={openActionTable.data?.gambar}
-            currentValue={selectFile.name}
+            currentValue={selectFile}
             // value={openActionTable.data?.gambar || ""}
           />
           <InputForm

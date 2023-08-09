@@ -10,7 +10,7 @@ export default function LoadingCircular() {
     <Backdrop
       sx={{ color: "#fff", zIndex: openLoadingCircular ? 991 : -1 }}
       color="white"
-      open={openLoadingCircular || true}
+      open={openLoadingCircular || false}
     >
       <CircularProgress color="inherit" />
     </Backdrop>

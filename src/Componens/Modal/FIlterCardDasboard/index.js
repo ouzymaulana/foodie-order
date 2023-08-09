@@ -120,15 +120,6 @@ export default function FilterCartModal({ open, handleClose, filterBy }) {
               </Grid>
             )}
           </LocalizationProvider>
-          {/* <Button
-            sx={{ borderRadius: "10px" }}
-            disableElevation
-            variant="contained"
-            size="large"
-            onClick={handleClose}
-          >
-            close
-          </Button> */}
           <Box display={"flex"} paddingTop={3}>
             <Button
               onClick={handleSubmit}

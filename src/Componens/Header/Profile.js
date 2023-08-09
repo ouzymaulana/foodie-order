@@ -1,4 +1,12 @@
-import { Avatar, Box, Button, Grid, Popover, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Grid,
+  Popover,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { grey } from "@mui/material/colors";
 import React, { useState } from "react";
 import List from "@mui/material/List";
@@ -35,6 +43,7 @@ function stringAvatar(name) {
 
 export default function Profile({ nama, role }) {
   const { openActionTable, setOpenActionTable } = useActionTableModal();
+  const isResponsive = useMediaQuery("(max-width:600px)");
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -64,19 +73,15 @@ export default function Profile({ nama, role }) {
     });
   };
 
-  console.log("====================================");
-  console.log(role);
-  console.log("====================================");
-
   return (
     <>
       <Grid display={"flex"} flex={3} gap={1} justifyContent={"end"}>
-        {role === "admin" && (
+        {role === "admin" && !isResponsive && (
           <Box
             onClick={() => handleCashWithDrawwal()}
             sx={{ backgroundColor: "white", cursor: "pointer" }}
             borderRadius={5}
-            width={60}
+            width={{ md: 60, sm: 50 }}
             display={"flex"}
             justifyContent={"center"}
             alignItems={"center"}
@@ -128,16 +133,12 @@ export default function Profile({ nama, role }) {
             </List>
             {/* </nav> */}
           </Popover>
-          <Box
-            width={60}
-            borderRadius={5}
-            // flex={0.3}
-          >
+          <Box width={60} borderRadius={5}>
             <Avatar
               {...stringAvatar(nama)}
               sx={{
-                width: 56,
-                height: 56,
+                width: { md: 56, xs: 40 },
+                height: { md: 56, xs: 40 },
                 borderRadius: 5,
                 backgroundColor: "white",
                 color: grey[500],

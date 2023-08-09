@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function FoodieOrder() {
   return (
-    <Grid display={"flex"} justifyContent={"center"}>
+    <Grid display={"flex"} justifyContent={"center"} alignItems={"center"}>
       <Box
         sx={{ boxSizing: "border-box" }}
         display={"flex"}
@@ -17,7 +17,9 @@ export default function FoodieOrder() {
           height={80}
           width={80}
           // layout="responsive"
-          style={{ height: "50px", width: "100px" }}
+          style={{
+            md: { height: "50px", width: "100px" },
+          }}
           alt="logo"
         />
       </Box>

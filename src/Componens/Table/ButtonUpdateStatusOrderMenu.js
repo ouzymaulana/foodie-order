@@ -15,6 +15,7 @@ export default function ButtonUpdateStatusOrderMenu({ orderItem }) {
   };
   return (
     <IconButton
+      disabled={orderItem.status === "done" ? true : false}
       onClick={() => handleUpdateOrderMenu()}
       sx={{ ml: "10px" }}
       size="small"
