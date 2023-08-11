@@ -89,7 +89,12 @@ export default function Profile({ nama, role }) {
             <LocalMallOutlinedIcon sx={{ color: grey[500] }} />
           </Box>
         )}
-        <Grid width={180} display={"flex"} flexDirection={"row"}>
+        <Grid
+          width={180}
+          display={"flex"}
+          flexDirection={"row"}
+          alignItems={"center"}
+        >
           <Typography
             onClick={handleClick}
             width={130}
@@ -99,6 +104,7 @@ export default function Profile({ nama, role }) {
             paddingX={1}
             justifyContent={"end"}
             sx={{ cursor: "pointer" }}
+            fontSize={{ xs: "12px" }}
           >
             {nama}
           </Typography>
@@ -113,6 +119,20 @@ export default function Profile({ nama, role }) {
             }}
           >
             <List>
+              {isResponsive && (
+                <ListItem onClick={handleCashWithDrawwal} disablePadding>
+                  <ListItemButton>
+                    <ListItemText
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      primary="Cash Advance"
+                    />
+                  </ListItemButton>
+                </ListItem>
+              )}
               <ListItem onClick={handleOpen} disablePadding>
                 <ListItemButton>
                   <ListItemText primary="Change Password" />

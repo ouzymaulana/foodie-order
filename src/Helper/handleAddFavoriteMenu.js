@@ -21,6 +21,8 @@ export const handleAddFavoriteMenu = async (
       },
     });
 
+    console.log("JWT : ", response);
+
     if (response.data.data.message === "Delete") {
       dispatch(deleteDataByIdMenu(id_menu));
       getDataFavorite(dispatch, setDataFavorite);

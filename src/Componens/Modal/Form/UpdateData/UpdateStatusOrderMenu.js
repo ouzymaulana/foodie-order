@@ -10,11 +10,13 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { Alert } from "@/Componens/Alert";
+import { useAlertMessage } from "@/Context/Alert/AlertContextProvider";
 
 export default function UpdateStatusOrderMenu({ title }) {
   const { openActionTable, setOpenActionTable } = useActionTableModal();
+  const { alertMessage, setAlertMessage } = useAlertMessage();
   const token = Cookies.get("token");
-  const { replace, asPath } = useRouter();
+  const { replace, asPath, push } = useRouter();
 
   const handleClose = () => {
     setOpenActionTable({ ...openActionTable, isUpdateOrderStatus: false });
@@ -24,25 +26,37 @@ export default function UpdateStatusOrderMenu({ title }) {
     const defaultStatus = openActionTable.data?.status || "";
     if (formik.values.status !== defaultStatus) {
       try {
-        const response = await axios.patch(
-          "http://localhost:5000/api/order-menu",
-          {
-            status: formik.values.status,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
+        if (token) {
+          const response = await axios.patch(
+            "http://localhost:5000/api/order-menu",
+            {
+              status: formik.values.status,
             },
-            params: {
-              id: openActionTable.data?.id || "",
-            },
-          }
-        );
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              params: {
+                id: openActionTable.data?.id || "",
+              },
+            }
+          );
+          console.log("=======jwt=============================");
+          console.log(response);
+          console.log("====================================");
 
-        if (response.data.status === "success") {
-          handleClose();
-          replace(asPath);
-          Alert("success", "Order Status Updated");
+          if (response.data.status === "success") {
+            handleClose();
+            replace(asPath);
+            Alert("success", "Order Status Updated");
+          }
+        } else {
+          push("/login");
+          setAlertMessage({
+            ...alertMessage,
+            isAlertToken: true,
+            message: "sesi anda habis, harap login kembali!",
+          });
         }
       } catch (error) {
         console.error(error);

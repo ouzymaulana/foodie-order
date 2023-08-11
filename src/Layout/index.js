@@ -1,5 +1,4 @@
-import { Grid, Typography, Alert, Snackbar, Stack } from "@mui/material";
-import Image from "next/image";
+import { Grid, useMediaQuery } from "@mui/material";
 import React from "react";
 import Navbar from "@/Componens/Header/Index";
 import SideBarMenu from "@/Componens/SideBar";
@@ -11,9 +10,10 @@ import DataMenuContextProvider from "@/Context/DataMenuContextProvider";
 import LoadingCircularProgressContextProvider from "@/Context/LoadingCircularProgressContextProvider";
 import ScrollPageContextProvider from "@/Context/ScrollPageContextProvider";
 import ActionTableContextProvider from "@/Context/ModalActionTable/ActionTableContextProvider";
-// import MenuContextProvider from "@/Context/MenuContextProvider";
+import BottomNavigationMenu from "@/Componens/BottomNavigation";
 
 export default function MainLayout({ children }) {
+  const isDesktop = useMediaQuery("(min-width:900px)");
   return (
     <>
       <SearchValueContextProvider>
@@ -25,15 +25,15 @@ export default function MainLayout({ children }) {
                   <LoadingCircularProgressContextProvider>
                     <ActionTableContextProvider>
                       <Navbar />
-                      <SideBarMenu />
+                      {isDesktop && <SideBarMenu />}
+                      {!isDesktop && <BottomNavigationMenu />}
 
                       <Grid
                         sx={{
                           backgroundColor: "#F1F1F1",
-                          // height: "20vh",
                           height: "calc(100vh - 80px)",
                           marginTop: "80px",
-                          marginLeft: "10rem",
+                          marginLeft: { md: "10rem" },
                           padding: "20px",
                         }}
                       >

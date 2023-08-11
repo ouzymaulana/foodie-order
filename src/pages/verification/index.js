@@ -117,27 +117,12 @@ export default function Verification() {
       setStrengthPwd(25);
       setStrengthColor("error");
     }
-    // if (pwdStrength.score === 1) {
-    //   setStrengthPwd(25);
-    //   setStrengthColor("error");
-    // } else if (pwdStrength.score === 2) {
-    //   setStrengthPwd(50);
-    //   setStrengthColor("primary");
-    // } else if (pwdStrength.score === 3) {
-    //   setStrengthPwd(75);
-    //   setStrengthColor("secondary");
-    // } else if (pwdStrength.score === 4) {
-    //   setStrengthPwd(100);
-    //   setStrengthColor("success");
-    // } else {
-    //   setStrengthPwd(0);
-    // }
   }, [formik.values.password, formik.errors.password, strengthPwdzxcvbn]);
 
   return (
     <>
       <LoginVerifikasiLayout>
-        <Grid sx={{ width: "35rem" }}>
+        <Grid sx={{ width: { lg: "35rem" } }}>
           <FoodieOrder />
           <Grid pt={2}>
             <Typography

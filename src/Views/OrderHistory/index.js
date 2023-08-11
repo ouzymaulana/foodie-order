@@ -1,8 +1,14 @@
-import SecondCartOrderHistory from "@/Componens/Card/CartOrderHistory/SecondCartOrderHistory";
+import CartOrderHistory from "@/Componens/Card/CartOrderHistory/CartOrderHistory";
 import Balance from "@/Componens/Nav/Balance";
 import OrderMenu from "@/Componens/Nav/OrderMenu";
 import { useDataSelectMenu } from "@/Context/SelectMenuSidebarContexProvider";
-import { Button, CardMedia, Grid, Typography } from "@mui/material";
+import {
+  Button,
+  CardMedia,
+  Grid,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { grey } from "@mui/material/colors";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -12,6 +18,7 @@ export default function OrderHistoryView() {
   const token = Cookies.get("token");
   const { selectMenu, setSelectMenu } = useDataSelectMenu();
   const [orderData, setOrderData] = useState([]);
+  const isDesktop = useMediaQuery("(min-width:900px)");
 
   const getOrderData = async () => {
     try {
@@ -59,14 +66,16 @@ export default function OrderHistoryView() {
           alignItems={"center"}
         >
           {orderData.map((item, i) => (
-            <SecondCartOrderHistory key={i} item={item} />
+            <CartOrderHistory key={i} item={item} />
           ))}
         </Grid>
       </Grid>
-      <Grid flex={3}>
-        <Balance />
-        <OrderMenu />
-      </Grid>
+      {isDesktop && (
+        <Grid flex={3}>
+          <Balance />
+          <OrderMenu />
+        </Grid>
+      )}
     </Grid>
   );
 }

@@ -9,8 +9,8 @@ export default function FoodieOrder() {
       <Box
         sx={{ boxSizing: "border-box" }}
         display={"flex"}
-        paddingX={3}
-        // paddingY={2}
+        paddingX={{ md: 3 }}
+        paddingRight={{ xs: 3 }}
       >
         <Image
           src="/img/logo.svg"

@@ -20,9 +20,6 @@ import FastfoodRoundedIcon from "@mui/icons-material/FastfoodRounded";
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 
 export default function TestSidebar() {
-  const [state, setState] = React.useState({
-    left: false,
-  });
   const { drawer, setDrawer } = useDrawerToggleContext();
   const { setOpenLoadingCircular } = useLoadingCircularProgress();
   const route = useRouter();

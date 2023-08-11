@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery } from "@mui/material";
 import React from "react";
 import FavoriteMenuItem from "./FavoriteMenuItem";
 import Balance from "@/Componens/Nav/Balance";
@@ -6,6 +6,7 @@ import OrderMenu from "@/Componens/Nav/OrderMenu";
 import { useRouter } from "next/router";
 
 export default function FavoriteMenu() {
+  const isDesktop = useMediaQuery("(min-width:900px)");
   const route = useRouter();
   return (
     <Grid display={"flex"} sx={{ height: "calc(100vh - 120px)", gap: "20px" }}>
@@ -23,10 +24,12 @@ export default function FavoriteMenu() {
       >
         <FavoriteMenuItem />
       </Grid>
-      <Grid flex={3}>
-        <Balance />
-        <OrderMenu />
-      </Grid>
+      {isDesktop && (
+        <Grid flex={3}>
+          <Balance />
+          <OrderMenu />
+        </Grid>
+      )}
     </Grid>
   );
 }

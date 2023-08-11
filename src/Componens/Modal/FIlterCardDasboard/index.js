@@ -1,13 +1,5 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  Typography,
-  styled,
-} from "@mui/material";
+import { Box, Button, Grid, styled } from "@mui/material";
 import React, { useState } from "react";
-import ModalLayout from "../ModalLayout";
 import {
   DateCalendar,
   DatePicker,
@@ -88,26 +80,20 @@ export default function FilterCartModal({ open, handleClose, filterBy }) {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             {filterBy === "Daily" && (
               <DateCalendar
-                sx={{ width: "100%" }}
+                // sx={{ width: "100%" }}
                 onChange={handleDateChange}
               />
             )}
             {filterBy === "Mounthly" && (
-              <MonthCalendar
-                sx={{ width: "100%" }}
-                // onChange={handleMountChange}
-                onChange={handleDateChange}
-              />
+              <MonthCalendar onChange={handleDateChange} />
             )}
             {filterBy === "Year" && (
               <YearCalendar
                 sx={{ width: "100%" }}
-                // onChange={handleYearChange}
                 onChange={handleDateChange}
               />
             )}
             {filterBy === "Customise" && (
-              // <YearCalendar sx={{ width: "100%" }} onChange={handleYearChange} />
               <Grid display={"flex"} flexDirection={"column"} gap={2}>
                 <DatePickerStyled
                   label="Start Date"

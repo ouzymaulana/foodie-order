@@ -21,9 +21,9 @@ export default function Favorite() {
 }
 
 export async function getServerSideProps(context) {
-  const cookieHeader = context.req.headers.cookie;
+  const cookieHeader = context.req.headers.cookie || "";
 
-  const cookies = cookie.parse(cookieHeader).token;
+  const cookies = cookie.parse(cookieHeader)?.token || "";
   if (!cookies) {
     return {
       redirect: {

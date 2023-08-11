@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
@@ -99,6 +99,17 @@ export default function BestSellers() {
   const [isHasCartopen, setIsHasCartOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const handleCloseIsHasCart = () => setIsHasCartOpen(false);
+  const isDesktop = useMediaQuery("(min-width:900px)");
+  const isTablet = useMediaQuery("(min-width:600px)");
+
+  let slidesAmount;
+  if (isDesktop) {
+    slidesAmount = 5;
+  } else if (isTablet) {
+    slidesAmount = 2;
+  } else {
+    slidesAmount = 1;
+  }
 
   const dispatch = useDispatch();
 
@@ -140,12 +151,14 @@ export default function BestSellers() {
   }, []);
 
   const settings = {
-    // className: "center",
     infinite: true,
     centerPadding: "10px",
-    slidesToShow: 5,
+    slidesToShow: slidesAmount,
     paddingLeft: "20px",
     swipeToSlide: true,
+    // display: "flex",
+    // justifyContent: "center",
+    // alignItems: "center",
 
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
@@ -161,14 +174,14 @@ export default function BestSellers() {
           display: "flex",
           flexWrap: "wrap",
           gap: 4.8,
-          // marginRight: "40px",
-          // marginLeft: "25px",
           marginTop: 2,
-          paddingLeft: "55px",
-          paddingRight: "40px",
+          paddingLeft: "70px",
+          paddingRight: "60px",
+          justifyContent: "center",
+          alignItems: "center",
+          // paddingRight: "40px",
           paddingBottom: 3,
-          // backgroundColor: "red",
-          display: "flex",
+          // display: "flex",
         }}
       >
         {dataBestSellers.map((item, i) => {

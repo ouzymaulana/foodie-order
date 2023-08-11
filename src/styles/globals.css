@@ -94,6 +94,12 @@ body {
   border-radius: 50px;
 }
 
+.slick-slide :first-child(div) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

@@ -19,6 +19,7 @@ export default function CardMenu({
           borderRadius: "20px",
           overflow: "hidden",
           padding: "10px",
+          // marginLeft: "5px",
         }}
       >
         <Box position={"relative"}>
@@ -46,8 +47,8 @@ export default function CardMenu({
             component="img"
             alt="green"
             height="180"
-            // image="/img/cocktail.jpg"
-            image={`http://localhost:5000/images/` + item.gambar || ""}
+            image="/img/cocktail.jpg"
+            // image={`http://localhost:5000/images/` + item.gambar || ""}
           />
         </Box>
         <Box display={"flex"} flexDirection={"column"} paddingX={"3px"}>

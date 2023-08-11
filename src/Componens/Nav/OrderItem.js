@@ -63,10 +63,6 @@ export default function OrderItem({ menu, item }) {
     getOneMenu();
   }, []);
 
-  console.log("==============cart======================");
-  console.log(menu);
-  console.log("====================================");
-
   return (
     <>
       <Box display={"flex"}>
@@ -77,6 +73,7 @@ export default function OrderItem({ menu, item }) {
           width={80}
           alt="gambar-menu"
           style={{
+            minWidth: "80px",
             borderRadius: "15px",
             flex: "1.5",
             objectPosition: "center",

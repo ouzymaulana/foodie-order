@@ -2,9 +2,9 @@ import { Button, CardMedia, Divider, Grid, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import React from "react";
 import { formatCurrency } from "@/Helper/formatCurrency";
-import SecondItemOrderHistory from "./SecondItemOrderHistory";
+import ItemOrderHistory from "./ItemOrderHistory";
 
-export default function SecondCartOrderHistory({ item }) {
+export default function CartOrderHistory({ item }) {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleString("en-GB", {
@@ -19,13 +19,13 @@ export default function SecondCartOrderHistory({ item }) {
   return (
     <Grid
       display={"flex"}
-      width={800}
+      width={{ md: 800 }}
       sx={{ backgroundColor: "white" }}
       padding={1.6}
       borderRadius={2.5}
       flexDirection={"column"}
     >
-      <Grid display={"flex"} paddingY={1}>
+      <Grid display={"flex"} flexWrap={"wrap"} paddingY={1}>
         <Grid flex={4}>
           <Typography variant="h6" color={grey[500]}>
             order time : {item.waktu_pemesanan}
@@ -44,7 +44,7 @@ export default function SecondCartOrderHistory({ item }) {
       </Grid>
       <Divider />
       {item.tb_order_details.map((menu, i) => (
-        <SecondItemOrderHistory itemOrder={menu} key={i} />
+        <ItemOrderHistory itemOrder={menu} key={i} />
       ))}
     </Grid>
   );

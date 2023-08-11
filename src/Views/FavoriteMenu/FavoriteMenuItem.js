@@ -67,6 +67,8 @@ export default function FavoriteMenuItem() {
         },
       });
 
+      console.log("JWTnya : ", response);
+
       if (response.data.status === "success") {
         dispatch(deleteDataByIdMenu(id_menu));
         // getDataFavorite();
@@ -83,12 +85,6 @@ export default function FavoriteMenuItem() {
 
   return (
     <>
-      {/* <InfiniteScroll
-        dataLength={dataFavorite.length}
-        next={getDataFavorite}
-        hasMore={hasMore}
-        loader={<h4>Looding...</h4>}
-      ></InfiniteScroll> */}
       <Typography variant="h5" fontWeight={600}>
         Favorite Menu
       </Typography>
@@ -99,6 +95,7 @@ export default function FavoriteMenuItem() {
         // gap={5.2}
         marginTop={2}
         paddingBottom={3}
+        justifyContent={{ xs: "center", md: "start" }}
       >
         {dataFavorite.map((item, i) => (
           <CardMenu

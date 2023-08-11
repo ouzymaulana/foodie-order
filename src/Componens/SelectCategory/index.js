@@ -1,12 +1,15 @@
 import { usePageMenu } from "@/Context/PageContextProvider";
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Box, Grid, Paper, Typography, useMediaQuery } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 
 export default function SelectByCategory() {
+  const isDesktop = useMediaQuery("(min-width:900px)");
   const { page, setPage } = usePageMenu();
   const route = useRouter();
+
+  const data = isDesktop ? 50 : 30;
 
   const kategori = [
     { nama: "heavy-meal", img: "/img/makananberat.svg" },
@@ -26,11 +29,11 @@ export default function SelectByCategory() {
           flexWrap: "wrap",
           "& > :not(style)": {
             m: 1,
-            width: 115,
-            height: 120,
+            width: { md: 115, xs: 60 },
+            height: { md: 120, xs: 65 },
           },
         }}
-        gap={6}
+        gap={{ md: 6, xs: 2 }}
       >
         {kategori.map((item, i) => (
           <Paper
@@ -47,7 +50,7 @@ export default function SelectByCategory() {
               alignItems: "center",
             }}
           >
-            <Image src={item.img} height={50} width={50} alt="icon" />
+            <Image src={item.img} height={data} width={data} alt="icon" />
           </Paper>
         ))}
       </Box>

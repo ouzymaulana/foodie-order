@@ -6,6 +6,7 @@ import {
   TextField,
   Typography,
   styled,
+  useMediaQuery,
 } from "@mui/material";
 import React from "react";
 import style from "../../styles/LoginVerifikasi.module.scss";
@@ -17,10 +18,11 @@ import { usePageMenu } from "@/Context/PageContextProvider";
 import Cookies from "js-cookie";
 import jwt from "jsonwebtoken";
 import Profile from "./Profile";
+import { useTheme } from "@emotion/react";
 
 const CssTextField = styled(TextField)({
   "& .MuiOutlinedInput-root": {
-    fontSize: "20px",
+    fontSize: { md: "20px", xs: "10px" },
     height: "50px",
     "& fieldset": {
       borderRadius: theme.spacing(6.3),
@@ -30,11 +32,14 @@ const CssTextField = styled(TextField)({
 });
 
 export default function Navbar() {
+  const theme = useTheme();
+  const isMdScreen = useMediaQuery(theme.breakpoints.up("md"));
   const token = Cookies.get("token");
   const jwtData = jwt.decode(token);
   const { searchValue, setSearchValue } = useDataSearchMenu();
   const router = useRouter();
   const { page, setPage } = usePageMenu();
+  const isDesktop = useMediaQuery("(min-width:900px)");
 
   const handleSearch = (event) => {
     const searchValueData = event.target.value;
@@ -62,24 +67,26 @@ export default function Navbar() {
         display: "flex",
         justifyContent: "center",
         boxShadow: "none",
-        paddingLeft: "12rem",
+        paddingLeft: { md: "12rem" },
       }}
     >
       <Grid display={"flex"} justifyContent={"space-between"} gap={1}>
-        <Grid flex={3}>
-          <Typography
-            fontFamily="Harlow Solid"
-            className={style.foodieorder}
-            fontSize={38}
-            fontWeight={500}
-          >
-            F0odieOrder
-          </Typography>
-        </Grid>
+        {isDesktop && (
+          <Grid flex={3} display={"flex"} alignItems={"center"}>
+            <Typography
+              fontFamily="Harlow Solid"
+              className={style.foodieorder}
+              fontSize={{ md: 38, xs: 23 }}
+              fontWeight={500}
+            >
+              F0odieOrder
+            </Typography>
+          </Grid>
+        )}
         <Grid flex={6}>
           <Box
             sx={{
-              width: 600,
+              width: { md: 600, xs: 200 },
               maxWidth: "100%",
               display: "flex",
               justifyContent: "center",
@@ -88,6 +95,7 @@ export default function Navbar() {
           >
             <CssTextField
               fullWidth
+              autoComplete="off"
               sx={{
                 backgroundColor: "white",
                 borderRadius: "25px",
@@ -96,7 +104,9 @@ export default function Navbar() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchOutlinedIcon fontSize="large" />{" "}
+                    <SearchOutlinedIcon
+                      fontSize={isMdScreen ? "large" : "medium"}
+                    />
                   </InputAdornment>
                 ),
               }}

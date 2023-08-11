@@ -20,36 +20,14 @@ export default function ProductFilterByKategori() {
   );
 }
 
-// export async function getServerSideProps(context) {
-//   const category = context.query.kategori;
-
-//   const cookieString = context.req.headers.cookie;
-//   const cookies = parse(cookieString);
-//   const token = cookies.token;
-
-// const response = await fetch("http://localhost:5000/kategori", {
-//   method: "POST",
-//   headers: {
-//     // "Content-Type": "application/json",
-//     Authorization: `Bearer ${token}`,
-//   },
-//   body: JSON.stringify({
-//         kategori: category,
-//         page,
-//         limit,
-//         // search: searchValue,
-//   }),
-// });
-
-// return {
-//   props: {},
-// };
-// }
 export async function getServerSideProps(context) {
-  const cookieHeader = context.req.headers.cookie;
+  let cookieHeader = context.req.headers.cookie;
 
+  console.log("ini : ", cookieHeader);
+  if (typeof cookieHeader !== "string") {
+    cookieHeader = "";
+  }
   const cookies = parse(cookieHeader).token;
-  console.log(cookies);
   if (!cookies) {
     return {
       redirect: {

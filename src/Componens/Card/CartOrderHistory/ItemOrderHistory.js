@@ -7,7 +7,7 @@ import { grey } from "@mui/material/colors";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-export default function SecondItemOrderHistory({ itemOrder }) {
+export default function ItemOrderHistory({ itemOrder }) {
   const [open, setOpen] = useState(false);
   const [isHasCartopen, setIsHasCartOpen] = useState(false);
   const handleClose = () => setOpen(false);
@@ -27,13 +27,13 @@ export default function SecondItemOrderHistory({ itemOrder }) {
 
   return (
     <>
-      <Grid display={"flex"} paddingY={1.5}>
-        <Grid flex={1.2}>
+      <Grid display={"flex"} flexWrap={"wrap"} paddingY={1.5}>
+        <Grid flex={{ md: 1.2, xs: "70%" }}>
           <CardMedia
-            sx={{ borderRadius: "15px" }}
+            sx={{ borderRadius: "15px", paddingX: { xs: 12, md: 0 } }}
             component="img"
             alt="green"
-            height="100"
+            height={"100"}
             image="/img/cocktail.jpg"
           />
         </Grid>

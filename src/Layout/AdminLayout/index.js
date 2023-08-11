@@ -2,6 +2,7 @@ import AdminHeader from "@/Componens/Header/AdminHeader";
 import LoadingCircular from "@/Componens/Loading/LoadingCircular";
 import AdminSideBar from "@/Componens/SideBar/AdminSideBar";
 import TestSidebar from "@/Componens/SideBar/testSideBar";
+import AlertMessageContextProvider from "@/Context/Alert/AlertContextProvider";
 import DashboardLimitTableContextProvider from "@/Context/DashboardLimitTableContextProvider";
 import IsHasUpdatedProvider from "@/Context/IsHasUpdatedContextProvider";
 import LoadingCircularProgressContextProvider from "@/Context/LoadingCircularProgressContextProvider";
@@ -37,23 +38,25 @@ export default function AdminLayout({ children }) {
                           <ActionTableContextProvider>
                             <IsHasUpdatedProvider>
                               <DrawerToggleContextProvider>
-                                <AdminHeader />
-                                {/* <AdminSideBar /> */}
-                                {drawer}
-                                <Grid
-                                  sx={{
-                                    backgroundColor: "#F1F1F1",
-                                    // height: "20vh",
-                                    height: "calc(100vh - 80px)",
-                                    marginTop: { md: "80px", xs: 5.4 },
-                                    marginLeft: { lg: "18rem" },
-                                    padding: "20px",
-                                  }}
-                                  overflow={"auto"}
-                                >
-                                  {children}
-                                </Grid>
-                                <LoadingCircular />
+                                <AlertMessageContextProvider>
+                                  <AdminHeader />
+                                  {/* <AdminSideBar /> */}
+                                  {drawer}
+                                  <Grid
+                                    sx={{
+                                      backgroundColor: "#F1F1F1",
+                                      // height: "20vh",
+                                      height: "calc(100vh - 80px)",
+                                      marginTop: { md: "80px", xs: 5.4 },
+                                      marginLeft: { lg: "18rem" },
+                                      padding: "20px",
+                                    }}
+                                    overflow={"auto"}
+                                  >
+                                    {children}
+                                  </Grid>
+                                  <LoadingCircular />
+                                </AlertMessageContextProvider>
                               </DrawerToggleContextProvider>
                             </IsHasUpdatedProvider>
                           </ActionTableContextProvider>

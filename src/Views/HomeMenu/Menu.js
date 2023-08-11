@@ -178,6 +178,7 @@ export default function MenuItem() {
         // gap={5.2}
         marginTop={2}
         paddingBottom={3}
+        justifyContent={{ xs: "center", md: "start" }}
       >
         {data.map((item, i) => {
           const isFavorite = dataFavorite.some(
