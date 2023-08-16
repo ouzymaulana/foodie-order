@@ -1,6 +1,5 @@
 import {
   Box,
-  Grid,
   IconButton,
   List,
   ListItem,
@@ -8,28 +7,27 @@ import {
   ListItemIcon,
   ListItemText,
   Popover,
-  Typography,
-} from "@mui/material";
-import React, { useState } from "react";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import ReadMoreRoundedIcon from "@mui/icons-material/ReadMoreRounded";
-import { useActionTableModal } from "@/Context/ModalActionTable/ActionTableContextProvider";
-import { useDispatch, useSelector } from "react-redux";
-import { useIsHasUpdated } from "@/Context/IsHasUpdatedContextProvider";
+} from '@mui/material';
+import React, { useState } from 'react';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import ReadMoreRoundedIcon from '@mui/icons-material/ReadMoreRounded';
+import { useActionTableModal } from '@/Context/ModalActionTable/ActionTableContextProvider';
+import { useDispatch } from 'react-redux';
+// import { useIsHasUpdated } from "@/Context/IsHasUpdatedContextProvider";
 import {
   deleteDataByIdMenu,
-  selectDataMenu,
-} from "@/Redux/Slices/DataMenuSlice";
-import { useRouter } from "next/router";
-import { deleteMenuAlert } from "../Alert/Menu";
+  // selectDataMenu,
+} from '@/Redux/Slices/DataMenuSlice';
+import { useRouter } from 'next/router';
+import { deleteMenuAlert } from '../Alert/Menu';
 
 export default function ActionTable({ dataItemMenu }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const { openActionTable, setOpenActionTable } = useActionTableModal();
-  const { setIshasUpdated } = useIsHasUpdated();
-  const dataMenu = useSelector(selectDataMenu);
+  // const { setIshasUpdated } = useIsHasUpdated();
+  // const dataMenu = useSelector(selectDataMenu);
   const dispatch = useDispatch();
   const { replace, asPath } = useRouter();
 
@@ -69,7 +67,7 @@ export default function ActionTable({ dataItemMenu }) {
     setAnchorEl(null);
   };
   const openPopover = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const id = open ? 'simple-popover' : undefined;
 
   return (
     <>
@@ -87,17 +85,17 @@ export default function ActionTable({ dataItemMenu }) {
         anchorEl={anchorEl}
         onClose={handleClosePopover}
         anchorOrigin={{
-          vertical: "center",
-          horizontal: "left",
+          vertical: 'center',
+          horizontal: 'left',
         }}
         transformOrigin={{
-          vertical: "center",
-          horizontal: "right",
+          vertical: 'center',
+          horizontal: 'right',
         }}
       >
-        <Box sx={{ width: "100%", maxWidth: 360 }}>
+        <Box sx={{ width: '100%', maxWidth: 360 }}>
           <nav aria-label="main mailbox folders">
-            <List sx={{ paddingBottom: "0", paddingTop: "0" }}>
+            <List sx={{ paddingBottom: '0', paddingTop: '0' }}>
               {/* <ListItem
                 disablePadding
                 onClick={() => actionEditModal(dataItemMenu, handleClose, open)}

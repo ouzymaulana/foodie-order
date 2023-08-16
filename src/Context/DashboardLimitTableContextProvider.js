@@ -1,11 +1,11 @@
-import { useRouter } from "next/router";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from 'next/router';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export const LimitTable = createContext();
 export const useLimitTable = () => useContext(LimitTable);
 
 const DashboardLimitTableContextProvider = ({ children }) => {
-  const { query, push, pathname } = useRouter();
+  const { query } = useRouter();
   const [limitTable, setLimitTable] = useState();
 
   useEffect(() => {

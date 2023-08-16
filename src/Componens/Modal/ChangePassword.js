@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from "react";
-import ModalLayout from "./ModalLayout";
-import PasswordInput from "../InputForm/PasswordInput";
-import ButtonModal from "./ButtonModal";
-import InputForm from "../InputForm";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import axios from "axios";
-import Cookies from "js-cookie";
-import zxcvbn from "zxcvbn";
+import React, { useEffect, useState } from 'react';
+import ModalLayout from './ModalLayout';
+import PasswordInput from '../InputForm/PasswordInput';
+import ButtonModal from './ButtonModal';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import zxcvbn from 'zxcvbn';
+import { Alert } from '../Alert';
 
 export default function ChangePassword({ open, handleClose, title }) {
-  const token = Cookies.get("token");
+  const token = Cookies.get('token');
   const [strengthPwd, setStrengthPwd] = useState(0);
-  const [strengthColor, setStrengthColor] = useState("inherit");
-  const [openSnackBar, setOpenSnackBar] = useState(false);
-  const handleOpenSnackBar = () => setOpenSnackBar(true);
-  const handleCloseSnackBar = () => setOpenSnackBar(false);
+  const [strengthColor, setStrengthColor] = useState('inherit');
+  // const [openSnackBar, setOpenSnackBar] = useState(false);
 
   const HandleChangePassword = async () => {
     try {
       const response = await axios.patch(
-        "http://localhost:5000/user/change-password",
+        'http://localhost:5000/user/change-password',
         {
           oldPassword: formik.values.oldPassword,
           newPassword: formik.values.newPassword,
@@ -33,11 +31,11 @@ export default function ChangePassword({ open, handleClose, title }) {
         }
       );
 
-      if (response.data.status === "success") {
+      if (response.data.status === 'success') {
         formik.resetForm();
         handleClose();
         // setOpenSnackBar(true);
-        Alert("success", "Password has been updated");
+        Alert('success', 'Password has been updated');
       }
     } catch (error) {
       console.error(error);
@@ -46,22 +44,22 @@ export default function ChangePassword({ open, handleClose, title }) {
 
   const formik = useFormik({
     initialValues: {
-      oldPassword: "",
-      newPassword: "",
-      confirmPassword: "",
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: '',
     },
 
     validationSchema: Yup.object({
-      oldPassword: Yup.string().required("Old Password is a required field"),
+      oldPassword: Yup.string().required('Old Password is a required field'),
       newPassword: Yup.string()
-        .min(8, "Password harus terdiri dari minimal 8 karakter")
-        .matches(/[a-z]/, "Password harus mengandung huruf kecil")
-        .matches(/[A-Z]/, "Password harus mengandung huruf besar")
-        .matches(/\d/, "Password harus mengandung angka")
-        .matches(/[^a-zA-Z\d]/, "Password harus mengandung karakter khusus")
+        .min(8, 'Password harus terdiri dari minimal 8 karakter')
+        .matches(/[a-z]/, 'Password harus mengandung huruf kecil')
+        .matches(/[A-Z]/, 'Password harus mengandung huruf besar')
+        .matches(/\d/, 'Password harus mengandung angka')
+        .matches(/[^a-zA-Z\d]/, 'Password harus mengandung karakter khusus')
         .test(
-          "no-consecutive-characters",
-          "Tidak boleh memiliki 3 huruf yang sama secara berurutan",
+          'no-consecutive-characters',
+          'Tidak boleh memiliki 3 huruf yang sama secara berurutan',
           (value) => {
             const consecutiveRegex = /(.)\1{2}/;
             return !consecutiveRegex.test(value);
@@ -69,7 +67,7 @@ export default function ChangePassword({ open, handleClose, title }) {
         )
         .required(),
       confirmPassword: Yup.string()
-        .oneOf([Yup.ref("newPassword")], "confirm password tidak benar")
+        .oneOf([Yup.ref('newPassword')], 'confirm password tidak benar')
         .required(),
     }),
 
@@ -83,27 +81,26 @@ export default function ChangePassword({ open, handleClose, title }) {
 
   useEffect(() => {
     const pwdStrength = zxcvbn(formik.values.newPassword);
-    const error = formik.errors.newPassword;
     const passwordErrorsCount = Object.keys(formik.errors).filter(
-      (key) => key === "newPassword"
+      (key) => key === 'newPassword'
     ).length;
 
     if (passwordErrorsCount === 0 && pwdStrength.guesses_log10 >= 10) {
       setStrengthPwd(100);
-      setStrengthColor("success");
+      setStrengthColor('success');
     } else if (passwordErrorsCount === 0 && pwdStrength.score >= 2) {
       setStrengthPwd(75);
-      setStrengthColor("primary");
+      setStrengthColor('primary');
       // setStrengthColor("success");
     } else if (passwordErrorsCount === 0 && pwdStrength.score < 2) {
       setStrengthPwd(50);
-      setStrengthColor("error");
+      setStrengthColor('error');
     } else if (passwordErrorsCount >= 1 && pwdStrength.score < 4) {
       setStrengthPwd(25);
-      setStrengthColor("error");
+      setStrengthColor('error');
     } else {
       setStrengthPwd(25);
-      setStrengthColor("error");
+      setStrengthColor('error');
     }
   }, [formik.values.newPassword, formik.errors.newPassword, strengthPwdzxcvbn]);
 
@@ -112,11 +109,11 @@ export default function ChangePassword({ open, handleClose, title }) {
       <ModalLayout open={open} handleClose={handleClose} title={title}>
         <form
           onSubmit={formik.handleSubmit}
-          style={{ display: "flex", flexDirection: "column", gap: "30px" }}
+          style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}
         >
           <PasswordInput
-            name={"oldPassword"}
-            label={"Old Password"}
+            name={'oldPassword'}
+            label={'Old Password'}
             value={formik.values.oldPassword}
             onChange={formik.handleChange}
             dataError={formik.errors.oldPassword}
@@ -124,8 +121,8 @@ export default function ChangePassword({ open, handleClose, title }) {
             handleBlur={formik.handleBlur}
           />
           <PasswordInput
-            name={"newPassword"}
-            label={"New Password"}
+            name={'newPassword'}
+            label={'New Password'}
             value={formik.values.newPassword}
             onChange={formik.handleChange}
             dataError={formik.errors.newPassword}
@@ -135,8 +132,8 @@ export default function ChangePassword({ open, handleClose, title }) {
             strengthColor={strengthColor}
           />
           <PasswordInput
-            name={"confirmPassword"}
-            label={"Confirm New Password"}
+            name={'confirmPassword'}
+            label={'Confirm New Password'}
             value={formik.values.confirmPassword}
             onChange={formik.handleChange}
             dataError={formik.errors.confirmPassword}

@@ -1,11 +1,8 @@
-import Head from "next/head";
-import { Inter } from "next/font/google";
-import cookie from "cookie";
-import MainLayout from "@/Layout";
-import HomeMenu from "@/Views/HomeMenu";
-import jwt from "jsonwebtoken";
-
-const inter = Inter({ subsets: ["latin"] });
+import Head from 'next/head';
+import cookie from 'cookie';
+import MainLayout from '@/Layout';
+import HomeMenu from '@/Views/HomeMenu';
+import jwt from 'jsonwebtoken';
 
 export default function Home() {
   return (
@@ -25,23 +22,23 @@ export default function Home() {
 export async function getServerSideProps(context) {
   let cookieHeader = context.req.headers.cookie;
 
-  if (typeof cookieHeader !== "string") {
-    cookieHeader = "";
+  if (typeof cookieHeader !== 'string') {
+    cookieHeader = '';
   }
   const cookies = cookie.parse(cookieHeader).token;
   if (!cookies) {
     return {
       redirect: {
-        destination: "/login",
+        destination: '/login',
         permanent: false,
       },
     };
   }
   const jwtData = jwt.decode(cookies);
-  if (jwtData.role === "admin") {
+  if (jwtData.role === 'admin') {
     return {
       redirect: {
-        destination: "/admin",
+        destination: '/admin',
         permanent: false,
       },
     };

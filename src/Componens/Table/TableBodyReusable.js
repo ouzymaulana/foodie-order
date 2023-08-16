@@ -1,12 +1,11 @@
-import { IconButton, TableCell, TableRow } from "@mui/material";
-import React, { useState } from "react";
-import CollapseTable from "./CollapseTable";
+import { TableCell, TableRow } from '@mui/material';
+import React, { useState } from 'react';
+import CollapseTable from './CollapseTable';
 import {
   actionFieldTableConditional,
   formatDataConditional,
-} from "@/Helper/filterSearchConditional";
-import EditIcon from "@mui/icons-material/Edit";
-import { isHasUpdateButtonOneField } from "@/Helper/updateOneFieldTable";
+} from '@/Helper/filterSearchConditional';
+import { isHasUpdateButtonOneField } from '@/Helper/updateOneFieldTable';
 
 export default function TableBodyReusable({ columns, row }) {
   const [open, setOpen] = useState(false);
@@ -22,7 +21,7 @@ export default function TableBodyReusable({ columns, row }) {
         onMouseLeave={() => setIsHovering(false)}
       >
         {columns.map((column, colIndex) => (
-          <TableCell sx={{ fontSize: "1rem", paddingY: "20px" }} key={colIndex}>
+          <TableCell sx={{ fontSize: '1rem', paddingY: '20px' }} key={colIndex}>
             {formatDataConditional(row, column, open, setOpen)}
 
             {actionFieldTableConditional(row, column)}

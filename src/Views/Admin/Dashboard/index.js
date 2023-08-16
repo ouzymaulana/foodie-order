@@ -1,35 +1,44 @@
-import CartDashboard from "@/Componens/Card/CartDasboard";
-import { Grid, Typography } from "@mui/material";
-import axios from "axios";
-import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
-import { useDataSelectFilter } from "@/Context/SelectFilterCardContextProvider";
-import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
-import ReusableTable from "@/Componens/Table";
-import { useDataTotalItem } from "@/Context/TotalItemContextProvider";
-import UpdateStatusOrderMenu from "@/Componens/Modal/Form/UpdateData/UpdateStatusOrderMenu";
+import CartDashboard from '@/Componens/Card/CartDasboard';
+import { Grid, Typography } from '@mui/material';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import React, { useEffect, useState } from 'react';
+import { useDataSelectFilter } from '@/Context/SelectFilterCardContextProvider';
+import { useLoadingCircularProgress } from '@/Context/LoadingCircularProgressContextProvider';
+import ReusableTable from '@/Componens/Table';
+import { useDataTotalItem } from '@/Context/TotalItemContextProvider';
+import UpdateStatusOrderMenu from '@/Componens/Modal/Form/UpdateData/UpdateStatusOrderMenu';
+import { useRouter } from 'next/router';
 
 export default function DashboardView({ getOrderData, totalOrderItems }) {
-  const { selectFilter, setSelectFilter } = useDataSelectFilter();
+  const { selectFilter } = useDataSelectFilter();
   const { setOpenLoadingCircular } = useLoadingCircularProgress();
   const { totalItem, setTotalItem } = useDataTotalItem();
   const [orderData, setOrderData] = useState([]);
-  const token = Cookies.get("token");
+  const token = Cookies.get('token');
+  const { push } = useRouter();
 
   const getOrderMenu = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/order-menu", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          createdAt: selectFilter,
-        },
-      });
-      setOpenLoadingCircular(false);
+      if (token) {
+        const response = await axios.get(
+          'http://localhost:5000/api/order-menu',
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            params: {
+              createdAt: selectFilter,
+            },
+          }
+        );
+        setOpenLoadingCircular(false);
 
-      if (response.data.status !== "fail") {
-        setOrderData(response.data.data.orderData);
+        if (response.data.status !== 'fail') {
+          setOrderData(response.data.data.orderData);
+        }
+      } else {
+        push('/login');
       }
     } catch (error) {
       console.error(error);
@@ -48,78 +57,78 @@ export default function DashboardView({ getOrderData, totalOrderItems }) {
 
   const columns = [
     {
-      label: "",
-      field: "action",
+      label: '',
+      field: 'action',
       minWidth: 0,
-      filter: "",
+      filter: '',
       sort: false,
       collapse: true,
-      collapseLable: "orderMenu",
+      collapseLable: 'orderMenu',
     },
     {
-      label: "User Name",
-      field: "nama",
-      routefield: "user-name",
+      label: 'User Name',
+      field: 'nama',
+      routefield: 'user-name',
       minWidth: 170,
-      filter: "inputText",
+      filter: 'inputText',
       sort: true,
     },
     {
-      label: "Order Time",
-      field: "waktu_pemesanan",
-      routefield: "order-time",
+      label: 'Order Time',
+      field: 'waktu_pemesanan',
+      routefield: 'order-time',
       minWidth: 170,
-      filter: "inputSelect",
+      filter: 'inputSelect',
       sort: false,
       selectData: [
-        { text: "all", value: "all" },
-        { text: "siang", value: "siang" },
-        { text: "sore", value: "sore" },
+        { text: 'all', value: 'all' },
+        { text: 'siang', value: 'siang' },
+        { text: 'sore', value: 'sore' },
       ],
     },
     {
-      label: "Order Date",
-      field: "createdAt",
-      routefield: "order-date",
+      label: 'Order Date',
+      field: 'createdAt',
+      routefield: 'order-date',
       minWidth: 170,
-      filter: "inputDate",
+      filter: 'inputDate',
       sort: true,
     },
     {
-      label: "Delivery Address",
-      field: "alamat_antar",
-      routefield: "delivery-address",
+      label: 'Delivery Address',
+      field: 'alamat_antar',
+      routefield: 'delivery-address',
       minWidth: 170,
-      filter: "inputText",
+      filter: 'inputText',
       sort: false,
     },
     {
-      label: "Status",
-      field: "status",
-      routefield: "status",
+      label: 'Status',
+      field: 'status',
+      routefield: 'status',
       minWidth: 170,
-      filter: "inputSelect",
+      filter: 'inputSelect',
       sort: false,
       fieldWithUpdate: true,
       selectData: [
-        { text: "all", value: "all" },
-        { text: "progress", value: "progress" },
-        { text: "done", value: "done" },
+        { text: 'all', value: 'all' },
+        { text: 'progress', value: 'progress' },
+        { text: 'done', value: 'done' },
       ],
     },
     {
-      label: "Total Pay",
-      field: "total_bayar",
-      routefield: "total-pay",
+      label: 'Total Pay',
+      field: 'total_bayar',
+      routefield: 'total-pay',
       minWidth: 170,
-      filter: "inputNumber",
+      filter: 'inputNumber',
       sort: true,
     },
   ];
 
   return (
     <>
-      <Grid display={"flex"} flexDirection={"column"} gap={5}>
+      <Grid display={'flex'} flexDirection={'column'} gap={5}>
         <CartDashboard
           selectFilter={selectFilter}
           orderData={orderData}
@@ -128,14 +137,14 @@ export default function DashboardView({ getOrderData, totalOrderItems }) {
         <Grid
           borderRadius={4}
           sx={{
-            backgroundColor: "white",
+            backgroundColor: 'white',
             // height: "calc(100vh - 40px - 13px)",
           }}
-          width={"100%"}
-          overflow={"hidden"}
+          width={'100%'}
+          overflow={'hidden'}
           padding={3}
-          display={"flex"}
-          flexDirection={"column"}
+          display={'flex'}
+          flexDirection={'column'}
         >
           <Grid>
             <Typography variant="h6" fontWeight={600}>

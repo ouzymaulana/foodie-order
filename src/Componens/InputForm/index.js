@@ -1,33 +1,25 @@
-import {
-  Box,
-  Input,
-  MenuItem,
-  TextField,
-  Typography,
-  styled,
-} from "@mui/material";
-import { ErrorMessage, Field } from "formik";
-import theme from "@/Helper/theme";
-import React from "react";
+import { Box, MenuItem, TextField, styled } from '@mui/material';
+import theme from '@/Helper/theme';
+import React from 'react';
 
 const CssTextField = styled(TextField)({
-  "& label.Mui-focused": {
-    color: "black",
+  '& label.Mui-focused': {
+    color: 'black',
   },
-  "& .MuiInput-underline:after": {
-    borderBottomColor: "#B2BAC2",
+  '& .MuiInput-underline:after': {
+    borderBottomColor: '#B2BAC2',
   },
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "#FFAF37",
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#FFAF37',
       borderRadius: theme.spacing(1.3), // Atur border-radius di sini
       borderWidth: 3,
     },
-    "&:hover fieldset": {
-      borderColor: "#FFAF37",
+    '&:hover fieldset': {
+      borderColor: '#FFAF37',
     },
-    "&.Mui-focused fieldset": {
-      borderColor: "#FFAF37",
+    '&.Mui-focused fieldset': {
+      borderColor: '#FFAF37',
       borderWidth: 3,
     },
   },
@@ -48,7 +40,7 @@ export default function InputForm({
   isImageFailed,
 }) {
   return (
-    <Box display={"flex"} flexDirection={"column"}>
+    <Box display={'flex'} flexDirection={'column'}>
       {fileType === true ? (
         <CssTextField
           type="file"
@@ -75,7 +67,7 @@ export default function InputForm({
           name={title}
           label={label}
           autoComplete="off"
-          value={value || ""}
+          value={value || ''}
           onChange={onchange}
           // onBlur={formik.handleBlur}
         >
@@ -97,10 +89,10 @@ export default function InputForm({
         />
       )}
       {touched && dataError && (
-        <span style={{ color: "red", fontFamily: "Inter" }}>{dataError}</span>
+        <span style={{ color: 'red', fontFamily: 'Inter' }}>{dataError}</span>
       )}
-      {isImageFailed !== undefined && isImageFailed.status === "failed" && (
-        <span style={{ color: "red", fontFamily: "Inter" }}>
+      {isImageFailed !== undefined && isImageFailed.status === 'failed' && (
+        <span style={{ color: 'red', fontFamily: 'Inter' }}>
           {isImageFailed.message}
         </span>
       )}

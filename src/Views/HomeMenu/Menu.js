@@ -1,35 +1,31 @@
-import { Grid, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { useRef } from "react";
-import { useRouter } from "next/router";
-import jwt from "jsonwebtoken";
-import { useDispatch, useSelector } from "react-redux";
+import { Grid, Typography } from '@mui/material';
+import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+import jwt from 'jsonwebtoken';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   addDataFavorite,
   deleteDataByIdMenu,
   selectDataFavorite,
   setDataFavorite,
-} from "@/Redux/Slices/FavoriteMenuSlice";
-import CardMenu from "@/Componens/Card";
-import { Inter } from "next/font/google";
-import AddToCart from "@/Componens/Modal/AddToCart";
-import { selectDataCart } from "@/Redux/Slices/CartItemsSlice";
-import IsHasCartItem from "@/Componens/Modal/IsHasCartItem";
-import { useLimitMenu } from "@/Context/LimitContextProvider";
-import { usePageMenu } from "@/Context/PageContextProvider";
-import CardMenuLoading from "@/Componens/Loading/CardMenuLoading";
-import { useMenuContext } from "@/Context/DataMenuContextProvider";
-import { useScrollPageMenu } from "@/Context/ScrollPageContextProvider";
-const inter = Inter({ subsets: ["latin"] });
+} from '@/Redux/Slices/FavoriteMenuSlice';
+import CardMenu from '@/Componens/Card';
+import AddToCart from '@/Componens/Modal/AddToCart';
+import { selectDataCart } from '@/Redux/Slices/CartItemsSlice';
+import IsHasCartItem from '@/Componens/Modal/IsHasCartItem';
+import { useLimitMenu } from '@/Context/LimitContextProvider';
+import CardMenuLoading from '@/Componens/Loading/CardMenuLoading';
+import { useMenuContext } from '@/Context/DataMenuContextProvider';
+import { useScrollPageMenu } from '@/Context/ScrollPageContextProvider';
 
 export default function MenuItem() {
   const [data, setData] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [totalItems, setTotalItems] = useState(0);
+  // const [totalItems, setTotalItems] = useState(0);
   const [loadingMenu, setLoadingMenu] = useState(false);
-  const [loadingMenuTimer, setLoadingMenuTimer] = useState();
+  // const [loadingMenuTimer, setLoadingMenuTimer] = useState();
   const [idMenuAddToCart, setIdMenuAddToCart] = useState();
   const [open, setOpen] = useState(false);
   const [isHasCartopen, setIsHasCartOpen] = useState(false);
@@ -37,19 +33,19 @@ export default function MenuItem() {
   const handleCloseIsHasCart = () => setIsHasCartOpen(false);
   const dataFavorite = useSelector(selectDataFavorite);
   const dispatch = useDispatch();
-  const { limit, setLimit } = useLimitMenu();
+  const { limit } = useLimitMenu();
   const { page, setPage } = useScrollPageMenu();
   // const { page, setPage } = usePageMenu();
   const route = useRouter();
-  const token = Cookies.get("token");
+  const token = Cookies.get('token');
   const listInnerRef = useRef(null);
   const cartItem = useSelector(selectDataCart);
-  const { menu, setMenu } = useMenuContext();
+  const { setMenu } = useMenuContext();
 
   const fetchData = async () => {
     try {
       setLoadingMenu(true);
-      const response = await axios.get("http://localhost:5000/api/menu", {
+      const response = await axios.get('http://localhost:5000/api/menu', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -61,7 +57,8 @@ export default function MenuItem() {
         },
       });
 
-      if (data == "") {
+      // if (data == '') {
+      if (data.length === 0) {
         setData(response.data.data);
         setMenu(response.data.data);
       } else {
@@ -70,9 +67,7 @@ export default function MenuItem() {
       }
 
       setHasMore(response.data.hasMore);
-      console.log("hasmore pada fetch : ", response.data.hasMore);
-      console.log("category pada fetch : ", route.query.kategori);
-      setTotalItems(response.data.totalItems);
+      // setTotalItems(response.data.totalItems);
 
       setPage(page + 1);
 
@@ -83,11 +78,9 @@ export default function MenuItem() {
   };
 
   useEffect(() => {
-    console.log("useEffect categori");
     setHasMore(!hasMore);
     // setPage(1);
     setData([]);
-    console.log("data di useEffect : ", data);
     fetchData();
   }, [route.query.kategori, route.query.search]);
 
@@ -114,19 +107,19 @@ export default function MenuItem() {
     const emailLogin = jwt.decode(token);
     // verify secretKey
     try {
-      const response = await axios.post("http://localhost:5000/api/favorite", {
+      const response = await axios.post('http://localhost:5000/api/favorite', {
         data: {
           id_menu,
           email: emailLogin.email,
         },
       });
 
-      if (response.data.data.message === "Delete") {
+      if (response.data.data.message === 'Delete') {
         dispatch(deleteDataByIdMenu(id_menu));
         getDataFavorite();
       }
 
-      if (response.data.data.message === "Create") {
+      if (response.data.data.message === 'Create') {
         const getDataMenu = data.find((menu) => menu.id === id_menu);
         dispatch(addDataFavorite(getDataMenu));
       }
@@ -137,7 +130,7 @@ export default function MenuItem() {
 
   const getDataFavorite = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/favorite", {
+      const response = await axios.get('http://localhost:5000/api/favorite', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -172,13 +165,13 @@ export default function MenuItem() {
         Menu
       </Typography>
       <Grid
-        display={"flex"}
-        flexWrap={"wrap"}
-        gap={"42.7px"}
+        display={'flex'}
+        flexWrap={'wrap'}
+        gap={'42.7px'}
         // gap={5.2}
         marginTop={2}
         paddingBottom={3}
-        justifyContent={{ xs: "center", md: "start" }}
+        justifyContent={{ xs: 'center', md: 'start' }}
       >
         {data.map((item, i) => {
           const isFavorite = dataFavorite.some(
@@ -198,7 +191,7 @@ export default function MenuItem() {
 
       {loadingMenu && <CardMenuLoading />}
 
-      {cartItem == "" ? (
+      {cartItem.length === 0 ? (
         <AddToCart
           open={open}
           handleClose={handleClose}
@@ -217,7 +210,7 @@ export default function MenuItem() {
       {hasMore && (
         <div
           id="scroll-trigger"
-          style={{ minHeight: "25px", minWidth: "200px" }}
+          style={{ minHeight: '25px', minWidth: '200px' }}
           ref={listInnerRef}
         ></div>
       )}

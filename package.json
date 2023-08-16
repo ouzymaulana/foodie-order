@@ -14,17 +14,18 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/inter": "^5.0.2",
+    "@fontsource/josefin-sans": "^5.0.9",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.4",
     "@mui/x-data-grid": "^6.10.0",
     "@mui/x-data-grid-generator": "^6.10.0",
     "@mui/x-date-pickers": "^6.10.0",
+    "@next/font": "^13.4.16",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "cookie": "^0.5.0",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.9",
-    "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
     "formik": "^2.4.1",
     "js-cookie": "^3.0.5",
@@ -49,6 +50,13 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.1",
     "sass": "^1.63.2"
   }
 }

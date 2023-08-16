@@ -1,20 +1,20 @@
-import * as React from "react";
-import InputForm from "../InputForm/index.js";
-import { Grid, MenuItem, TextField } from "@mui/material";
-import ButtonModal from "./ButtonModal.js";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import { selectDataCart, setCartItem } from "@/Redux/Slices/CartItemsSlice.js";
-import ModalLayout from "./ModalLayout/index.js";
+import * as React from 'react';
+import InputForm from '../InputForm/index.js';
+import { Grid } from '@mui/material';
+import ButtonModal from './ButtonModal.js';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { setCartItem } from '@/Redux/Slices/CartItemsSlice.js';
+import ModalLayout from './ModalLayout/index.js';
 
 export default function IsHasCartItem({ open, handleClose, idMenu, title }) {
-  const cartItem = useSelector(selectDataCart);
+  // const cartItem = useSelector(selectDataCart);
   const dispatch = useDispatch();
 
   const handleAddToCart = async () => {
     const menu = {
-      idMenu: idMenu,
+      idMenu,
       catatanTambahan: formik.values.catatanTambahan,
       quantity: 1,
     };
@@ -25,7 +25,7 @@ export default function IsHasCartItem({ open, handleClose, idMenu, title }) {
 
   const formik = useFormik({
     initialValues: {
-      catatanTambahan: "",
+      catatanTambahan: '',
     },
 
     validationSchema: Yup.object({
@@ -41,10 +41,10 @@ export default function IsHasCartItem({ open, handleClose, idMenu, title }) {
   return (
     <ModalLayout open={open} title={title}>
       <form onSubmit={formik.handleSubmit}>
-        <Grid display={"flex"} flexDirection={"column"} gap={3}>
+        <Grid display={'flex'} flexDirection={'column'} gap={3}>
           <InputForm
-            title={"catatanTambahan"}
-            label={"Order Notes"}
+            title={'catatanTambahan'}
+            label={'Order Notes'}
             multiline={true}
             value={formik.values.catatanTambahan}
             onchange={formik.handleChange}

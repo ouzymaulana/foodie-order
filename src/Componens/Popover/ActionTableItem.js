@@ -6,17 +6,14 @@ import {
   ListItemIcon,
   ListItemText,
   Popover,
-} from "@mui/material";
-import React, { useState } from "react";
-import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import UpdateMenuForm from "../Modal/Form/UpdateData/UpdateMenuForm";
-import { usePopoverActionMenuTable } from "@/Context/PopoverActionMenuTableContextProvider";
+} from '@mui/material';
+import React from 'react';
+import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import { usePopoverActionMenuTable } from '@/Context/PopoverActionMenuTableContextProvider';
+import ReadMoreRoundedIcon from '@mui/icons-material/ReadMoreRounded';
 
 export default function ActionTableItem() {
-  console.log("====================================");
-  console.log("sudahhhhhK");
-  console.log("====================================");
   // const [anchorEl, setAnchorEl] = useState(null);
   const { popoverActionMenuTable, setPopoverActionMenuTable } =
     usePopoverActionMenuTable();
@@ -35,7 +32,7 @@ export default function ActionTableItem() {
     // } catch (error) {}
   };
   const openPopover = Boolean(popoverActionMenuTable);
-  const id = open ? "simple-popover" : undefined;
+  const id = open ? 'simple-popover' : undefined;
   return (
     <>
       <Popover
@@ -44,17 +41,17 @@ export default function ActionTableItem() {
         anchorEl={popoverActionMenuTable}
         onClose={handleClosePopover}
         anchorOrigin={{
-          vertical: "center",
-          horizontal: "left",
+          vertical: 'center',
+          horizontal: 'left',
         }}
         transformOrigin={{
-          vertical: "center",
-          horizontal: "right",
+          vertical: 'center',
+          horizontal: 'right',
         }}
       >
-        <Box sx={{ width: "100%", maxWidth: 360 }}>
+        <Box sx={{ width: '100%', maxWidth: 360 }}>
           <nav aria-label="main mailbox folders">
-            <List sx={{ paddingBottom: "0", paddingTop: "0" }}>
+            <List sx={{ paddingBottom: '0', paddingTop: '0' }}>
               {/* <ListItem
                 disablePadding
                 onClick={() => actionEditModal(dataMenu, handleClose, open)}

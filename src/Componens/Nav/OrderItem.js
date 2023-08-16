@@ -1,30 +1,30 @@
-import { Box, Paper, Typography } from "@mui/material";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-import Cookies from "js-cookie";
-import axios from "axios";
-import UpdateItemCart from "../Modal/UpdateItemCart";
-import { useDispatch } from "react-redux";
+import { Box, Paper, Typography } from '@mui/material';
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import UpdateItemCart from '../Modal/UpdateItemCart';
+import { useDispatch } from 'react-redux';
 import {
   deleteOneItemCart,
   incrementDecrementQuantity,
-} from "@/Redux/Slices/CartItemsSlice";
-import { formatCurrency } from "@/Helper/formatCurrency";
+} from '@/Redux/Slices/CartItemsSlice';
+import { formatCurrency } from '@/Helper/formatCurrency';
 
 export default function OrderItem({ menu, item }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [itemMenu, setItemMenu] = useState();
+  const [setItemMenu] = useState();
   const dispatch = useDispatch();
-  const token = Cookies.get("token");
+  const token = Cookies.get('token');
 
   const getOneMenu = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/menus", {
+      const response = await axios.get('http://localhost:5000/api/menus', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -44,7 +44,7 @@ export default function OrderItem({ menu, item }) {
     if (item.quantity !== 1) {
       const data = {
         idMenu: item.idMenu,
-        status: "decrement",
+        status: 'decrement',
       };
       dispatch(incrementDecrementQuantity(data));
     } else {
@@ -54,7 +54,7 @@ export default function OrderItem({ menu, item }) {
   const handleIncrementQuantity = () => {
     const data = {
       idMenu: item.idMenu,
-      status: "increment",
+      status: 'increment',
     };
     dispatch(incrementDecrementQuantity(data));
   };
@@ -65,53 +65,53 @@ export default function OrderItem({ menu, item }) {
 
   return (
     <>
-      <Box display={"flex"}>
+      <Box display={'flex'}>
         <Image
           // src="/img/cocktail.jpg"
-          src={`http://localhost:5000/images/` + menu?.gambar || ""}
+          src={`http://localhost:5000/images/` + menu?.gambar || ''}
           height={80}
           width={80}
           alt="gambar-menu"
           style={{
-            minWidth: "80px",
-            borderRadius: "15px",
-            flex: "1.5",
-            objectPosition: "center",
-            objectFit: "cover",
+            minWidth: '80px',
+            borderRadius: '15px',
+            flex: '1.5',
+            objectPosition: 'center',
+            objectFit: 'cover',
           }}
         />
         <Box
           flex={3}
-          display={"flex"}
-          flexDirection={"column"}
-          alignItems={"start"}
-          justifyContent={"center"}
+          display={'flex'}
+          flexDirection={'column'}
+          alignItems={'start'}
+          justifyContent={'center'}
           paddingLeft={1}
         >
           <Typography
             sx={{
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              maxWidth: "140px",
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              maxWidth: '140px',
             }}
             variant="body2"
             fontWeight={600}
             gutterBottom
           >
             {/* {itemMenu?.nama || ""} */}
-            {menu?.nama || ""}
+            {menu?.nama || ''}
           </Typography>
           <Typography variant="body2" color="secondary" gutterBottom>
-            {formatCurrency(item.quantity * menu?.harga || "")}
+            {formatCurrency(item.quantity * menu?.harga || '')}
             {/* IDR {itemMenu?.harga || ""} */}
           </Typography>
           <Typography
             sx={{
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              maxWidth: "140px",
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              maxWidth: '140px',
             }}
             variant="body2"
             color="secondary"
@@ -121,36 +121,36 @@ export default function OrderItem({ menu, item }) {
           </Typography>
         </Box>
         <Box
-          display={"flex"}
+          display={'flex'}
           flex={3}
-          justifyContent={"space-evenly"}
-          alignItems={"center"}
+          justifyContent={'space-evenly'}
+          alignItems={'center'}
         >
           <RemoveIcon
-            sx={{ cursor: "pointer" }}
+            sx={{ cursor: 'pointer' }}
             onClick={() => handleDecrementQuantity()}
           />
 
           <Paper
             sx={{
-              padding: "5px",
-              height: "25px",
-              display: "flex",
-              alignItems: "center",
+              padding: '5px',
+              height: '25px',
+              display: 'flex',
+              alignItems: 'center',
             }}
           >
             {item.quantity}
           </Paper>
           <AddIcon
-            sx={{ cursor: "pointer" }}
+            sx={{ cursor: 'pointer' }}
             onClick={() => handleIncrementQuantity()}
           />
         </Box>
         <Box
           flex={1}
-          display={"flex"}
-          alignItems={"center"}
-          justifyContent={"end"}
+          display={'flex'}
+          alignItems={'center'}
+          justifyContent={'end'}
           // sx={{ backgroundColor: "red" }}
         >
           <Paper
@@ -158,11 +158,11 @@ export default function OrderItem({ menu, item }) {
             elevation={0}
             onClick={handleOpen}
             sx={{
-              backgroundColor: "#FAA41A",
-              padding: "2px",
-              display: "flex",
-              justifyContent: "center",
-              cursor: "pointer",
+              backgroundColor: '#FAA41A',
+              padding: '2px',
+              display: 'flex',
+              justifyContent: 'center',
+              cursor: 'pointer',
             }}
           >
             <ModeEditOutlineOutlinedIcon color="dark" />

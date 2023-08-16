@@ -1,10 +1,9 @@
-import { useDataSelectMenu } from "@/Context/SelectMenuSidebarContexProvider";
-import MainLayout from "@/Layout";
-import OrderHistoryView from "@/Views/OrderHistory";
-import Head from "next/head";
-import React, { useEffect, useState } from "react";
-import cookie from "cookie";
-import jwt from "jsonwebtoken";
+import MainLayout from '@/Layout';
+import OrderHistoryView from '@/Views/OrderHistory';
+import Head from 'next/head';
+import React from 'react';
+import cookie from 'cookie';
+import jwt from 'jsonwebtoken';
 
 export default function OrderHistory() {
   return (
@@ -24,23 +23,23 @@ export default function OrderHistory() {
 export async function getServerSideProps(context) {
   let cookieHeader = context.req.headers.cookie;
 
-  if (typeof cookieHeader !== "string") {
-    cookieHeader = "";
+  if (typeof cookieHeader !== 'string') {
+    cookieHeader = '';
   }
   const cookies = cookie.parse(cookieHeader).token;
   if (!cookies) {
     return {
       redirect: {
-        destination: "/login",
+        destination: '/login',
         permanent: false,
       },
     };
   }
   const jwtData = jwt.decode(cookies);
-  if (jwtData.role === "admin") {
+  if (jwtData.role === 'admin') {
     return {
       redirect: {
-        destination: "/admin",
+        destination: '/admin',
         permanent: false,
       },
     };

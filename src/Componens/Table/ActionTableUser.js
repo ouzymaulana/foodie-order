@@ -1,10 +1,10 @@
-import { Grid, IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
-import React, { useEffect } from "react";
-import { useActionTableModal } from "@/Context/ModalActionTable/ActionTableContextProvider";
-import { useRouter } from "next/router";
-import { deleteUserAlert } from "../Alert/User";
+import { Grid, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import BorderColorRoundedIcon from '@mui/icons-material/BorderColorRounded';
+import React from 'react';
+import { useActionTableModal } from '@/Context/ModalActionTable/ActionTableContextProvider';
+import { useRouter } from 'next/router';
+import { deleteUserAlert } from '../Alert/User';
 
 export default function ActionTableUser({ dataItemUser }) {
   const { openActionTable, setOpenActionTable } = useActionTableModal();

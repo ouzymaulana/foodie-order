@@ -1,28 +1,23 @@
-import { Typography, useMediaQuery } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
-import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
-import { Inter } from "next/font/google";
-import Slider from "react-slick";
-import Image from "next/image";
-import axios from "axios";
-import Cookies from "js-cookie";
-import CardMenu from "@/Componens/Card";
-import { handleAddFavoriteMenu } from "@/Helper/handleAddFavoriteMenu";
-import { useDispatch, useSelector } from "react-redux";
+import { Typography, useMediaQuery } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
+import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
+import Slider from 'react-slick';
+import axios from 'axios';
+import CardMenu from '@/Componens/Card';
+import { handleAddFavoriteMenu } from '@/Helper/handleAddFavoriteMenu';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   addDataFavorite,
   deleteDataByIdMenu,
   selectDataFavorite,
   setDataFavorite,
-} from "@/Redux/Slices/FavoriteMenuSlice";
-import { useMenuContext } from "@/Context/DataMenuContextProvider";
-import { getDataFavorite } from "@/Helper/FavoriteData/getDataFavorite";
-import { selectDataCart } from "@/Redux/Slices/CartItemsSlice";
-import AddToCart from "@/Componens/Modal/AddToCart";
-import IsHasCartItem from "@/Componens/Modal/IsHasCartItem";
-
-const inter = Inter({ subsets: ["latin"] });
+} from '@/Redux/Slices/FavoriteMenuSlice';
+import { useMenuContext } from '@/Context/DataMenuContextProvider';
+import { getDataFavorite } from '@/Helper/FavoriteData/getDataFavorite';
+import { selectDataCart } from '@/Redux/Slices/CartItemsSlice';
+import AddToCart from '@/Componens/Modal/AddToCart';
+import IsHasCartItem from '@/Componens/Modal/IsHasCartItem';
 
 function SampleNextArrow({ onClick, style, className }) {
   return (
@@ -34,21 +29,21 @@ function SampleNextArrow({ onClick, style, className }) {
         // padding: "8px 8px",
         // borderRadius: "50px",
         // opacity: "50%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "auto",
-        width: "auto",
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 'auto',
+        width: 'auto',
         zIndex: 1,
-        position: "absolute",
+        position: 'absolute',
         fontSize: 0,
         lineHeight: 0,
-        top: "40%",
-        right: "0%",
-        cursor: "pointer",
+        top: '40%',
+        right: '0%',
+        cursor: 'pointer',
       }}
     >
-      <ArrowForwardIosOutlinedIcon fontSize="large" sx={{ color: "grey" }} />
+      <ArrowForwardIosOutlinedIcon fontSize="large" sx={{ color: 'grey' }} />
     </div>
   );
 }
@@ -70,21 +65,21 @@ function SamplePrevArrow({ onClick, style, className }) {
         // padding: "8px 8px",
         // borderRadius: "50px",
         // opacity: "50%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "auto",
-        width: "auto",
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 'auto',
+        width: 'auto',
         zIndex: 1,
-        position: "absolute",
+        position: 'absolute',
         fontSize: 0,
         lineHeight: 0,
-        top: "40%",
-        left: "0%",
-        cursor: "pointer",
+        top: '40%',
+        left: '0%',
+        cursor: 'pointer',
       }}
     >
-      <ArrowBackIosOutlinedIcon fontSize="large" sx={{ color: "grey" }} />
+      <ArrowBackIosOutlinedIcon fontSize="large" sx={{ color: 'grey' }} />
     </div>
   );
 }
@@ -93,14 +88,14 @@ export default function BestSellers() {
   const dataFavorite = useSelector(selectDataFavorite);
   const cartItem = useSelector(selectDataCart);
   const [dataBestSellers, setDataBestSellers] = useState([]);
-  const { menu, setMenu } = useMenuContext();
+  const { menu } = useMenuContext();
   const [idMenuAddToCart, setIdMenuAddToCart] = useState();
   const [open, setOpen] = useState(false);
   const [isHasCartopen, setIsHasCartOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const handleCloseIsHasCart = () => setIsHasCartOpen(false);
-  const isDesktop = useMediaQuery("(min-width:900px)");
-  const isTablet = useMediaQuery("(min-width:600px)");
+  const isDesktop = useMediaQuery('(min-width:900px)');
+  const isTablet = useMediaQuery('(min-width:600px)');
 
   let slidesAmount;
   if (isDesktop) {
@@ -114,9 +109,9 @@ export default function BestSellers() {
   const dispatch = useDispatch();
 
   const getDataBestSellers = async () => {
-    const response = await axios.get("http://localhost:5000/api/best-sellers");
+    const response = await axios.get('http://localhost:5000/api/best-sellers');
 
-    if (response.data.status === "success") {
+    if (response.data.status === 'success') {
       setDataBestSellers(response.data.data.menuBestSellers);
     }
   };
@@ -152,9 +147,9 @@ export default function BestSellers() {
 
   const settings = {
     infinite: true,
-    centerPadding: "10px",
+    centerPadding: '10px',
     slidesToShow: slidesAmount,
-    paddingLeft: "20px",
+    paddingLeft: '20px',
     swipeToSlide: true,
     // display: "flex",
     // justifyContent: "center",
@@ -171,14 +166,14 @@ export default function BestSellers() {
       <Slider
         {...settings}
         style={{
-          display: "flex",
-          flexWrap: "wrap",
+          display: 'flex',
+          flexWrap: 'wrap',
           gap: 4.8,
           marginTop: 2,
-          paddingLeft: "70px",
-          paddingRight: "60px",
-          justifyContent: "center",
-          alignItems: "center",
+          paddingLeft: '70px',
+          paddingRight: '60px',
+          justifyContent: 'center',
+          alignItems: 'center',
           // paddingRight: "40px",
           paddingBottom: 3,
           // display: "flex",
@@ -200,7 +195,7 @@ export default function BestSellers() {
         })}
       </Slider>
       {/* </Grid> */}
-      {cartItem == "" ? (
+      {cartItem.length === 0 ? (
         <AddToCart
           open={open}
           handleClose={handleClose}

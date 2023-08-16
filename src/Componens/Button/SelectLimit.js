@@ -1,27 +1,26 @@
-import { useLimitTable } from "@/Context/DashboardLimitTableContextProvider";
-import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
-import { useDataSearchMenu } from "@/Context/SearchValueOnTableContextProvider";
-import theme from "@/Helper/theme";
-import styled from "@emotion/styled";
-import { FormControl, MenuItem, Select, TextField } from "@mui/material";
-import { grey } from "@mui/material/colors";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useLimitTable } from '@/Context/DashboardLimitTableContextProvider';
+import { useDataSearchMenu } from '@/Context/SearchValueOnTableContextProvider';
+import theme from '@/Helper/theme';
+import styled from '@emotion/styled';
+import { MenuItem, TextField } from '@mui/material';
+import { grey } from '@mui/material/colors';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 const CssTextField = styled(TextField)({
-  "& .MuiOutlinedInput-root": {
-    fontSize: "1rem",
-    height: "40px",
-    width: "100%",
+  '& .MuiOutlinedInput-root': {
+    fontSize: '1rem',
+    height: '40px',
+    width: '100%',
 
-    "& fieldset": {
+    '& fieldset': {
       borderRadius: theme.spacing(1),
     },
-    "&:hover fieldset": {
+    '&:hover fieldset': {
       borderColor: grey[400],
     },
-    "&.Mui-focused fieldset": {
-      borderColor: "#FFAF37",
+    '&.Mui-focused fieldset': {
+      borderColor: '#FFAF37',
       borderWidth: 3,
     },
   },
@@ -29,7 +28,7 @@ const CssTextField = styled(TextField)({
 
 export default function SelectLimit() {
   const { limitTable, setLimitTable } = useLimitTable();
-  const { searchValue, setSearchValue } = useDataSearchMenu();
+  const { searchValue } = useDataSearchMenu();
   const { push, pathname, query } = useRouter();
 
   const handleSetlimit = () => {
@@ -39,11 +38,11 @@ export default function SelectLimit() {
     const newSearchValues = {
       ...query,
       ...searchValue,
-      ["limit"]: limitTable,
+      limit: limitTable,
     };
     const dataWithValue = Object.keys(newSearchValues)
       .filter(
-        (key) => newSearchValues[key] !== ""
+        (key) => newSearchValues[key] !== ''
         // newSearchValues[key] !== "Rp" &&
         // newSearchValues[key] !== "all"
       )
@@ -52,7 +51,7 @@ export default function SelectLimit() {
         return obj;
       }, {});
     push({
-      pathname: pathname,
+      pathname,
       query: dataWithValue,
     });
     //   setOpenLoadingCircular(false);
@@ -67,13 +66,13 @@ export default function SelectLimit() {
   return (
     <CssTextField
       select
-      inputProps={{ "aria-label": "Without label" }}
+      inputProps={{ 'aria-label': 'Without label' }}
       size="small"
       sx={{
-        "& > div": {
-          border: "none",
+        '& > div': {
+          border: 'none',
         },
-        "&:hover fieldset": {
+        '&:hover fieldset': {
           borderColor: grey[400],
         },
       }}

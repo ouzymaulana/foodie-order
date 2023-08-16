@@ -1,10 +1,7 @@
-import FilterCard from "@/Componens/Popover/FilterCard";
-import { useDataSelectFilter } from "@/Context/SelectFilterCardContextProvider";
-import { formatCurrency } from "@/Helper/formatCurrency";
-import { Grid, Typography } from "@mui/material";
-import axios from "axios";
-import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import FilterCard from '@/Componens/Popover/FilterCard';
+import { formatCurrency } from '@/Helper/formatCurrency';
+import { Grid, Typography } from '@mui/material';
+import React, { useEffect } from 'react';
 
 export default function CartDashboard({
   selectFilter,
@@ -12,9 +9,9 @@ export default function CartDashboard({
   getOrderMenu,
 }) {
   const orderOnProgress = orderData.filter(
-    (item) => item.status === "progress"
+    (item) => item.status === 'progress'
   );
-  const orderDone = orderData.filter((item) => item.status === "done");
+  const orderDone = orderData.filter((item) => item.status === 'done');
 
   const incomingBalance = orderData.reduce(
     (total, order) => total + order.total_bayar,
@@ -26,24 +23,24 @@ export default function CartDashboard({
   }, [selectFilter]);
 
   return (
-    <Grid display={"flex"} flexDirection={"column"} gap={3}>
-      <Grid display={"flex"} flexDirection={"column"} gap={1}>
+    <Grid display={'flex'} flexDirection={'column'} gap={3}>
+      <Grid display={'flex'} flexDirection={'column'} gap={1}>
         <FilterCard />
         <Grid
-          display={"flex"}
-          flexWrap={"wrap"}
+          display={'flex'}
+          flexWrap={'wrap'}
           gap={{ md: 4, xs: 2 }}
           // flexDirection={{ lg: "row", sm: "column" }}
-          justifyContent={"space-between"}
+          justifyContent={'space-between'}
         >
           <Grid
-            width={"25rem"}
-            height={"10rem"}
+            width={'25rem'}
+            height={'10rem'}
             borderRadius={4}
-            sx={{ backgroundColor: "white" }}
+            sx={{ backgroundColor: 'white' }}
             padding={2}
-            display={"flex"}
-            flexDirection={"column"}
+            display={'flex'}
+            flexDirection={'column'}
           >
             <Grid flex={6}>
               <Typography variant="h5" fontWeight={600}>
@@ -52,9 +49,9 @@ export default function CartDashboard({
             </Grid>
             <Grid
               flex={6}
-              display={"flex"}
-              justifyContent={"end"}
-              alignItems={"end"}
+              display={'flex'}
+              justifyContent={'end'}
+              alignItems={'end'}
             >
               <Typography variant="h4" fontWeight={600}>
                 {orderData.length || 0}
@@ -62,13 +59,13 @@ export default function CartDashboard({
             </Grid>
           </Grid>
           <Grid
-            width={"25rem"}
-            height={"10rem"}
+            width={'25rem'}
+            height={'10rem'}
             borderRadius={4}
-            sx={{ backgroundColor: "white" }}
+            sx={{ backgroundColor: 'white' }}
             padding={2}
-            display={"flex"}
-            flexDirection={"column"}
+            display={'flex'}
+            flexDirection={'column'}
           >
             <Grid flex={6}>
               <Typography variant="h5" fontWeight={600}>
@@ -77,9 +74,9 @@ export default function CartDashboard({
             </Grid>
             <Grid
               flex={6}
-              display={"flex"}
-              justifyContent={"end"}
-              alignItems={"end"}
+              display={'flex'}
+              justifyContent={'end'}
+              alignItems={'end'}
             >
               <Typography variant="h4" fontWeight={600}>
                 {orderOnProgress.length || 0}
@@ -87,13 +84,13 @@ export default function CartDashboard({
             </Grid>
           </Grid>
           <Grid
-            width={"25rem"}
-            height={"10rem"}
+            width={'25rem'}
+            height={'10rem'}
             borderRadius={4}
-            sx={{ backgroundColor: "white" }}
+            sx={{ backgroundColor: 'white' }}
             padding={2}
-            display={"flex"}
-            flexDirection={"column"}
+            display={'flex'}
+            flexDirection={'column'}
           >
             <Grid flex={6}>
               <Typography variant="h5" fontWeight={600}>
@@ -102,9 +99,9 @@ export default function CartDashboard({
             </Grid>
             <Grid
               flex={6}
-              display={"flex"}
-              justifyContent={"end"}
-              alignItems={"end"}
+              display={'flex'}
+              justifyContent={'end'}
+              alignItems={'end'}
             >
               <Typography variant="h4" fontWeight={600}>
                 {orderDone.length || 0}
@@ -112,13 +109,13 @@ export default function CartDashboard({
             </Grid>
           </Grid>
           <Grid
-            width={"25rem"}
-            height={"10rem"}
+            width={'25rem'}
+            height={'10rem'}
             borderRadius={4}
-            sx={{ backgroundColor: "white" }}
+            sx={{ backgroundColor: 'white' }}
             padding={2}
-            display={"flex"}
-            flexDirection={"column"}
+            display={'flex'}
+            flexDirection={'column'}
           >
             <Grid flex={6}>
               <Typography variant="h5" fontWeight={600}>
@@ -127,9 +124,9 @@ export default function CartDashboard({
             </Grid>
             <Grid
               flex={6}
-              display={"flex"}
-              justifyContent={"end"}
-              alignItems={"end"}
+              display={'flex'}
+              justifyContent={'end'}
+              alignItems={'end'}
             >
               <Typography variant="h4" fontWeight={600}>
                 {formatCurrency(incomingBalance)}

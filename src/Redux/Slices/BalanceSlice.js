@@ -1,15 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { createSlice } from '@reduxjs/toolkit';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 const balancePersistConfig = {
-  key: "balance",
-  storage: storage,
-  whitelist: ["balance"],
+  key: 'balance',
+  storage,
+  // storage: storage,
+  whitelist: ['balance'],
 };
 
 const BalanceSlice = createSlice({
-  name: "balance",
+  name: 'balance',
   initialState: {
     balance: 0,
   },

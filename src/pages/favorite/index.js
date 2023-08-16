@@ -1,9 +1,8 @@
-import Head from "next/head";
-import { Inter } from "next/font/google";
-import cookie from "cookie";
-import MainLayout from "@/Layout";
-import FavoriteMenu from "@/Views/FavoriteMenu";
-import jwt from "jsonwebtoken";
+import Head from 'next/head';
+import cookie from 'cookie';
+import MainLayout from '@/Layout';
+import FavoriteMenu from '@/Views/FavoriteMenu';
+import jwt from 'jsonwebtoken';
 
 export default function Favorite() {
   return (
@@ -21,22 +20,22 @@ export default function Favorite() {
 }
 
 export async function getServerSideProps(context) {
-  const cookieHeader = context.req.headers.cookie || "";
+  const cookieHeader = context.req.headers.cookie || '';
 
-  const cookies = cookie.parse(cookieHeader)?.token || "";
+  const cookies = cookie.parse(cookieHeader)?.token || '';
   if (!cookies) {
     return {
       redirect: {
-        destination: "/login",
+        destination: '/login',
         permanent: false,
       },
     };
   }
   const jwtData = jwt.decode(cookies);
-  if (jwtData.role === "admin") {
+  if (jwtData.role === 'admin') {
     return {
       redirect: {
-        destination: "/admin",
+        destination: '/admin',
         permanent: false,
       },
     };

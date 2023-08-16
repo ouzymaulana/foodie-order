@@ -1,10 +1,10 @@
-import AdminLayout from "@/Layout/AdminLayout";
-import Head from "next/head";
-import React from "react";
-import jwt from "jsonwebtoken";
-import cookie from "cookie";
-import axios from "axios";
-import DashboardView from "@/Views/Admin/Dashboard";
+import AdminLayout from '@/Layout/AdminLayout';
+import Head from 'next/head';
+import React from 'react';
+import jwt from 'jsonwebtoken';
+import cookie from 'cookie';
+import axios from 'axios';
+import DashboardView from '@/Views/Admin/Dashboard';
 
 export default function Dashboard({ getOrderData, totalOrderItems }) {
   return (
@@ -30,23 +30,23 @@ export async function getServerSideProps(context) {
   const { sortType, sortBy, search, field, page, limit, ...searchValues } =
     context.query;
 
-  if (typeof cookieHeader !== "string") {
-    cookieHeader = "";
+  if (typeof cookieHeader !== 'string') {
+    cookieHeader = '';
   }
   const cookies = cookie.parse(cookieHeader).token;
   if (!cookies) {
     return {
       redirect: {
-        destination: "/login",
+        destination: '/login',
         permanent: false,
       },
     };
   }
   const jwtData = jwt.decode(cookies);
-  if (jwtData.role === "user") {
+  if (jwtData.role === 'user') {
     return {
       redirect: {
-        destination: "/",
+        destination: '/',
         permanent: false,
       },
     };
@@ -54,21 +54,20 @@ export async function getServerSideProps(context) {
 
   let getOrderData = [];
   let totalOrderItems;
-  let newOrderData = [];
   try {
     const response = await axios.get(
-      "http://localhost:5000/api/all-order-menu",
+      'http://localhost:5000/api/all-order-menu',
       {
         headers: {
           Authorization: `Bearer ${cookies}`,
         },
         params: {
-          sortBy: sortBy || "createdAt",
-          sortType: sortType || "desc",
-          search: search || "",
-          field: field || "",
-          limit: limit || "10",
-          page: page || "1",
+          sortBy: sortBy || 'createdAt',
+          sortType: sortType || 'desc',
+          search: search || '',
+          field: field || '',
+          limit: limit || '10',
+          page: page || '1',
           ...searchValues,
         },
       }

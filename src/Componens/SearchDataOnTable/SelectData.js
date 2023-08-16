@@ -1,32 +1,26 @@
-import { usePageMenu } from "@/Context/PageContextProvider";
-import { useDataSearchMenu } from "@/Context/SearchValueOnTableContextProvider";
-import theme from "@/Helper/theme";
-import {
-  Grid,
-  MenuItem,
-  TableSortLabel,
-  TextField,
-  styled,
-} from "@mui/material";
-import { grey } from "@mui/material/colors";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { useDebounce } from "use-debounce";
+import { usePageMenu } from '@/Context/PageContextProvider';
+import { useDataSearchMenu } from '@/Context/SearchValueOnTableContextProvider';
+import theme from '@/Helper/theme';
+import { MenuItem, TextField, styled } from '@mui/material';
+import { grey } from '@mui/material/colors';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { useDebounce } from 'use-debounce';
 
 const CssTextField = styled(TextField)({
-  "& .MuiOutlinedInput-root": {
-    fontSize: "1rem",
-    height: "40px",
-    width: "100%",
+  '& .MuiOutlinedInput-root': {
+    fontSize: '1rem',
+    height: '40px',
+    width: '100%',
 
-    "& fieldset": {
+    '& fieldset': {
       borderRadius: theme.spacing(1),
     },
-    "&:hover fieldset": {
+    '&:hover fieldset': {
       borderColor: grey[400],
     },
-    "&.Mui-focused fieldset": {
-      borderColor: "#FFAF37",
+    '&.Mui-focused fieldset': {
+      borderColor: '#FFAF37',
       borderWidth: 3,
     },
   },
@@ -36,23 +30,23 @@ export default function SelectData({ title, selectData }) {
   const route = useRouter();
   const { searchValue, setSearchValue } = useDataSearchMenu();
   const { setPage } = usePageMenu();
-  const [inputSearch, setInputSearch] = useState("");
+  const [inputSearch, setInputSearch] = useState('');
   const [valueUseDebounce] = useDebounce(inputSearch, 1000);
 
   const handleSearch = () => {
     setPage(1);
     const priceWithoutRp = searchValue.price
-      ? searchValue.price.replace("Rp", "")
-      : "";
-    const totalPayWithoutRp = searchValue["total-pay"]
-      ? searchValue["total-pay"].replace("Rp", "")
-      : "";
+      ? searchValue.price.replace('Rp', '')
+      : '';
+    const totalPayWithoutRp = searchValue['total-pay']
+      ? searchValue['total-pay'].replace('Rp', '')
+      : '';
 
     let searchValueData;
     // const newTitle = title;
-    if (inputSearch === "all") {
+    if (inputSearch === 'all') {
       const data = Object.keys(searchValue)
-        .filter((key) => searchValue[key] !== "all")
+        .filter((key) => searchValue[key] !== 'all')
         .reduce((obj, key) => {
           obj[key] = searchValue[key];
           return obj;
@@ -61,7 +55,7 @@ export default function SelectData({ title, selectData }) {
       setSearchValue(data);
 
       // setSearchvalue hilangin
-      searchValueData = "";
+      searchValueData = '';
     } else {
       searchValueData = inputSearch;
     }
@@ -69,14 +63,14 @@ export default function SelectData({ title, selectData }) {
       ...route.query,
       ...searchValue,
       [title]: searchValueData,
-      ["page"]: 1,
+      page: 1,
       price: priceWithoutRp,
-      ["total-pay"]: totalPayWithoutRp,
+      'total-pay': totalPayWithoutRp,
     };
 
     const dataWithValue = Object.keys(newSearchValues)
       .filter(
-        (key) => newSearchValues[key] !== "" && newSearchValues[key] !== "Rp"
+        (key) => newSearchValues[key] !== '' && newSearchValues[key] !== 'Rp'
       )
       .reduce((obj, key) => {
         obj[key] = newSearchValues[key];
@@ -95,10 +89,11 @@ export default function SelectData({ title, selectData }) {
       );
 
       if (entry) {
-        const [key, value] = entry;
-        setInputSearch(value);
+        // const [key, value] = entry;
+        // setInputSearch(value);
+        setInputSearch(entry[1]);
       } else {
-        setInputSearch("");
+        setInputSearch('');
       }
     }
   }, []);
@@ -110,13 +105,13 @@ export default function SelectData({ title, selectData }) {
   return (
     <CssTextField
       id="outlined-select-currency"
-      sx={{ width: "100%" }}
+      sx={{ width: '100%' }}
       select
       defaultValue={inputSearch || selectData[0].value}
       value={inputSearch || selectData[0].value}
       onChange={(event) => {
-        setInputSearch(event.target.value),
-          setSearchValue({ ...searchValue, [title]: event.target.value });
+        setInputSearch(event.target.value);
+        setSearchValue({ ...searchValue, [title]: event.target.value });
       }}
     >
       {selectData.map((item, i) => (

@@ -41,9 +41,6 @@ export default function UpdateStatusOrderMenu({ title }) {
               },
             }
           );
-          console.log("=======jwt=============================");
-          console.log(response);
-          console.log("====================================");
 
           if (response.data.status === "success") {
             handleClose();
@@ -52,11 +49,16 @@ export default function UpdateStatusOrderMenu({ title }) {
           }
         } else {
           push("/login");
+
           setAlertMessage({
             ...alertMessage,
             isAlertToken: true,
             message: "sesi anda habis, harap login kembali!",
           });
+
+          console.log("===========messs=========================");
+          console.log(alertMessage);
+          console.log("====================================");
         }
       } catch (error) {
         console.error(error);

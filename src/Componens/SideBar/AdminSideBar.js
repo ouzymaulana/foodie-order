@@ -7,16 +7,14 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
-  Typography,
-} from "@mui/material";
-import Image from "next/image";
-import React from "react";
-import DashboardCustomizeOutlinedIcon from "@mui/icons-material/DashboardCustomizeOutlined";
-import FastfoodRoundedIcon from "@mui/icons-material/FastfoodRounded";
-import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
-import { useDataSelectMenu } from "@/Context/SelectMenuSidebarContexProvider";
-import { useRouter } from "next/router";
-import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
+} from '@mui/material';
+import Image from 'next/image';
+import React from 'react';
+import DashboardCustomizeOutlinedIcon from '@mui/icons-material/DashboardCustomizeOutlined';
+import FastfoodRoundedIcon from '@mui/icons-material/FastfoodRounded';
+import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
+import { useRouter } from 'next/router';
+import { useLoadingCircularProgress } from '@/Context/LoadingCircularProgressContextProvider';
 
 export default function AdminSideBar() {
   const route = useRouter();
@@ -24,12 +22,12 @@ export default function AdminSideBar() {
   return (
     <Drawer
       sx={{
-        position: "relative",
-        border: "0",
+        position: 'relative',
+        border: '0',
         flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: "18rem",
-          boxSizing: "border-box",
+        '& .MuiDrawer-paper': {
+          width: '18rem',
+          boxSizing: 'border-box',
         },
         zIndex: 990,
         // display: { sm: "none", xs: "none" },
@@ -39,9 +37,9 @@ export default function AdminSideBar() {
     >
       <Toolbar
         sx={{
-          height: "80px",
-          display: "flex",
-          justifyContent: "center",
+          height: '80px',
+          display: 'flex',
+          justifyContent: 'center',
         }}
       >
         <Image src="/img/logo.svg" height={100} width={100} alt="logo" />
@@ -51,16 +49,16 @@ export default function AdminSideBar() {
         <ListItem sx={{ paddingX: 3 }}>
           <ListItemButton
             onClick={() => {
-              route.push("/admin");
+              route.push('/admin');
               setOpenLoadingCircular(true);
             }}
             sx={{
               borderRadius: 3.5,
               // ...(selectMenu === "" && {
-              ...(route.pathname === "/admin" && {
-                backgroundColor: "#FFBA53",
-                "&:hover": {
-                  backgroundColor: "#FFBA53",
+              ...(route.pathname === '/admin' && {
+                backgroundColor: '#FFBA53',
+                '&:hover': {
+                  backgroundColor: '#FFBA53',
                 },
               }),
             }}
@@ -68,21 +66,21 @@ export default function AdminSideBar() {
             <ListItemIcon>
               <DashboardCustomizeOutlinedIcon />
             </ListItemIcon>
-            <ListItemText primary={"Dashboard"} />
+            <ListItemText primary={'Dashboard'} />
           </ListItemButton>
         </ListItem>
         <ListItem sx={{ paddingX: 3 }}>
           <ListItemButton
             onClick={() => {
-              route.push("/admin/menu-management");
+              route.push('/admin/menu-management');
               setOpenLoadingCircular(true);
             }}
             sx={{
               borderRadius: 3.5,
-              ...(route.pathname === "/admin/menu-management" && {
-                backgroundColor: "#FFBA53",
-                "&:hover": {
-                  backgroundColor: "#FFBA53",
+              ...(route.pathname === '/admin/menu-management' && {
+                backgroundColor: '#FFBA53',
+                '&:hover': {
+                  backgroundColor: '#FFBA53',
                 },
               }),
             }}
@@ -90,21 +88,21 @@ export default function AdminSideBar() {
             <ListItemIcon>
               <FastfoodRoundedIcon />
             </ListItemIcon>
-            <ListItemText primary={"Menu Management"} />
+            <ListItemText primary={'Menu Management'} />
           </ListItemButton>
         </ListItem>
         <ListItem sx={{ paddingX: 3 }}>
           <ListItemButton
             onClick={() => {
-              route.push("/admin/user-management");
+              route.push('/admin/user-management');
               setOpenLoadingCircular(true);
             }}
             sx={{
               borderRadius: 3.5,
-              ...(route.pathname === "/admin/user-management" && {
-                backgroundColor: "#FFBA53",
-                "&:hover": {
-                  backgroundColor: "#FFBA53",
+              ...(route.pathname === '/admin/user-management' && {
+                backgroundColor: '#FFBA53',
+                '&:hover': {
+                  backgroundColor: '#FFBA53',
                 },
               }),
             }}
@@ -112,7 +110,7 @@ export default function AdminSideBar() {
             <ListItemIcon>
               <GroupRoundedIcon />
             </ListItemIcon>
-            <ListItemText primary={"User Management"} />
+            <ListItemText primary={'User Management'} />
           </ListItemButton>
         </ListItem>
       </List>

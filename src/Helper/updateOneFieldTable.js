@@ -1,8 +1,7 @@
-import ButtonUpdateStatusOrderMenu from "@/Componens/Table/ButtonUpdateStatusOrderMenu";
-import { TableSortLabel } from "@mui/material";
+import ButtonUpdateStatusOrderMenu from '@/Componens/Table/ButtonUpdateStatusOrderMenu';
 
 export function isHasUpdateButtonOneField(row, column) {
-  if (column === "status") {
+  if (column === 'status') {
     return <ButtonUpdateStatusOrderMenu orderItem={row} />;
   } else {
     return <></>;

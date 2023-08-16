@@ -1,7 +1,8 @@
-import axios from "axios";
-import Cookies from "js-cookie";
-import jwt from "jsonwebtoken";
-import { getDataFavorite } from "./FavoriteData/getDataFavorite";
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import jwt from 'jsonwebtoken';
+import { getDataFavorite } from './FavoriteData/getDataFavorite';
+import { useRouter } from 'next/router';
 
 export const handleAddFavoriteMenu = async (
   id_menu,
@@ -11,26 +12,31 @@ export const handleAddFavoriteMenu = async (
   setDataFavorite,
   menu
 ) => {
-  const token = Cookies.get("token");
-  const emailLogin = jwt.decode(token);
+  const token = Cookies.get('token');
+  const { push } = useRouter();
   try {
-    const response = await axios.post("http://localhost:5000/api/favorite", {
-      data: {
-        id_menu,
-        email: emailLogin.email,
-      },
-    });
+    if (token) {
+      const emailLogin = jwt.decode(token);
+      const response = await axios.post('http://localhost:5000/api/favorite', {
+        data: {
+          id_menu,
+          email: emailLogin.email,
+        },
+      });
 
-    console.log("JWT : ", response);
+      console.log('JWT : ', response);
 
-    if (response.data.data.message === "Delete") {
-      dispatch(deleteDataByIdMenu(id_menu));
-      getDataFavorite(dispatch, setDataFavorite);
-    }
+      if (response.data.data.message === 'Delete') {
+        dispatch(deleteDataByIdMenu(id_menu));
+        getDataFavorite(dispatch, setDataFavorite);
+      }
 
-    if (response.data.data.message === "Create") {
-      const getDataMenu = menu.find((menu) => menu.id === id_menu);
-      dispatch(addDataFavorite(getDataMenu));
+      if (response.data.data.message === 'Create') {
+        const getDataMenu = menu.find((menu) => menu.id === id_menu);
+        dispatch(addDataFavorite(getDataMenu));
+      }
+    } else {
+      push('/login');
     }
   } catch (error) {
     console.error(error);

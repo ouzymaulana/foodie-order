@@ -1,21 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { createSlice } from '@reduxjs/toolkit';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 const itemCartPersistConfig = {
-  key: "cartItem",
-  storage: storage,
-  whitelist: ["cartItem"],
+  key: 'cartItem',
+  storage,
+  whitelist: ['cartItem'],
 };
 
 const CartItemsSlice = createSlice({
-  name: "cartItem",
+  name: 'cartItem',
   initialState: {
     cartItem: [],
   },
   reducers: {
     setCartItem: (state, action) => {
-      if (state.cartItem == "") {
+      if (state.cartItem.length === 0) {
         state.cartItem = action.payload;
       } else {
         state.cartItem[0].menu.push(action.payload);
@@ -52,8 +52,8 @@ const CartItemsSlice = createSlice({
       const { waktuPesanan, alamatAntar } = action.payload;
       const data = {
         ...state.cartItem[0],
-        waktuPesanan: waktuPesanan,
-        alamatAntar: alamatAntar,
+        waktuPesanan,
+        alamatAntar,
       };
 
       const updatedState = {
@@ -72,7 +72,7 @@ const CartItemsSlice = createSlice({
           return {
             ...item,
             quantity:
-              status === "increment" ? item.quantity + 1 : item.quantity - 1,
+              status === 'increment' ? item.quantity + 1 : item.quantity - 1,
           };
         }
         return item;
@@ -104,12 +104,8 @@ const CartItemsSlice = createSlice({
         cartItem: [updatedCartItem],
       };
 
-      if (updatedState.cartItem[0].menu == "") {
+      if (updatedState.cartItem[0].menu.length === 0) {
         state.cartItem = [];
-        console.log(
-          "Updated state:",
-          JSON.stringify(updatedState.cartItem[0].menu)
-        );
       } else {
         return updatedState;
       }

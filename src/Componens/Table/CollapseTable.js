@@ -1,4 +1,3 @@
-import { useActionTableModal } from "@/Context/ModalActionTable/ActionTableContextProvider";
 import {
   Box,
   Collapse,
@@ -8,12 +7,11 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from "@mui/material";
-import { grey } from "@mui/material/colors";
-import React from "react";
+} from '@mui/material';
+import { grey } from '@mui/material/colors';
+import React from 'react';
 
 export default function CollapseTable({ dataRows, open }) {
-  const { openActionTable, setOpenActionTable } = useActionTableModal();
   return (
     <TableRow
       sx={{
@@ -51,11 +49,11 @@ export default function CollapseTable({ dataRows, open }) {
               <TableBody>
                 {dataRows.tb_order_details.map((item, i) => (
                   <TableRow key={i}>
-                    <TableCell>{item.tb_menu.nama || "-"}</TableCell>
-                    <TableCell>{item.tb_menu.kategori || "-"}</TableCell>
-                    <TableCell>{item.quantity || "-"}</TableCell>
-                    <TableCell>{item.catatan || "-"}</TableCell>
-                    <TableCell>{item.subTotal || "-"}</TableCell>
+                    <TableCell>{item.tb_menu.nama || '-'}</TableCell>
+                    <TableCell>{item.tb_menu.kategori || '-'}</TableCell>
+                    <TableCell>{item.quantity || '-'}</TableCell>
+                    <TableCell>{item.catatan || '-'}</TableCell>
+                    <TableCell>{item.subTotal || '-'}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

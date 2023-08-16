@@ -1,11 +1,11 @@
-import AddToCart from "@/Componens/Modal/AddToCart";
-import IsHasCartItem from "@/Componens/Modal/IsHasCartItem";
-import { formatCurrency } from "@/Helper/formatCurrency";
-import { selectDataCart } from "@/Redux/Slices/CartItemsSlice";
-import { Button, CardMedia, Divider, Grid, Typography } from "@mui/material";
-import { grey } from "@mui/material/colors";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import AddToCart from '@/Componens/Modal/AddToCart';
+import IsHasCartItem from '@/Componens/Modal/IsHasCartItem';
+import { formatCurrency } from '@/Helper/formatCurrency';
+import { selectDataCart } from '@/Redux/Slices/CartItemsSlice';
+import { Button, CardMedia, Divider, Grid, Typography } from '@mui/material';
+import { grey } from '@mui/material/colors';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export default function ItemOrderHistory({ itemOrder }) {
   const [open, setOpen] = useState(false);
@@ -27,13 +27,13 @@ export default function ItemOrderHistory({ itemOrder }) {
 
   return (
     <>
-      <Grid display={"flex"} flexWrap={"wrap"} paddingY={1.5}>
-        <Grid flex={{ md: 1.2, xs: "70%" }}>
+      <Grid display={'flex'} flexWrap={'wrap'} paddingY={1.5}>
+        <Grid flex={{ md: 1.2, xs: '70%' }}>
           <CardMedia
-            sx={{ borderRadius: "15px", paddingX: { xs: 12, md: 0 } }}
+            sx={{ borderRadius: '15px', paddingX: { xs: 12, md: 0 } }}
             component="img"
             alt="green"
-            height={"100"}
+            height={'100'}
             image="/img/cocktail.jpg"
           />
         </Grid>
@@ -51,11 +51,11 @@ export default function ItemOrderHistory({ itemOrder }) {
         </Grid>
         <Grid
           flex={2}
-          display={"flex"}
-          flexDirection={"column"}
+          display={'flex'}
+          flexDirection={'column'}
           // justifyContent={"end"}
-          alignItems={"end"}
-          position={"relative"}
+          alignItems={'end'}
+          position={'relative'}
         >
           <Grid flex={3}>
             <Typography variant="subtitle1" color={grey[600]}>
@@ -70,9 +70,9 @@ export default function ItemOrderHistory({ itemOrder }) {
           </Grid>
           <Grid
             flex={8}
-            display={"flex"}
-            justifyContent={"end"}
-            alignItems={"end"}
+            display={'flex'}
+            justifyContent={'end'}
+            alignItems={'end'}
           >
             <Button
               onClick={() => handleOpen(itemOrder.tb_menu.id)}
@@ -81,8 +81,8 @@ export default function ItemOrderHistory({ itemOrder }) {
               color="primary"
               disableElevation
               sx={{
-                borderRadius: "6px",
-                textTransform: "none",
+                borderRadius: '6px',
+                textTransform: 'none',
               }}
             >
               order again
@@ -91,7 +91,7 @@ export default function ItemOrderHistory({ itemOrder }) {
         </Grid>
       </Grid>
       <Divider variant="middle" />
-      {cartItem == "" ? (
+      {cartItem.length === 0 ? (
         <AddToCart
           open={open}
           handleClose={handleClose}
