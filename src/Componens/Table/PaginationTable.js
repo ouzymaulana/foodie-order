@@ -15,11 +15,6 @@ export default function PaginationTable({ limitTable }) {
   const theme = useTheme();
   const isMdScreen = useMediaQuery(theme.breakpoints.up('md'));
 
-  // console.log("===========TotalItem=LimitTable========================");
-  // console.log(totalItem);
-  // console.log(limitTable);
-  // console.log("====================================");
-
   const handleChange = (event, value) => {
     setPage(value);
   };
@@ -58,8 +53,8 @@ export default function PaginationTable({ limitTable }) {
     >
       <SelectLimit />
       <Pagination
-        count={Math.ceil(totalItem / limitTable)}
-        page={parseInt(page)}
+        count={Math.ceil(totalItem / limitTable) || 0}
+        page={parseInt(page) || 0}
         variant="outlined"
         size={isMdScreen ? 'large' : 'small'}
         color="primary"

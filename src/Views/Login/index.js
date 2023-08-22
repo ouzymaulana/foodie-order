@@ -217,7 +217,7 @@ export default function LoginView() {
                   want to verify account?{' '}
                   <Link
                     style={{ textDecoration: 'underline', color: '#FAA41A' }}
-                    href="/verification"
+                    href="/verification?token=kokk"
                   >
                     Verification
                   </Link>

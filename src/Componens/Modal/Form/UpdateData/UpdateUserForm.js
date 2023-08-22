@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
-import ModalLayout from "../../ModalLayout";
-import { Grid } from "@mui/material";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import InputForm from "@/Componens/InputForm";
-import ButtonModal from "../../ButtonModal";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { useRouter } from "next/router";
-import { useActionTableModal } from "@/Context/ModalActionTable/ActionTableContextProvider";
-import { Alert } from "@/Componens/Alert";
+import React, { useEffect } from 'react';
+import ModalLayout from '../../ModalLayout';
+import { Grid } from '@mui/material';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import InputForm from '@/Componens/InputForm';
+import ButtonModal from '../../ButtonModal';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+import { useActionTableModal } from '@/Context/ModalActionTable/ActionTableContextProvider';
+import { Alert } from '@/Componens/Alert';
 
 export default function UpdateUserForm({ title }) {
   const { openActionTable, setOpenActionTable } = useActionTableModal();
-  const token = Cookies.get("token");
+  const token = Cookies.get('token');
   const { replace, asPath } = useRouter();
 
   const handleCloseUpdateUser = () =>
@@ -22,7 +22,7 @@ export default function UpdateUserForm({ title }) {
   const handleSubmit = async () => {
     try {
       const response = await axios.put(
-        "http://localhost:5000/admin/user/update",
+        'http://localhost:5000/admin/user/update',
         {
           nama: formik.values.nama,
           email: formik.values.email,
@@ -39,9 +39,9 @@ export default function UpdateUserForm({ title }) {
         }
       );
 
-      if (response.data.status === "success") {
+      if (response.data.status === 'success') {
         handleCloseUpdateUser();
-        Alert("success", "successfully update new user");
+        Alert('success', 'successfully update new user');
         replace(asPath);
       }
     } catch (error) {
@@ -52,10 +52,10 @@ export default function UpdateUserForm({ title }) {
   const formik = useFormik({
     // setting initial values
     initialValues: {
-      nama: "",
-      email: "",
-      divisi: "",
-      role: "",
+      nama: '',
+      email: '',
+      divisi: '',
+      role: '',
     },
 
     validationSchema: Yup.object({
@@ -87,39 +87,39 @@ export default function UpdateUserForm({ title }) {
       title={title}
     >
       <form onSubmit={formik.handleSubmit}>
-        <Grid display={"flex"} flexDirection={"column"} gap={3}>
+        <Grid display={'flex'} flexDirection={'column'} gap={3}>
           <InputForm
-            title={"nama"}
-            label={"Menu Name"}
-            value={formik.values.nama}
+            title={'nama'}
+            label={'Menu Name'}
+            value={formik.values.nama || ''}
             onchange={formik.handleChange}
             dataError={formik.errors.nama}
             touched={formik.touched.nama}
           />
           <InputForm
-            title={"email"}
-            label={"Email"}
-            value={formik.values.email}
+            title={'email'}
+            label={'Email'}
+            value={formik.values.email || ''}
             onchange={formik.handleChange}
             dataError={formik.errors.email}
             touched={formik.touched.email}
           />
           <InputForm
-            title={"divisi"}
-            label={"Division"}
+            title={'divisi'}
+            label={'Division'}
             select={true}
-            dataSelect={["IT Dev", "Pro Dev"]}
-            value={formik.values.divisi}
+            dataSelect={['IT Dev', 'Pro Dev']}
+            value={formik.values.divisi || ''}
             onchange={formik.handleChange}
             dataError={formik.errors.divisi}
             touched={formik.touched.divisi}
           />
           <InputForm
-            title={"role"}
-            label={"Role"}
+            title={'role'}
+            label={'Role'}
             select={true}
-            dataSelect={["user", "admin"]}
-            value={formik.values.role}
+            dataSelect={['user', 'admin']}
+            value={formik.values.role || ''}
             onchange={formik.handleChange}
             dataError={formik.errors.role}
             touched={formik.touched.role}
