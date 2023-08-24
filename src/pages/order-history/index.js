@@ -4,6 +4,7 @@ import Head from 'next/head';
 import React from 'react';
 import cookie from 'cookie';
 import jwt from 'jsonwebtoken';
+import userAut from '@/Helper/Authorization/userAut';
 
 export default function OrderHistory() {
   return (
@@ -27,23 +28,9 @@ export async function getServerSideProps(context) {
     cookieHeader = '';
   }
   const cookies = cookie.parse(cookieHeader).token;
-  if (!cookies) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
   const jwtData = jwt.decode(cookies);
-  if (jwtData.role === 'admin') {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
+  const authResult = userAut(jwtData, cookies);
+  if (authResult) return authResult;
   return {
     props: {},
   };

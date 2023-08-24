@@ -41,7 +41,6 @@ export default function CashWithDrawwal({ title }) {
       }
 
       if (response.data.status === 'fail') {
-        console.log(response.data.data.message);
         setAlertMessage(response.data.data.message);
         setIsAlart(true);
       }

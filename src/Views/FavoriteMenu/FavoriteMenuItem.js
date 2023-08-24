@@ -52,8 +52,6 @@ export default function FavoriteMenuItem() {
         },
       });
 
-      console.log('JWTnya : ', response);
-
       if (response.data.status === 'success') {
         dispatch(deleteDataByIdMenu(id_menu));
         // getDataFavorite();

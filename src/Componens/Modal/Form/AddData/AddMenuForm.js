@@ -25,9 +25,6 @@ export default function AddMenuForm({ open, handleClose, title }) {
   });
 
   const handleChangeFile = (value) => {
-    console.log('====================================');
-    console.log('MASUK');
-    console.log('====================================');
     const validationImage = textFieldImage(value);
 
     if (validationImage.status === 'failed') {

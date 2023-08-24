@@ -1,7 +1,7 @@
 import AdminHeader from '@/Componens/Header/AdminHeader';
 import LoadingCircular from '@/Componens/Loading/LoadingCircular';
 import AdminSideBar from '@/Componens/SideBar/AdminSideBar';
-import TestSidebar from '@/Componens/SideBar/testSideBar';
+import ResponsiveSideBar from '@/Componens/SideBar/ResponsiveSideBar';
 import AlertMessageContextProvider from '@/Context/Alert/AlertContextProvider';
 import DashboardLimitTableContextProvider from '@/Context/DashboardLimitTableContextProvider';
 import IsHasUpdatedProvider from '@/Context/IsHasUpdatedContextProvider';
@@ -22,7 +22,7 @@ import React from 'react';
 export default function AdminLayout({ children }) {
   const isDesktop = useMediaQuery('(min-width:600px)');
 
-  const drawer = isDesktop ? <AdminSideBar /> : <TestSidebar />;
+  const drawer = isDesktop ? <AdminSideBar /> : <ResponsiveSideBar />;
   return (
     <>
       <SelectMenuSidebarContexProvider>

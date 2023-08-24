@@ -1,12 +1,11 @@
-import React from "react";
-import ModalLayout from "../../ModalLayout";
-import { Typography } from "@mui/material";
-import { useFormik } from "formik";
+import React from 'react';
+import ModalLayout from '../../ModalLayout';
+import { Typography } from '@mui/material';
+import { useFormik } from 'formik';
 
 export default function testFile({ dataMenu, title, open, handleClose }) {
-  console.log(dataMenu);
   const formik = useFormik({
-    nama: "ouzy",
+    nama: 'ouzy',
   });
   return (
     <ModalLayout open={open} handleClose={handleClose} title={title}>

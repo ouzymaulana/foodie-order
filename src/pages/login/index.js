@@ -5,6 +5,7 @@ import LoginView from '@/Views/Login';
 import AlertMessageContextProvider from '@/Context/Alert/AlertContextProvider';
 import LoadingCircularProgressContextProvider from '@/Context/LoadingCircularProgressContextProvider';
 import LoadingCircular from '@/Componens/Loading/LoadingCircular';
+import isLogin from '@/Helper/Authorization';
 
 export default function Login() {
   return (
@@ -25,19 +26,9 @@ export async function getServerSideProps(context) {
   }
   const cookies = cookie.parse(cookieHeader).token;
   const jwtData = jwt.decode(cookies);
-  let checkRole;
-  if (jwtData) {
-    checkRole = jwtData.role === 'admin' ? '/admin' : '/';
-  }
 
-  if (cookies) {
-    return {
-      redirect: {
-        destination: checkRole,
-        permanent: false,
-      },
-    };
-  }
+  const authStatus = isLogin(jwtData, cookies);
+  if (authStatus) return authStatus;
   return {
     props: {},
   };

@@ -4,6 +4,7 @@ import VerificationView from '@/Views/Verification';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 import AlertMessageContextProvider from '@/Context/Alert/AlertContextProvider';
+import isLogin from '@/Helper/Authorization';
 
 export default function Verification() {
   return (
@@ -24,10 +25,9 @@ export async function getServerSideProps(context) {
   }
   const cookies = cookie.parse(cookieHeader).token;
   const jwtData = jwt.decode(cookies);
-  let checkRole;
-  if (jwtData) {
-    checkRole = jwtData.role === 'admin' ? '/admin' : '/';
-  } else if (token === undefined) {
+
+  const authStatus = isLogin(jwtData, cookies);
+  if (token === undefined && !authStatus) {
     return {
       redirect: {
         destination: '/login',
@@ -35,15 +35,8 @@ export async function getServerSideProps(context) {
       },
     };
   }
+  if (authStatus) return authStatus;
 
-  if (cookies) {
-    return {
-      redirect: {
-        destination: checkRole,
-        permanent: false,
-      },
-    };
-  }
   return {
     props: {},
   };

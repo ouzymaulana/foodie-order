@@ -3,6 +3,7 @@ import cookie from 'cookie';
 import MainLayout from '@/Layout';
 import FavoriteMenu from '@/Views/FavoriteMenu';
 import jwt from 'jsonwebtoken';
+import userAut from '@/Helper/Authorization/userAut';
 
 export default function Favorite() {
   return (
@@ -23,23 +24,9 @@ export async function getServerSideProps(context) {
   const cookieHeader = context.req.headers.cookie || '';
 
   const cookies = cookie.parse(cookieHeader)?.token || '';
-  if (!cookies) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
   const jwtData = jwt.decode(cookies);
-  if (jwtData.role === 'admin') {
-    return {
-      redirect: {
-        destination: '/admin',
-        permanent: false,
-      },
-    };
-  }
+  const authResult = userAut(jwtData, cookies);
+  if (authResult) return authResult;
   return {
     props: {
       // ...

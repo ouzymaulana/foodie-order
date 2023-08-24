@@ -48,6 +48,9 @@ export default function DashboardView({ getOrderData, totalOrderItems }) {
   useEffect(() => {
     setTotalItem(totalOrderItems);
     // dispatch(setDataMenu(getDataMenu));
+    console.log('====================================');
+    console.log('BERAPA');
+    console.log('====================================');
   }, [totalItem, getOrderData]);
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 import axios from 'axios';
 import DashboardView from '@/Views/Admin/Dashboard';
+import adminAut from '@/Helper/Authorization/adminAut';
 
 export default function Dashboard({ getOrderData, totalOrderItems }) {
   return (
@@ -34,23 +35,10 @@ export async function getServerSideProps(context) {
     cookieHeader = '';
   }
   const cookies = cookie.parse(cookieHeader).token;
-  if (!cookies) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
   const jwtData = jwt.decode(cookies);
-  if (jwtData.role === 'user') {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
+
+  const authResult = adminAut(jwtData, cookies);
+  if (authResult) return authResult;
 
   let getOrderData = [];
   let totalOrderItems;
@@ -78,8 +66,6 @@ export async function getServerSideProps(context) {
       totalOrderItems = response.data.data.totalItems;
       getOrderData = response.data.data.newOrderData;
     }
-
-    console.log(getOrderData);
   } catch (error) {
     console.error(error);
   }

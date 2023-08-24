@@ -42,9 +42,7 @@ export default function UpdateInputFile({
 }) {
   const fileInputRef = useRef(null);
   const handleInputChange = (event) => {
-    console.log('MASUK ONCHANGE');
     const file = event.target.files[0];
-    // console.log(file);
     onchange(file);
   };
 

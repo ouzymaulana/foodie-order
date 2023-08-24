@@ -32,20 +32,13 @@ export default function SelectLimit() {
   const { push, pathname, query } = useRouter();
 
   const handleSetlimit = () => {
-    // clearTimeout(isLoading);
-    // setOpenLoadingCircular(true);
-    // const newTimer = setTimeout(() => {
     const newSearchValues = {
       ...query,
       ...searchValue,
       limit: limitTable,
     };
     const dataWithValue = Object.keys(newSearchValues)
-      .filter(
-        (key) => newSearchValues[key] !== ''
-        // newSearchValues[key] !== "Rp" &&
-        // newSearchValues[key] !== "all"
-      )
+      .filter((key) => newSearchValues[key] !== '')
       .reduce((obj, key) => {
         obj[key] = newSearchValues[key];
         return obj;
@@ -54,14 +47,13 @@ export default function SelectLimit() {
       pathname,
       query: dataWithValue,
     });
-    //   setOpenLoadingCircular(false);
-    // }, 500);
-    // setIsLoading(newTimer);
   };
 
   useEffect(() => {
     handleSetlimit();
-  }, [limitTable, query.limit]);
+    // }, [query.limit]);
+  }, [limitTable]);
+  // }, [limitTable, query.limit]);
 
   return (
     <CssTextField

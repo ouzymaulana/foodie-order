@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const FavoriteMenuSlice = createSlice({
-  name: "dataFavorite",
+  name: 'dataFavorite',
   initialState: {
     dataFavorite: [],
   },
@@ -20,11 +20,7 @@ const FavoriteMenuSlice = createSlice({
       state.dataFavorite = [...state.dataFavorite, { ...action.payload }];
     },
 
-    ifHasDataFavorite: (state, action) => {
-      console.log("==================ifHasDataFavorite==================");
-      console.log(action.payload);
-      console.log("====================================");
-    },
+    ifHasDataFavorite: (state, action) => {},
   },
 });
 

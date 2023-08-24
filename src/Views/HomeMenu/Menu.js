@@ -35,7 +35,6 @@ export default function MenuItem() {
   const dispatch = useDispatch();
   const { limit } = useLimitMenu();
   const { page, setPage } = useScrollPageMenu();
-  // const { page, setPage } = usePageMenu();
   const route = useRouter();
   const token = Cookies.get('token');
   const listInnerRef = useRef(null);

@@ -41,8 +41,6 @@ export default function FilterCartModal({ open, handleClose, filterBy }) {
   const [startDate, setStartDate] = useState(null);
   const [lastDate, setLastDate] = useState(null);
 
-  console.log(startDate);
-
   const handleDateChange = (date) => {
     setSelectValue(date);
   };

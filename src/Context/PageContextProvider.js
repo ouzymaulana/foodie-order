@@ -1,12 +1,12 @@
-import { useRouter } from "next/router";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from 'next/router';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export const PageMenu = createContext();
 export const usePageMenu = () => useContext(PageMenu);
 
 const PageContextProvider = ({ children }) => {
   // check page in route
-  const { query } = useRouter();
+  const { query, push, pathname } = useRouter();
   const [page, setPage] = useState();
 
   useEffect(() => {
@@ -14,6 +14,14 @@ const PageContextProvider = ({ children }) => {
       setPage(query.page);
     } else {
       setPage(1);
+      const dataRoute = {
+        ...query,
+        page: 1,
+      };
+      push({
+        pathname,
+        query: dataRoute,
+      });
     }
   }, []);
   return (

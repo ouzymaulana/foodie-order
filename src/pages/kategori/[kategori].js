@@ -1,9 +1,10 @@
-import MainLayout from "@/Layout";
-import HomeMenu from "@/Views/HomeMenu";
-import { parse } from "cookie";
-import Head from "next/head";
-import React from "react";
-import jwt from "jsonwebtoken";
+import MainLayout from '@/Layout';
+import HomeMenu from '@/Views/HomeMenu';
+import { parse } from 'cookie';
+import Head from 'next/head';
+import React from 'react';
+import jwt from 'jsonwebtoken';
+import userAut from '@/Helper/Authorization/userAut';
 
 export default function ProductFilterByKategori() {
   return (
@@ -22,29 +23,13 @@ export default function ProductFilterByKategori() {
 
 export async function getServerSideProps(context) {
   let cookieHeader = context.req.headers.cookie;
-
-  console.log("ini : ", cookieHeader);
-  if (typeof cookieHeader !== "string") {
-    cookieHeader = "";
+  if (typeof cookieHeader !== 'string') {
+    cookieHeader = '';
   }
   const cookies = parse(cookieHeader).token;
-  if (!cookies) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
   const jwtData = jwt.decode(cookies);
-  if (jwtData.role === "admin") {
-    return {
-      redirect: {
-        destination: "/admin",
-        permanent: false,
-      },
-    };
-  }
+  const authResult = userAut(jwtData, cookies);
+  if (authResult) return authResult;
   return {
     props: {
       // ...

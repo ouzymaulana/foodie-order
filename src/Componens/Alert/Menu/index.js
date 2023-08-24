@@ -28,7 +28,6 @@ export async function isConfirmedDelete(
       alertHandleStatus('Deleted!', 'Your Menu has been deleted.', 'success');
       replace(asPath);
     }
-    console.log(response);
   } catch (error) {
     console.error(error);
   }

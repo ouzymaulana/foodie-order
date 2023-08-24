@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import ModalLayout from "./ModalLayout";
-import { Box, Button, Grid, Typography } from "@mui/material";
-import Image from "next/image";
-import { formatCurrency } from "@/Helper/formatCurrency";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteCartItem, selectDataCart } from "@/Redux/Slices/CartItemsSlice";
-import { grey } from "@mui/material/colors";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { Alert } from "../Alert";
+import React, { useState } from 'react';
+import ModalLayout from './ModalLayout';
+import { Box, Button, Grid, Typography } from '@mui/material';
+import Image from 'next/image';
+import { formatCurrency } from '@/Helper/formatCurrency';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteCartItem, selectDataCart } from '@/Redux/Slices/CartItemsSlice';
+import { grey } from '@mui/material/colors';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { Alert } from '../Alert';
 
 export default function ConfirmCheckOut({
   dataItemCart,
@@ -19,7 +19,7 @@ export default function ConfirmCheckOut({
   title,
 }) {
   const [disableButton, setDisableButton] = useState(false);
-  const token = Cookies.get("token");
+  const token = Cookies.get('token');
   const cartItem = useSelector(selectDataCart);
   const dispatch = useDispatch();
 
@@ -27,7 +27,7 @@ export default function ConfirmCheckOut({
     setDisableButton(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/pemesanan",
+        'http://localhost:5000/api/pemesanan',
         {
           waktuPesanan: cartItem[0].waktuPesanan,
           alamatAntar: cartItem[0].alamatAntar,
@@ -41,13 +41,12 @@ export default function ConfirmCheckOut({
         }
       );
 
-      if (response.data.status === "success") {
+      if (response.data.status === 'success') {
         setDisableButton(false);
         handleClose();
         dispatch(deleteCartItem());
-        Alert("success", "Food order successful");
+        Alert('success', 'Food order successful');
       }
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -59,16 +58,16 @@ export default function ConfirmCheckOut({
       title={title}
       isClick={true}
     >
-      <Grid display={"flex"} flexDirection={"column"}>
+      <Grid display={'flex'} flexDirection={'column'}>
         <Grid
-          display={"flex"}
-          flexDirection={"column"}
-          overflow={"auto"}
+          display={'flex'}
+          flexDirection={'column'}
+          overflow={'auto'}
           height={400}
           sx={{
-            "&::-webkit-scrollbar": {
-              width: "0.3em",
-              background: "#eeeeee",
+            '&::-webkit-scrollbar': {
+              width: '0.3em',
+              background: '#eeeeee',
             },
           }}
         >
@@ -77,36 +76,36 @@ export default function ConfirmCheckOut({
             return (
               <Grid
                 key={i}
-                display={"flex"}
-                flexDirection={"column"}
+                display={'flex'}
+                flexDirection={'column'}
                 borderBottom={1}
                 color={grey[400]}
                 paddingX={1}
                 paddingTop={1}
               >
-                <Box display={"flex"}>
+                <Box display={'flex'}>
                   <Box paddingBottom={0} flex={1}>
                     <Image
                       // src="/img/cocktail.jpg"
                       src={
                         `http://localhost:5000/images/` + isHasMenu?.gambar ||
-                        ""
+                        ''
                       }
                       height={65}
                       width={65}
                       alt="gambar-menu"
                       style={{
-                        borderRadius: "15px",
-                        flex: "1.5",
-                        objectPosition: "center",
-                        objectFit: "cover",
+                        borderRadius: '15px',
+                        flex: '1.5',
+                        objectPosition: 'center',
+                        objectFit: 'cover',
                       }}
                     />
                   </Box>
                   <Box
-                    display={"flex"}
-                    flexDirection={"column"}
-                    justifyContent={"center"}
+                    display={'flex'}
+                    flexDirection={'column'}
+                    justifyContent={'center'}
                     paddingX={1}
                     flex={8}
                   >
@@ -114,26 +113,26 @@ export default function ConfirmCheckOut({
                       fontSize={18}
                       variant="subtitle1"
                       fontWeight={600}
-                      color={"grey"}
+                      color={'grey'}
                     >
-                      {isHasMenu?.nama || ""}
+                      {isHasMenu?.nama || ''}
                     </Typography>
                     <Typography
                       fontSize={16}
                       variant="subtitle2"
-                      color={"grey"}
+                      color={'grey'}
                     >
                       Quantity {item.quantity}
                     </Typography>
                   </Box>
                   <Box
                     flex={4}
-                    display={"flex"}
-                    justifyContent={"end"}
-                    alignItems={"center"}
+                    display={'flex'}
+                    justifyContent={'end'}
+                    alignItems={'center'}
                   >
-                    <Typography variant="h6" color={"grey"}>
-                      {formatCurrency(item.quantity * isHasMenu?.harga || "")}
+                    <Typography variant="h6" color={'grey'}>
+                      {formatCurrency(item.quantity * isHasMenu?.harga || '')}
                     </Typography>
                   </Box>
                 </Box>
@@ -141,11 +140,11 @@ export default function ConfirmCheckOut({
                   <Typography
                     variant="subtitle1"
                     fontWeight={500}
-                    color={"grey"}
+                    color={'grey'}
                   >
                     Order Note
                   </Typography>
-                  <Typography variant="subtitle1" color={"grey"}>
+                  <Typography variant="subtitle1" color={'grey'}>
                     {item.catatanTambahan}
                   </Typography>
                 </Box>
@@ -153,29 +152,29 @@ export default function ConfirmCheckOut({
             );
           })}
         </Grid>
-        <Grid display={"flex"} flexDirection={"column"}>
-          <Box display={"flex"} paddingX={1} paddingTop={1}>
+        <Grid display={'flex'} flexDirection={'column'}>
+          <Box display={'flex'} paddingX={1} paddingTop={1}>
             <Typography fontSize={18} flex={6}>
               Order time
             </Typography>
-            <Typography fontSize={18} flex={6} textAlign={"end"} color={"grey"}>
-              {cartItem[0]?.waktuPesanan || ""}
+            <Typography fontSize={18} flex={6} textAlign={'end'} color={'grey'}>
+              {cartItem[0]?.waktuPesanan || ''}
             </Typography>
           </Box>
-          <Box display={"flex"} paddingX={1}>
+          <Box display={'flex'} paddingX={1}>
             <Typography fontSize={18} flex={6}>
               Table Location
             </Typography>
-            <Typography fontSize={18} flex={6} textAlign={"end"} color={"grey"}>
-              {cartItem[0]?.alamatAntar || ""}
+            <Typography fontSize={18} flex={6} textAlign={'end'} color={'grey'}>
+              {cartItem[0]?.alamatAntar || ''}
             </Typography>
           </Box>
         </Grid>
-        <Grid display={"flex"} paddingX={1} paddingTop={1}>
+        <Grid display={'flex'} paddingX={1} paddingTop={1}>
           <Typography variant="h6" flex={6}>
             Total
           </Typography>
-          <Typography variant="h6" flex={6} textAlign={"end"} color={"grey"}>
+          <Typography variant="h6" flex={6} textAlign={'end'} color={'grey'}>
             {formatCurrency(total)}
           </Typography>
         </Grid>
@@ -187,10 +186,10 @@ export default function ConfirmCheckOut({
             size="large"
             color="primary"
             sx={{
-              borderRadius: "10px",
-              height: "90%",
-              width: "100%",
-              fontWeight: "600",
+              borderRadius: '10px',
+              height: '90%',
+              width: '100%',
+              fontWeight: '600',
             }}
             disableElevation
           >
