@@ -1,8 +1,8 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import FavoriteMenuReducer from "./Slices/FavoriteMenuSlice";
-import persistedItemCartReducer from "./Slices/CartItemsSlice";
-import persistedBalanceReducer from "./Slices/BalanceSlice";
-import DataMenuReducer from "./Slices/DataMenuSlice";
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import FavoriteMenuReducer from './Slices/FavoriteMenuSlice';
+import persistedItemCartReducer from './Slices/CartItemsSlice';
+import persistedBalanceReducer from './Slices/BalanceSlice';
+import DataMenuReducer from './Slices/DataMenuSlice';
 import {
   FLUSH,
   PAUSE,
@@ -10,7 +10,7 @@ import {
   PURGE,
   REGISTER,
   REHYDRATE,
-} from "redux-persist";
+} from 'redux-persist';
 
 const store = configureStore({
   reducer: {

@@ -38,7 +38,8 @@ export default function ListTotal({ total, setTotal, itemMenu }) {
         flex={2}
         display={'flex'}
         flexDirection={'column'}
-        sx={{ backgroundColor: '#eeeeee' }}
+        sx={{ backgroundColor: 'secondary.dark' }}
+        // sx={{ backgroundColor: '#eeeeee' }}
         borderRadius={3}
         paddingX={2}
       >

@@ -40,7 +40,6 @@ export default function PaginationTable({ limitTable }) {
 
   useEffect(() => {
     handleSetPage();
-    // }, [router.query.page]);
   }, [page]);
   return (
     <Stack

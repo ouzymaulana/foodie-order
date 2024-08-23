@@ -1,12 +1,12 @@
-import AddUserForm from "@/Componens/Modal/Form/AddData/AddUserForm";
-import UpdateUserForm from "@/Componens/Modal/Form/UpdateData/UpdateUserForm";
-import ReusableTable from "@/Componens/Table";
-import { useLoadingCircularProgress } from "@/Context/LoadingCircularProgressContextProvider";
-import { useSortBy } from "@/Context/SortByContextProvider";
-import { useSortType } from "@/Context/SortTypeContextProvider";
-import { useDataTotalItem } from "@/Context/TotalItemContextProvider";
-import { Button, Grid, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import AddUserForm from '@/Componens/Modal/Form/AddData/AddUserForm';
+import UpdateUserForm from '@/Componens/Modal/Form/UpdateData/UpdateUserForm';
+import ReusableTable from '@/Componens/Table';
+import { useLoadingCircularProgress } from '@/Context/LoadingCircularProgressContextProvider';
+import { useSortBy } from '@/Context/SortByContextProvider';
+import { useSortType } from '@/Context/SortTypeContextProvider';
+import { useDataTotalItem } from '@/Context/TotalItemContextProvider';
+import { Button, Grid, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 
 export default function UserManagementView({
   getDataUser,
@@ -37,59 +37,59 @@ export default function UserManagementView({
 
   const columns = [
     {
-      label: "Name",
-      field: "nama",
-      routefield: "name",
+      label: 'Name',
+      field: 'nama',
+      routefield: 'name',
       minWidth: 170,
-      filter: "inputText",
+      filter: 'inputText',
       sort: false,
     },
     {
-      label: "Email",
-      field: "email",
-      routefield: "email",
+      label: 'Email',
+      field: 'email',
+      routefield: 'email',
       minWidth: 170,
-      filter: "inputText",
+      filter: 'inputText',
       sort: false,
     },
     {
-      label: "Division",
-      field: "divisi",
-      routefield: "division",
+      label: 'Division',
+      field: 'divisi',
+      routefield: 'division',
       minWidth: 170,
-      filter: "inputSelect",
+      filter: 'inputSelect',
       sort: false,
       selectData: [
-        { text: "all", value: "all" },
-        { text: "IT Dev", value: "IT Dev" },
-        { text: "Pro Dev", value: "Pro Dev" },
-        { text: "frontend engineer", value: "frontend engineer" },
+        { text: 'all', value: 'all' },
+        { text: 'IT Dev', value: 'IT Dev' },
+        { text: 'Pro Dev', value: 'Pro Dev' },
+        { text: 'frontend engineer', value: 'frontend engineer' },
       ],
     },
     {
-      label: "Role",
-      field: "role",
-      routefield: "role",
+      label: 'Role',
+      field: 'role',
+      routefield: 'role',
       minWidth: 170,
-      filter: "inputText",
+      filter: 'inputText',
       sort: false,
     },
     {
-      label: "Registered Date",
-      field: "createdAt",
-      routefield: "registerDate",
+      label: 'Registered Date',
+      field: 'createdAt',
+      routefield: 'registerDate',
       minWidth: 170,
-      filter: "inputDate",
+      filter: 'inputDate',
       sort: true,
     },
     {
-      label: "",
-      field: "action",
+      label: '',
+      field: 'action',
       minWidth: 0,
-      filter: "",
+      filter: '',
       sort: false,
       action: true,
-      actionLable: "userManagement",
+      actionLable: 'userManagement',
     },
   ];
   return (
@@ -97,23 +97,23 @@ export default function UserManagementView({
       <Grid
         borderRadius={4}
         sx={{
-          backgroundColor: "white",
-          height: "calc(100vh - 40px - 80px)",
+          backgroundColor: 'white',
+          height: 'calc(100vh - 40px - 80px)',
         }}
-        width={"100%"}
-        overflow={"hidden"}
+        width={'100%'}
+        overflow={'hidden'}
         padding={3}
-        display={"flex"}
-        flexDirection={"column"}
+        display={'flex'}
+        flexDirection={'column'}
         // gap={2}
       >
-        <Grid display={"flex"}>
+        <Grid display={'flex'}>
           <Grid flex={6}>
             <Typography paddingBottom={1} variant="h6" fontWeight={600}>
               Data User
             </Typography>
           </Grid>
-          <Grid flex={6} textAlign={"end"}>
+          <Grid flex={6} textAlign={'end'}>
             <Button
               disableElevation
               size="small"
@@ -129,11 +129,11 @@ export default function UserManagementView({
         </Grid>
       </Grid>
       <AddUserForm
-        title={"Please Fill The Form"}
+        title={'Please Fill The Form'}
         handleClose={handleClose}
         open={open}
       />
-      <UpdateUserForm title={"User Update Form"} />
+      <UpdateUserForm title={'User Update Form'} />
     </>
   );
 }

@@ -19,6 +19,7 @@ import Cookies from 'js-cookie';
 import jwt from 'jsonwebtoken';
 import Profile from './Profile';
 import { useTheme } from '@emotion/react';
+import DarkMode from './DarkMode';
 
 const CssTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
@@ -31,7 +32,7 @@ const CssTextField = styled(TextField)({
   },
 });
 
-export default function Navbar() {
+export default function Navbar({ mode, toggleDarkMode }) {
   const theme = useTheme();
   const isMdScreen = useMediaQuery(theme.breakpoints.up('md'));
   const token = Cookies.get('token');
@@ -62,7 +63,7 @@ export default function Navbar() {
       position="fixed"
       sx={{
         padding: '20px',
-        backgroundColor: '#F1F1F1',
+        bgcolor: 'primary.light',
         height: '80px',
         display: 'flex',
         justifyContent: 'center',
@@ -97,15 +98,17 @@ export default function Navbar() {
               fullWidth
               autoComplete="off"
               sx={{
-                backgroundColor: 'white',
+                backgroundColor: 'colorCustom.input',
+                // backgroundColor: 'secondary.light',
                 borderRadius: '25px',
               }}
               value={searchValue}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">
+                  <InputAdornment position="start" color="red">
                     <SearchOutlinedIcon
                       fontSize={isMdScreen ? 'large' : 'medium'}
+                      color="red"
                     />
                   </InputAdornment>
                 ),
@@ -117,6 +120,7 @@ export default function Navbar() {
             />
           </Box>
         </Grid>
+        <DarkMode mode={mode} toggleDarkMode={toggleDarkMode} />
         <Profile nama={jwtData?.nama || ''} />
       </Grid>
     </AppBar>

@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const DataMenuSlice = createSlice({
-  name: "dataMenu",
+  name: 'dataMenu',
   initialState: {
     dataMenu: {},
   },
@@ -23,11 +23,6 @@ const DataMenuSlice = createSlice({
         ...action.payload,
         createdAt: new Date().toISOString(),
       };
-
-      // const newDataMenu =
-      //   state.dataMenu.length > 0
-      //     ? state.dataMenu.slice(0, -1)
-      //     : state.dataMenu;
 
       const updateDataMenu = [...state.dataMenu, newPayload];
 

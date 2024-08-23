@@ -10,10 +10,11 @@ export const handleAddFavoriteMenu = async (
   deleteDataByIdMenu,
   addDataFavorite,
   setDataFavorite,
-  menu
+  menu,
+  push
 ) => {
   const token = Cookies.get('token');
-  const { push } = useRouter();
+  // const { push } = useRouter();
   try {
     if (token) {
       const emailLogin = jwt.decode(token);

@@ -31,7 +31,7 @@ export default function Balance() {
   return (
     <>
       <Box
-        sx={{ backgroundColor: 'white' }}
+        sx={{ backgroundColor: 'secondary.light' }}
         display={'flex'}
         height={100}
         borderRadius={5}

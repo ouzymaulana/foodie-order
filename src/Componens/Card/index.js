@@ -2,6 +2,7 @@ import { Box, Button, Card, CardMedia, Typography } from '@mui/material';
 import React from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { formatCurrency } from '@/Helper/formatCurrency';
+import DarkModeContextProvider from '@/Context/DarkMode/DarkModeContextProvider';
 export default function CardMenu({
   item,
   isFavorite,
@@ -45,8 +46,8 @@ export default function CardMenu({
             component="img"
             alt="green"
             height="180"
-            image="/img/cocktail.jpg"
-            // image={`http://localhost:5000/images/` + item.gambar || ""}
+            // image="/img/cocktail.jpg"
+            image={`http://localhost:5000/images/` + item.gambar || ''}
           />
         </Box>
         <Box display={'flex'} flexDirection={'column'} paddingX={'3px'}>

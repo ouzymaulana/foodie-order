@@ -18,6 +18,7 @@ import { getDataFavorite } from '@/Helper/FavoriteData/getDataFavorite';
 import { selectDataCart } from '@/Redux/Slices/CartItemsSlice';
 import AddToCart from '@/Componens/Modal/AddToCart';
 import IsHasCartItem from '@/Componens/Modal/IsHasCartItem';
+import { useRouter } from 'next/router';
 
 function SampleNextArrow({ onClick, style, className }) {
   return (
@@ -96,6 +97,7 @@ export default function BestSellers() {
   const handleCloseIsHasCart = () => setIsHasCartOpen(false);
   const isDesktop = useMediaQuery('(min-width:900px)');
   const isTablet = useMediaQuery('(min-width:600px)');
+  const { push } = useRouter();
 
   let slidesAmount;
   if (isDesktop) {
@@ -123,7 +125,8 @@ export default function BestSellers() {
       deleteDataByIdMenu,
       addDataFavorite,
       setDataFavorite,
-      menu
+      menu,
+      push
     );
   };
 

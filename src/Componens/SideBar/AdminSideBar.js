@@ -35,7 +35,7 @@ export default function AdminSideBar() {
       <List>
         <SideBarItem
           route={'/admin'}
-          menuTitle={'Dassboard'}
+          menuTitle={'Dashboard'}
           itemIcon={<DashboardCustomizeOutlinedIcon />}
         />
         <SideBarItem

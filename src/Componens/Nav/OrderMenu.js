@@ -50,7 +50,10 @@ export default function OrderMenu() {
   return (
     <>
       <Box
-        sx={{ backgroundColor: 'white', height: 'calc(100vh - 240px)' }}
+        sx={{
+          backgroundColor: 'secondary.light',
+          height: 'calc(100vh - 240px)',
+        }}
         borderRadius={5}
         marginTop={'20px'}
         padding={2}

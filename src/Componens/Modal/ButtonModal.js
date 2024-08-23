@@ -30,6 +30,7 @@ export default function ButtonModal({
         cancel
       </Button>
       <Button
+        disableElevation
         type="submit"
         disabled={disable}
         variant="contained"

@@ -20,9 +20,6 @@ import CashWithDrawwal from '../Modal/Form/UpdateData/CashWithDrawwal';
 import { useActionTableModal } from '@/Context/ModalActionTable/ActionTableContextProvider';
 
 function stringAvatar(name) {
-  // return {
-  //   children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
-  // };
   const nameArray = name.split(' ');
   if (nameArray.length >= 2) {
     return {
